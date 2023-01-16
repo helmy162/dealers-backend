@@ -127,31 +127,18 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/logout', [AuthController::class , 'logout']);
     });
 
-    Route::group(['prefix' => 'inspecter'], function () {
+    Route::group(['prefix' => 'inspector'], function () {
 
-            //add resourceApi route
-        Route::apiResource('cars', CarController::class);
-
-        //add route generate info car
-        Route::apiResource('generate-info', GeneralInfoController::class);
-
-        //add EngineTransmission route
-        Route::apiResource('engine-transmissions', EngineTransmissionController::class);
-
-        //add interiorElecticalsAirConditioner route
-        Route::apiResource('ieac', InteriorElecticalsAirConditionerController::class);
-
-        //add steeringSuspensionBrakes route
-        Route::apiResource('ssa', SteeringSuspensionBrakesController::class);
-
-        //add carSpace route
-        Route::apiResource('car-spaces', CarSpaceController::class);
-
-        //add wheel route
-        Route::apiResource('wheels', WheelController::class);
-
-        //route for add car images
-        Route::post('/cars/images', [CarImageController::class, 'storeImages']);
+        Route::get('cars', [CarController::class, 'index']);
+        
+        Route::get('add/car/general-info', [CarController::class, 'createCarWithGeneralInfo']);
+        Route::get('add/car/specs', [CarController::class, 'addSpecs']);
+        Route::get('add/car/engine-transmission', [CarController::class, 'addEngineAndTransmission']);
+        Route::get('add/car/interior-electricals-AC', [CarController::class, 'addInteriorElectricalsAndAC']);
+        Route::get('add/car/steering-suspension-brakes', [CarController::class, 'addSteeringSuspensionAndBrakes']);
+        Route::get('add/car/wheels', [CarController::class, 'addWheels']);
+        Route::get('add/car/images', [CarController::class, 'addImages']);
+        Route::get('add/car/exterior-condition', [CarController::class, 'addExteriorCondition']);
     });
 
     Route::group(['prefix' => 'dealer'], function () {

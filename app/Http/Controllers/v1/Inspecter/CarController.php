@@ -21,83 +21,65 @@ class CarController extends Controller
     public function index()
     {  
        
-        $cars = Car::with('carImages')->get()->map(function ($car) {
-            return [
-                'id' => $car->id,
-                'user_name' => $car->user->name,
-                'carData' => $car->carData,
-                'carImages' => $car->carImages,
-            ];
-        });
+        $cars = Car::paginate(5);
+        
+        return response()->json($cars);
+    }
 
-        //return all cars
+    public function createCarWithGeneralInfo(){
         return response()->json([
-            'status' => 'success',
-            'UserType' => 'Inspecter',
-            'cars' => $cars,
+            'success' => true,
+            'data' => 'createCarWithGeneralInfo'
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCarRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCarRequest $request)
-    {
-       //add data name and general info for car 
-        $car = Car::create([
-            'name' => $request->name,
-            'general_info' => json_encode($request->general_info),
-            // 'user_id' => $request->user()->id,
-        ]);
-        //return success message
+    public function addSpecs(){
         return response()->json([
-            'status' => 'success',
-            'UserType' => 'Inspecter',
-            'message' => 'Car Added Successfully',
+            'success' => true,
+            'data' => 'addSpecs'
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Car $car)
-    {
-        return response()->json($car->load('images'));
+    public function addEngineAndTransmission(){
+        return response()->json([
+            'success' => true,
+            'data' => 'addEngineAndTransmission'
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCarRequest  $request
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCarRequest $request, Car $car)
-    {
-        $car->update($request->validated());
-        //add images to car
-        $car->images()->createMany($request->images);
-        return response()->json($car);
+    public function addInteriorElectricalsAndAC(){
+        return response()->json([
+            'success' => true,
+            'data' => 'addInteriorElectricalsAndAC'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Car $car)
-    {
-        $car->delete();
-        //delete images from car
-        $car->images()->delete();
-        return response()->json(null, 204);
+    public function addSteeringSuspensionAndBrakes(){
+        return response()->json([
+            'success' => true,
+            'data' => 'addSteeringSuspensionAndBrakes'
+        ]);
+    }
+
+    public function addWheels(){
+        return response()->json([
+            'success' => true,
+            'data' => 'addWheels'
+        ]);
+    }
+
+    public function addImages(){
+        return response()->json([
+            'success' => true,
+            'data' => 'addImages'
+        ]);
+    }
+
+    public function addExteriorCondition(){
+        return response()->json([
+            'success' => true,
+            'data' => 'addExteriorCondition'
+        ]);
     }
 
     //build storeImages function
