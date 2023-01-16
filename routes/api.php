@@ -131,14 +131,14 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('cars', [CarController::class, 'index']);
         
-        Route::get('add/car/general-info', [CarController::class, 'createCarWithGeneralInfo']);
-        Route::get('add/car/specs', [CarController::class, 'addSpecs']);
-        Route::get('add/car/engine-transmission', [CarController::class, 'addEngineAndTransmission']);
-        Route::get('add/car/interior-electricals-AC', [CarController::class, 'addInteriorElectricalsAndAC']);
-        Route::get('add/car/steering-suspension-brakes', [CarController::class, 'addSteeringSuspensionAndBrakes']);
-        Route::get('add/car/wheels', [CarController::class, 'addWheels']);
-        Route::get('add/car/images', [CarController::class, 'addImages']);
-        Route::get('add/car/exterior-condition', [CarController::class, 'addExteriorCondition']);
+        Route::post('add/car/general-info', [CarController::class, 'createCarWithGeneralInfo']);
+        Route::post('add/car/specs', [CarController::class, 'addSpecs']);
+        Route::post('add/car/engine-transmission', [CarController::class, 'addEngineAndTransmission']);
+        Route::post('add/car/interior-electricals-AC', [CarController::class, 'addInteriorElectricalsAndAC']);
+        Route::post('add/car/steering-suspension-brakes', [CarController::class, 'addSteeringSuspensionAndBrakes']);
+        Route::post('add/car/wheels', [CarController::class, 'addWheels']);
+        Route::post('add/car/images', [CarController::class, 'addImages']);
+        Route::post('add/car/exterior-condition', [CarController::class, 'addExteriorCondition']);
     });
 
     Route::group(['prefix' => 'dealer'], function () {
