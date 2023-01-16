@@ -17,6 +17,8 @@ class Car extends Model
 
     protected $casts = [
         'engine' => 'array',
+        'is_new' => 'boolean',
+        'first_owner' => 'boolean',
     ];
 
     protected $hidden = [

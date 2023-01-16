@@ -25,6 +25,13 @@ class CarController extends Controller
         return response()->json($cars);
     }
 
+    public function getAllCars(){
+
+        $cars = Car::all();
+        
+        return response()->json($cars);
+    }
+
     public function createCarWithGeneralInfo(Request $request){
 
         $car = new Car();
@@ -34,7 +41,7 @@ class CarController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
@@ -45,7 +52,7 @@ class CarController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
@@ -56,7 +63,7 @@ class CarController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
@@ -67,7 +74,7 @@ class CarController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
@@ -78,7 +85,7 @@ class CarController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
@@ -89,7 +96,7 @@ class CarController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
@@ -99,8 +106,8 @@ class CarController extends Controller
         $car->save();
         
         return response()->json([
-            'success' => true,
-            'data' => $car
+            'success' => 'not implemented yet!',
+            'car' => $car
         ]);
     }
 
@@ -111,14 +118,14 @@ class CarController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $car
+            'car' => $car
         ]);
     }
 
     //build storeImages function
     public function storeImages(Request $request)
     {
-        //add car images to uploads folder and store the path in database
+        //add car images to uploads folder and store the path in carbase
         $carImages = [];
         foreach ($request->file('images') as $image) {
             $path = $image->store('uploads', 'public');

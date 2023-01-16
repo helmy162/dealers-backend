@@ -130,6 +130,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'inspector'], function () {
 
         Route::get('cars', [CarController::class, 'index']);
+        Route::get('cars/all', [CarController::class, 'getAllCars']);
         
         Route::post('add/car/general-info', [CarController::class, 'createCarWithGeneralInfo']);
         Route::post('add/car/specs', [CarController::class, 'addSpecs']);
