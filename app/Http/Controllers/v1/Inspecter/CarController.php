@@ -48,6 +48,7 @@ class CarController extends Controller
     public function addSpecs(Request $request){
         $car = Car::findOrFail($request->car_id);
         $car->fill($request->all());
+        $car->specs_status = true;
         $car->save();
         
         return response()->json([
@@ -59,6 +60,7 @@ class CarController extends Controller
     public function addEngineAndTransmission(Request $request){
         $car = Car::findOrFail($request->car_id);
         $car->fill($request->all());
+        $car->engine_status = true;
         $car->save();
         
         return response()->json([
@@ -70,6 +72,7 @@ class CarController extends Controller
     public function addInteriorElectricalsAndAC(Request $request){
         $car = Car::findOrFail($request->car_id);
         $car->fill($request->all());
+        $car->interior_status = true;
         $car->save();
         
         return response()->json([
@@ -81,6 +84,7 @@ class CarController extends Controller
     public function addSteeringSuspensionAndBrakes(Request $request){
         $car = Car::findOrFail($request->car_id);
         $car->fill($request->all());
+        $car->steering_status = true;
         $car->save();
         
         return response()->json([
@@ -92,6 +96,7 @@ class CarController extends Controller
     public function addWheels(Request $request){
         $car = Car::findOrFail($request->car_id);
         $car->fill($request->all());
+        $car->wheels_status = true;
         $car->save();
         
         return response()->json([
@@ -130,6 +135,7 @@ class CarController extends Controller
 
 
             $car->images = $imagesNameArr;
+            $car->images_status = true;
             $car->save();
         }
 
@@ -143,6 +149,7 @@ class CarController extends Controller
     public function addExteriorCondition(Request $request){
         $car = Car::findOrFail($request->car_id);
         $car->fill($request->all());
+        $car->exterior_status = true;
         $car->save();
         
         return response()->json([
