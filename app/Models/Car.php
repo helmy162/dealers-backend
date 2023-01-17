@@ -12,11 +12,21 @@ class Car extends Model
     protected $guarded = [
         'id',
         'inspector_id',
-        'status'
+        'status',
+        'images',
+        'engine_status',
+        'steering_status',
+        'interior_status',
+        'specs_status',
+        'wheels_status',
+        'exterior_status',
+        'images_status'
     ];
 
     protected $casts = [
         'engine' => 'array',
+        'markers' => 'array',
+        'images' => 'array',
         'is_new' => 'boolean',
         'first_owner' => 'boolean',
     ];
@@ -24,6 +34,13 @@ class Car extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
+        'engine_status',
+        'steering_status',
+        'interior_status',
+        'specs_status',
+        'wheels_status',
+        'exterior_status',
+        'images_status'
     ];
 
     public function bids()

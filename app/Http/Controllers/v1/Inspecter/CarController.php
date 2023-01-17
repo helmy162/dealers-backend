@@ -102,11 +102,40 @@ class CarController extends Controller
 
     public function addImages(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->save();
+        
+        // dd($request);
+        if ($request->hasFile('images')) {
+
+            $images = $request->file('images');
+            $imagesNameArr = array();
+            foreach ($images as $image) {
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/car_images',$fileNameToStore);
+
+                //add car images array
+                array_push($imagesNameArr, $fileNameToStore);
+            }
+
+
+            $car->images = $imagesNameArr;
+            $car->save();
+        }
+
         
         return response()->json([
-            'success' => 'not implemented yet!',
+            'success' => 'true',
             'car' => $car
         ]);
     }
@@ -122,21 +151,4 @@ class CarController extends Controller
         ]);
     }
 
-    //build storeImages function
-    public function storeImages(Request $request)
-    {
-        //add car images to uploads folder and store the path in carbase
-        $carImages = [];
-        foreach ($request->file('images') as $image) {
-            $path = $image->store('uploads', 'public');
-            $carImages[] = ['path' => $path];
-        }
-        //create car images and car_id is the id of the car
-        $car = Car::find($request->car_id);
-        $car->carImages()->createMany($carImages);
-        //return the car images
-        return response()->json([
-            'carImages' => $carImages
-        ], 201);
-    }
 }
