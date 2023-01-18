@@ -35,7 +35,7 @@ class CarController extends Controller
         //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
         //             ->paginate(5);
 
-        $cars = Car::paginate(5);
+        $cars = Car::with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->paginate(5);
         
         return response()->json($cars);
     }
@@ -51,8 +51,8 @@ class CarController extends Controller
         //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
         //             ->get();
 
-        $cars = Car::all();
-        
+        $cars = Car::with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->get();
+
         return response()->json($cars);
     }
 
@@ -80,10 +80,11 @@ class CarController extends Controller
         
         $car->specs_id = $specs->id;
         $car->save();
+        $car->specs;
 
         return response()->json([
             'success' => true,
-            'car' => $car->with('specs')
+            'car' => $car
         ]);
     }
 
@@ -97,10 +98,11 @@ class CarController extends Controller
         
         $car->engine_id = $engine->id;
         $car->save();
+        $car->engineTransmission;
 
         return response()->json([
             'success' => true,
-            'car' => $car->with('engineTransmission')->first()
+            'car' => $car
         ]);
     }
 
@@ -114,10 +116,11 @@ class CarController extends Controller
         
         $car->interior_id = $interior->id;
         $car->save();
+        $car->interior;
 
         return response()->json([
             'success' => true,
-            'car' => $car->with('interior')->first()
+            'car' => $car
         ]);
     }
 
@@ -131,10 +134,11 @@ class CarController extends Controller
         
         $car->steering_id = $steering->id;
         $car->save();
+        $car->steering;
 
         return response()->json([
             'success' => true,
-            'car' => $car->with('specs')->first()
+            'car' => $car
         ]);
     }
 
@@ -148,10 +152,11 @@ class CarController extends Controller
         
         $car->wheels_id = $wheels->id;
         $car->save();
+        $car->wheels;
 
         return response()->json([
             'success' => true,
-            'car' => $car->with('wheels')->first()
+            'car' => $car
         ]);
     }
 
@@ -196,18 +201,49 @@ class CarController extends Controller
 
     public function addExteriorCondition(Request $request){
         $car = Car::findOrFail($request->car_id);
-
+        
         $exterior = new Exterior();
-        $exterior->fill($request->all());
+        $defects = $request->markers;
+
+        $request->hasFile('images') ? $images = $request->file('images') : '';
+
+        foreach ($defects as $defect) {
+            if($images &&  is_array($images) && $defect->photo){
+                //get image from images array
+                $image = $images[$defect->photo];
+
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/defect_images',$fileNameToStore);
+
+                $defect->photo = '/storage/defect_images/'.$fileNameToStore;
+            }else{
+                $defect->photo = null;
+            }
+        }
+
+        $exterior->markers = $defects;
         $exterior->car_id = $car->id;
         $exterior->save();
         
         $car->exterior_id = $exterior->id;
         $car->save();
+        $car->exterior;
 
         return response()->json([
             'success' => true,
-            'car' => $car->with('exterior')->first()
+            'car' => $car
         ]);
     }
 

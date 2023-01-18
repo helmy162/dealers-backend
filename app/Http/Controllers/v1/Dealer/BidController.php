@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Dealer;
 use App\Http\Requests\StoreBidRequest;
 use App\Http\Requests\UpdateBidRequest;
 use App\Models\Bid;
+use App\Models\Events\NewBid;
 use App\Notifications\BidNotification;
 
 class BidController extends Controller
@@ -29,6 +30,7 @@ class BidController extends Controller
 
         //add notification for admin
         $admin->notify(new BidNotification($car, $user, $request->bid));
+        // event(new NewBid());
 
         return response()->json([
             'status' => 'success',
