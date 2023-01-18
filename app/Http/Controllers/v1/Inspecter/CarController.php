@@ -79,6 +79,7 @@ class CarController extends Controller
         $specs->save();
         
         $car->specs_id = $specs->id;
+        $car->save();
 
         return response()->json([
             'success' => true,
@@ -95,6 +96,7 @@ class CarController extends Controller
         $engine->save();
         
         $car->engine_id = $engine->id;
+        $car->save();
 
         return response()->json([
             'success' => true,
@@ -111,6 +113,7 @@ class CarController extends Controller
         $interior->save();
         
         $car->interior_id = $interior->id;
+        $car->save();
 
         return response()->json([
             'success' => true,
@@ -127,6 +130,7 @@ class CarController extends Controller
         $steering->save();
         
         $car->steering_id = $steering->id;
+        $car->save();
 
         return response()->json([
             'success' => true,
@@ -143,6 +147,7 @@ class CarController extends Controller
         $wheels->save();
         
         $car->wheels_id = $wheels->id;
+        $car->save();
 
         return response()->json([
             'success' => true,
@@ -198,6 +203,7 @@ class CarController extends Controller
         $exterior->save();
         
         $car->exterior_id = $exterior->id;
+        $car->save();
 
         return response()->json([
             'success' => true,
