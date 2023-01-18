@@ -179,7 +179,7 @@ class CarController extends Controller
                 $path = $image->storeAs('public/car_images',$fileNameToStore);
 
                 //add car images array
-                array_push($imagesNameArr, $fileNameToStore);
+                array_push($imagesNameArr, '/storage/car_images/'.$fileNameToStore);
             }
 
 
