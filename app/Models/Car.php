@@ -12,20 +12,11 @@ class Car extends Model
     protected $guarded = [
         'id',
         'inspector_id',
-        'status',
         'images',
-        'engine_status',
-        'steering_status',
-        'interior_status',
-        'specs_status',
-        'wheels_status',
-        'exterior_status',
-        'images_status'
     ];
 
     protected $casts = [
         'engine' => 'array',
-        'markers' => 'array',
         'images' => 'array',
         'is_new' => 'boolean',
         'first_owner' => 'boolean',
@@ -34,13 +25,13 @@ class Car extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        'engine_status',
-        'steering_status',
-        'interior_status',
-        'specs_status',
-        'wheels_status',
-        'exterior_status',
-        'images_status'
+        'inspector_id',
+        'engine_id',
+        'steering_id',
+        'interior_id',
+        'specs_id',
+        'wheels_id',
+        'exterior_id',
     ];
 
     public function bids()
@@ -51,6 +42,30 @@ class Car extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function engineTransmission(){
+        return $this->hasOne(Engine::class);
+    }
+
+    public function exterior(){
+        return $this->hasOne(Exterior::class);
+    }
+
+    public function interior(){
+        return $this->hasOne(Interior::class);
+    }
+
+    public function specs(){
+        return $this->hasOne(Specs::class);
+    }
+
+    public function steering(){
+        return $this->hasOne(Steering::class);
+    }
+
+    public function wheels(){
+        return $this->hasOne(Wheels::class);
     }
 
 }

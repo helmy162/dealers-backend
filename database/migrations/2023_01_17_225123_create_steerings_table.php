@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('steerings', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('car_id');
+            $table->string('Brake_Pads')->nullable();
+            $table->string('Brake_Disk')->nullable();
+            $table->string('Parking_Brake')->nullable();
+            $table->string('Suspension')->nullable();
+            $table->string('Shock_Absorber')->nullable();
+            $table->string('Steering_Operation')->nullable();
+            $table->string('Steering_Alignment')->nullable();
+            $table->string('Wheel_Alignment')->nullable();
+            $table->string('Steering_Comment')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('steerings');
+    }
+};

@@ -7,6 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use App\Models\Car;
+use App\Models\Engine;
+use App\Models\Exterior;
+use App\Models\Interior;
+use App\Models\Specs;
+use App\Models\Steering;
+use App\Models\Wheels;
 
 use Illuminate\Http\Request;
 
@@ -20,6 +26,15 @@ class CarController extends Controller
     public function index()
     {  
        
+        // $cars = Car::whereNotNUll('engine_id')
+        //             ->whereNotNUll('steering_id')
+        //             ->whereNotNUll('interior_id')
+        //             ->whereNotNUll('exterior_id')
+        //             ->whereNotNUll('specs_id')
+        //             ->whereNotNUll('wheels_id')
+        //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
+        //             ->paginate(5);
+
         $cars = Car::paginate(5);
         
         return response()->json($cars);
@@ -27,16 +42,26 @@ class CarController extends Controller
 
     public function getAllCars(){
 
+        // $cars = Car::whereNotNUll('engine_id')
+        //             ->whereNotNUll('steering_id')
+        //             ->whereNotNUll('interior_id')
+        //             ->whereNotNUll('exterior_id')
+        //             ->whereNotNUll('specs_id')
+        //             ->whereNotNUll('wheels_id')
+        //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
+        //             ->get();
+
         $cars = Car::all();
         
         return response()->json($cars);
     }
 
-    public function createCarWithGeneralInfo(Request $request){
+    public function createCar(Request $request){
 
         $car = new Car();
         $car->inspector_id = 1;
         $car->fill($request->all());
+        $car->ownership = $request->first_owner;
         $car->save();
 
         return response()->json([
@@ -47,68 +72,87 @@ class CarController extends Controller
 
     public function addSpecs(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->specs_status = true;
-        $car->save();
+
+        $specs = new Specs();
+        $specs->fill($request->all());
+        $specs->car_id = $car->id;
+        $specs->save();
         
+        $car->specs_id = $specs->id;
+
         return response()->json([
             'success' => true,
-            'car' => $car
+            'car' => $car->with('specs')
         ]);
     }
 
     public function addEngineAndTransmission(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->engine_status = true;
-        $car->save();
+
+        $engine = new Engine();
+        $engine->fill($request->all());
+        $engine->car_id = $car->id;
+        $engine->save();
         
+        $car->engine_id = $engine->id;
+
         return response()->json([
             'success' => true,
-            'car' => $car
+            'car' => $car->with('engineTransmission')->first()
         ]);
     }
 
     public function addInteriorElectricalsAndAC(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->interior_status = true;
-        $car->save();
+
+        $interior = new Interior();
+        $interior->fill($request->all());
+        $interior->car_id = $car->id;
+        $interior->save();
         
+        $car->interior_id = $interior->id;
+
         return response()->json([
             'success' => true,
-            'car' => $car
+            'car' => $car->with('interior')->first()
         ]);
     }
 
     public function addSteeringSuspensionAndBrakes(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->steering_status = true;
-        $car->save();
+
+        $steering = new Steering();
+        $steering->fill($request->all());
+        $steering->car_id = $car->id;
+        $steering->save();
         
+        $car->steering_id = $steering->id;
+
         return response()->json([
             'success' => true,
-            'car' => $car
+            'car' => $car->with('specs')->first()
         ]);
     }
 
     public function addWheels(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->wheels_status = true;
-        $car->save();
+
+        $wheels = new Wheels();
+        $wheels->fill($request->all());
+        $wheels->car_id = $car->id;
+        $wheels->save();
         
+        $car->wheels_id = $wheels->id;
+
         return response()->json([
             'success' => true,
-            'car' => $car
+            'car' => $car->with('wheels')->first()
         ]);
     }
 
     public function addImages(Request $request){
         $car = Car::findOrFail($request->car_id);
         
-        // dd($request);
         if ($request->hasFile('images')) {
 
             $images = $request->file('images');
@@ -135,7 +179,6 @@ class CarController extends Controller
 
 
             $car->images = $imagesNameArr;
-            $car->images_status = true;
             $car->save();
         }
 
@@ -148,13 +191,17 @@ class CarController extends Controller
 
     public function addExteriorCondition(Request $request){
         $car = Car::findOrFail($request->car_id);
-        $car->fill($request->all());
-        $car->exterior_status = true;
-        $car->save();
+
+        $exterior = new Exterior();
+        $exterior->fill($request->all());
+        $exterior->car_id = $car->id;
+        $exterior->save();
         
+        $car->exterior_id = $exterior->id;
+
         return response()->json([
             'success' => true,
-            'car' => $car
+            'car' => $car->with('exterior')->first()
         ]);
     }
 
