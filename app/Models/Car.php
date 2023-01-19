@@ -12,19 +12,27 @@ class Car extends Model
     protected $guarded = [
         'id',
         'inspector_id',
+        'details_id',
+        'history_id',
+        'inspector_id',
+        'engine_id',
+        'steering_id',
+        'interior_id',
+        'specs_id',
+        'wheels_id',
+        'exterior_id',
         'images',
     ];
 
     protected $casts = [
-        'engine' => 'array',
         'images' => 'array',
-        'is_new' => 'boolean',
-        'first_owner' => 'boolean',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
+        'details_id',
+        'history_id',
         'inspector_id',
         'engine_id',
         'steering_id',
@@ -68,6 +76,12 @@ class Car extends Model
         return $this->hasOne(Wheels::class);
     }
 
-}
+    public function details(){
+        return $this->hasOne(Details::class);
+    }
 
+    public function history(){
+        return $this->hasOne(History::class);
+    }
+}
 

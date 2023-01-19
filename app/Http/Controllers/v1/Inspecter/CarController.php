@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use App\Models\Car;
+use App\Models\Details;
+use App\Models\History;
 use App\Models\Engine;
 use App\Models\Exterior;
 use App\Models\Interior;
@@ -35,7 +37,7 @@ class CarController extends Controller
         //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
         //             ->paginate(5);
 
-        $cars = Car::with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->paginate(5);
+        $cars = Car::with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->paginate(5);
         
         return response()->json($cars);
     }
@@ -51,7 +53,7 @@ class CarController extends Controller
         //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
         //             ->get();
 
-        $cars = Car::with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->get();
+        $cars = Car::with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->get();
 
         return response()->json($cars);
     }
@@ -60,8 +62,18 @@ class CarController extends Controller
 
         $car = new Car();
         $car->inspector_id = 1;
-        $car->fill($request->all());
-        $car->ownership = $request->first_owner;
+
+        $details = new Details();
+        $details->fill($request->all());
+        $details->save();
+
+        $history = new History();
+        $history->fill($request->all());
+        $history->ownership = $request->first_owner;
+        $history->save();
+
+        $car->details_id = $details->id;
+        $car->history_id = $history->id;
         $car->save();
 
         return response()->json([
@@ -187,7 +199,6 @@ class CarController extends Controller
                 array_push($imagesNameArr, '/storage/car_images/'.$fileNameToStore);
             }
 
-
             $car->images = $imagesNameArr;
             $car->save();
         }
@@ -207,33 +218,38 @@ class CarController extends Controller
 
         $request->hasFile('images') ? $images = $request->file('images') : '';
 
-        foreach ($defects as $defect) {
-            if($images &&  is_array($images) && $defect->photo){
-                //get image from images array
-                $image = $images[$defect->photo];
-
-                //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
-
-                //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
-
-                //get just the extension
-                $extension = $image->getClientOriginalExtension();
-
-                //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
-
-                //upload image
-                $path = $image->storeAs('public/defect_images',$fileNameToStore);
-
-                $defect->photo = '/storage/defect_images/'.$fileNameToStore;
-            }else{
-                $defect->photo = null;
+        $markers = [];
+        if($defects && is_array($defects)){
+            foreach ($defects as $defect) {
+                $defect = json_decode($defect);
+                if($images &&  is_array($images) && is_int($defect->photo)){
+                    //get image from images array
+                    $image = $images[$defect->photo];
+    
+                    //get file name with the extension
+                    $fileNameWithExt= $image->getClientOriginalName();
+    
+                    //get just filename
+                    $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+    
+                    //get just the extension
+                    $extension = $image->getClientOriginalExtension();
+    
+                    //file name to store(unique)
+                    $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+    
+                    //upload image
+                    $path = $image->storeAs('public/defect_images',$fileNameToStore);
+    
+                    $defect->photo = '/storage/defect_images/'.$fileNameToStore;
+                }else{
+                    $defect->photo = null;
+                }
+                array_push($markers, $defect);
             }
         }
 
-        $exterior->markers = $defects;
+        $exterior->markers = $markers;
         $exterior->car_id = $car->id;
         $exterior->save();
         
