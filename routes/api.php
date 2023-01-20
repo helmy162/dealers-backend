@@ -70,6 +70,9 @@ Route::group(['prefix' => 'v1'], function () {
          Route::group(['prefix' => 'admin'], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
+
+            Route::get('all-users', [UsersController::class, 'allUsers']);
+
             //add resourceApi route
             // Route::Controller(AdminCarsReqeustConctoller::class)->group(function () {
             //     //route approve car
@@ -87,33 +90,25 @@ Route::group(['prefix' => 'v1'], function () {
             //route for pending car
             Route::post('/cars/{car}/pending', [AdminCarsReqeustConctoller::class, 'pendingCar'])->name('cars.pending');
 
-            Route::delete('cars/{car}',  [CarController::class, 'destory']);
+            Route::delete('cars/{car}',  [CarController::class, 'destroy']);
         });
         
         //route group for inspecter
-        // Route::group(['prefix' => 'inspecter'], function () {
+        Route::group(['prefix' => 'inspector'], function () {
 
-        //         //add resourceApi route
-        //     Route::apiResource('cars', CarController::class);
+            Route::get('cars', [CarController::class, 'index']);
+            Route::get('cars/all', [CarController::class, 'getAllCars']);
+            
+            Route::post('add/car/general-info', [CarController::class, 'createCar']);
+            Route::post('add/car/specs', [CarController::class, 'addSpecs']);
+            Route::post('add/car/engine-transmission', [CarController::class, 'addEngineAndTransmission']);
+            Route::post('add/car/interior-electricals-AC', [CarController::class, 'addInteriorElectricalsAndAC']);
+            Route::post('add/car/steering-suspension-brakes', [CarController::class, 'addSteeringSuspensionAndBrakes']);
+            Route::post('add/car/wheels', [CarController::class, 'addWheels']);
+            Route::post('add/car/images', [CarController::class, 'addImages']);
+            Route::post('add/car/exterior-condition', [CarController::class, 'addExteriorCondition']);
+        });
 
-        //     //add EngineTransmission route
-        //     Route::apiResource('engine-transmissions', EngineTransmissionController::class);
-
-        //     //add interiorElecticalsAirConditioner route
-        //     Route::apiResource('ieac', InteriorElecticalsAirConditionerController::class);
-
-        //     //add steeringSuspensionBrakes route
-        //     Route::apiResource('ssa', SteeringSuspensionBrakesController::class);
-
-        //     //add carSpace route
-        //     Route::apiResource('car-spaces', CarSpaceController::class);
-
-        //     //add wheel route
-        //     Route::apiResource('wheels', WheelController::class);
-
-        //     //route for add car images
-        //     Route::post('/cars/images', [CarImageController::class, 'storeImages']);
-        // });
         //route group for dealer
         // Route::group(['prefix' => 'dealer'], function () {
         //     //add resourceApi route
@@ -125,25 +120,13 @@ Route::group(['prefix' => 'v1'], function () {
         //     //post data for car request when BidNow button clicked
         //     Route::post('/cars/request', [BidController::class, 'requestCar']);
         // });
-        //add logout route
-        Route::post('/logout', [AuthController::class , 'logout']);
-    });
 
-    Route::get('admin/all-users', [UsersController::class, 'allUsers']);
-
-    Route::group(['prefix' => 'inspector'], function () {
-
+        // get cars
         Route::get('cars', [CarController::class, 'index']);
         Route::get('cars/all', [CarController::class, 'getAllCars']);
-        
-        Route::post('add/car/general-info', [CarController::class, 'createCar']);
-        Route::post('add/car/specs', [CarController::class, 'addSpecs']);
-        Route::post('add/car/engine-transmission', [CarController::class, 'addEngineAndTransmission']);
-        Route::post('add/car/interior-electricals-AC', [CarController::class, 'addInteriorElectricalsAndAC']);
-        Route::post('add/car/steering-suspension-brakes', [CarController::class, 'addSteeringSuspensionAndBrakes']);
-        Route::post('add/car/wheels', [CarController::class, 'addWheels']);
-        Route::post('add/car/images', [CarController::class, 'addImages']);
-        Route::post('add/car/exterior-condition', [CarController::class, 'addExteriorCondition']);
+
+        //add logout route
+        Route::post('/logout', [AuthController::class , 'logout']);
     });
 
     Route::group(['prefix' => 'dealer'], function () {
