@@ -86,6 +86,8 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/cars/{car}/reject', [AdminCarsReqeustConctoller::class, 'rejectCar'])->name('cars.reject');
             //route for pending car
             Route::post('/cars/{car}/pending', [AdminCarsReqeustConctoller::class, 'pendingCar'])->name('cars.pending');
+
+            Route::delete('cars/{car}',  [CarController::class, 'destory']);
         });
         
         //route group for inspecter

@@ -268,4 +268,14 @@ class CarController extends Controller
         ]);
     }
 
+    public function destroy(Request $request, $id)
+    {
+        $car = Car::findOrFail($id);
+        $car->delete();
+
+        return response()->json([
+            'success' => 'true',
+        ]);
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\v1\Dealer;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBidRequest;
 use App\Http\Requests\UpdateBidRequest;
 use App\Models\Bid;

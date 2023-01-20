@@ -141,21 +141,14 @@ class UsersController extends Controller
         }
     }
 
-
-
     public function destroy(Request $request, $id)
     {
-        $user = User::find($id);
-        if ($user) {
-            $user->delete();
-            return response()->json([
-                'message' => 'success',
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'user not found',
-            ], 404);
-        }
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'success' => 'true',
+        ]);
     }
 
 
