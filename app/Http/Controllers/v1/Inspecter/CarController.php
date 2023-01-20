@@ -62,19 +62,24 @@ class CarController extends Controller
 
         $car = new Car();
         $car->inspector_id = 1;
+        $car->save();
 
         $details = new Details();
         $details->fill($request->all());
+        $details->car_id = $car->id;
         $details->save();
 
         $history = new History();
         $history->fill($request->all());
         $history->ownership = $request->first_owner;
+        $history->car_id = $car->id;
         $history->save();
 
         $car->details_id = $details->id;
         $car->history_id = $history->id;
         $car->save();
+        $car->history;
+        $car->details;
 
         return response()->json([
             'success' => true,
@@ -222,7 +227,7 @@ class CarController extends Controller
         if($defects && is_array($defects)){
             foreach ($defects as $defect) {
                 $defect = json_decode($defect);
-                if($images &&  is_array($images) && is_int($defect->photo)){
+                if(isset($images) &&  is_array($images) && is_int($defect->photo)){
                     //get image from images array
                     $image = $images[$defect->photo];
     

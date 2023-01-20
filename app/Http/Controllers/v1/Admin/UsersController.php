@@ -54,6 +54,12 @@ class UsersController extends Controller
         ]);
     }
 
+    public function allUsers(){
+        $users = User::all();
+
+        return response()->json($users);
+    }
+
 
     //add new user inspecter or dealer
     public function store(Request $request)

@@ -127,6 +127,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/logout', [AuthController::class , 'logout']);
     });
 
+    Route::get('admin/all-users', [UsersController::class, 'allUsers']);
+
     Route::group(['prefix' => 'inspector'], function () {
 
         Route::get('cars', [CarController::class, 'index']);

@@ -51,7 +51,7 @@ class User extends Authenticatable
     //get the user's cars
     public function cars()
     {
-        return $this->hasMany(Car::class);
+        return $this->hasMany(Car::class, 'inspector_id');
     }
 
     //add realtion bid between user and car
