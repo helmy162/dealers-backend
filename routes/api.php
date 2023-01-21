@@ -46,14 +46,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //add group with prefix api with v1 version
 Route::group(['prefix' => 'v1'], function () {
 
-    //route test for api
-    Route::get('/test', function () {
-        return response()->json(['message' => 'test api']);
-    });
-    //register user 
-    //route controller AuthController
-
-    
+    // user register
     Route::post('/register', [AuthController::class, 'register']);
     //login user
     Route::post('/login', [AuthController::class , 'login']);
@@ -66,8 +59,8 @@ Route::group(['prefix' => 'v1'], function () {
     //route group for auth user
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
-         //route group for admin 
-         Route::group(['prefix' => 'admin'], function () {
+        //route group for admin 
+        Route::group(['prefix' => 'admin'], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
 
@@ -95,9 +88,6 @@ Route::group(['prefix' => 'v1'], function () {
         
         //route group for inspecter
         Route::group(['prefix' => 'inspector'], function () {
-
-            Route::get('cars', [CarController::class, 'index']);
-            Route::get('cars/all', [CarController::class, 'getAllCars']);
             
             Route::post('add/car/general-info', [CarController::class, 'createCar']);
             Route::post('add/car/specs', [CarController::class, 'addSpecs']);
@@ -107,6 +97,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('add/car/wheels', [CarController::class, 'addWheels']);
             Route::post('add/car/images', [CarController::class, 'addImages']);
             Route::post('add/car/exterior-condition', [CarController::class, 'addExteriorCondition']);
+            
         });
 
         //route group for dealer
@@ -121,13 +112,14 @@ Route::group(['prefix' => 'v1'], function () {
         //     Route::post('/cars/request', [BidController::class, 'requestCar']);
         // });
 
-        // get cars
-        Route::get('cars', [CarController::class, 'index']);
-        Route::get('cars/all', [CarController::class, 'getAllCars']);
-
+        
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
     });
+    
+    // get cars
+    Route::get('cars', [CarController::class, 'index']);
+    Route::get('cars/all', [CarController::class, 'getAllCars']);
 
     Route::group(['prefix' => 'dealer'], function () {
         //add resourceApi route
