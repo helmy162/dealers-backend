@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\v1\AuthController;
 use App\Http\Controllers\v1\Admin\{AdminCarsReqeustConctoller,UsersController};
 //use CarImageController for store car images
-use App\Http\Controllers\v1\Inspecter\CarImageController;
+use App\Http\Controllers\v1\Inspector\CarImageController;
 //use dealer controller for store dealer
 use App\Http\Controllers\v1\Dealer\{
     BidController,
@@ -17,7 +17,7 @@ use App\Http\Controllers\v1\Dealer\{
 
 
 
-use App\Http\Controllers\v1\Inspecter\{
+use App\Http\Controllers\v1\Inspector\{
     CarController,
     EngineTransmissionController,
     InteriorElecticalsAirConditionerController,
@@ -63,30 +63,22 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'admin'], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
-
             Route::get('all-users', [UsersController::class, 'allUsers']);
 
-            //add resourceApi route
-            // Route::Controller(AdminCarsReqeustConctoller::class)->group(function () {
-            //     //route approve car
-            //     Route::post('/cars/approve/{id}', 'approveCar');
-            //     //pending cars
-            //     Route::post('/cars/pending/{id}', 'pendingCar')->name('cars.pending');
-            //     //route reject car
-            //     Route::post('/cars/reject/{id}', 'rejectCar');
-            // });
-            
-            // //route for approve car
-            Route::post('/cars/{car}/approve', [AdminCarsReqeustConctoller::class, 'approveCar'])->name('cars.approve');
-            //route for reject car
-            Route::post('/cars/{car}/reject', [AdminCarsReqeustConctoller::class, 'rejectCar'])->name('cars.reject');
-            //route for pending car
-            Route::post('/cars/{car}/pending', [AdminCarsReqeustConctoller::class, 'pendingCar'])->name('cars.pending');
 
+            // cars routes
+            Route::post('edit/car/general-info', [CarController::class, 'editGeneralInfo']);
+            Route::post('edit/car/specs', [CarController::class, 'editSpecs']);
+            Route::post('edit/car/engine-transmission', [CarController::class, 'editEngineAndTransmission']);
+            Route::post('edit/car/interior-electricals-AC', [CarController::class, 'editInteriorElectricalsAndAC']);
+            Route::post('edit/car/steering-suspension-brakes', [CarController::class, 'editSteeringSuspensionAndBrakes']);
+            Route::post('edit/car/wheels', [CarController::class, 'editWheels']);
+            // Route::post('edit/car/images', [CarController::class, 'editImages']);
+            // Route::post('edit/car/exterior-condition', [CarController::class, 'editExteriorCondition']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);
         });
         
-        //route group for inspecter
+        //route group for inspector
         Route::group(['prefix' => 'inspector'], function () {
             
             Route::post('add/car/general-info', [CarController::class, 'createCar']);

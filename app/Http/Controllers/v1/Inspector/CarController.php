@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v1\Inspecter;
+namespace App\Http\Controllers\v1\Inspector;
 
 use App\Http\Controllers\Controller;
 
@@ -261,6 +261,169 @@ class CarController extends Controller
         $car->exterior_id = $exterior->id;
         $car->save();
         $car->exterior;
+
+        return response()->json([
+            'success' => true,
+            'car' => $car
+        ]);
+    }
+
+    /////////////////////////
+    /////// EDIT CAR ////////
+    /////////////////////////
+
+    public function editGeneralInfo(Request $request){
+
+        $car = Car::findOrFail($request->car_id);
+
+        if(!$car->details_id){
+            $details = new Details();
+            $details->fill($request->all());
+            $details->car_id = $car->id;
+            $details->save();
+
+            $car->details_id = $details->id;
+        }else{
+            $car->details->fill($request->all());
+            $car->details->save();
+        }
+
+        if(!$car->history_id){
+            $history = new History();
+            $history->fill($request->all());
+            $history->ownership = $request->first_owner;
+            $history->car_id = $car->id;
+            $history->save();
+
+            $car->history_id = $history->id;
+        }else{
+            $car->history->fill($request->all());
+            $car->history->save();
+        }
+        
+        $car->save();
+        $car->history;
+        $car->details;
+
+        return response()->json([
+            'success' => true,
+            'car' => $car
+        ]);
+    }
+
+    public function editSpecs(Request $request){
+        $car = Car::findOrFail($request->car_id);
+
+        if(!$car->specs_id){
+            $specs = new Specs();
+            $specs->fill($request->all());
+            $specs->car_id = $car->id;
+            $specs->save();
+
+            $car->specs_id = $specs->id;
+            $car->save();
+        }else{
+            $car->specs->fill($request->all());
+            $car->specs->save();
+        }
+        
+        $car->specs;
+
+        return response()->json([
+            'success' => true,
+            'car' => $car
+        ]);
+    }
+
+    public function editEngineAndTransmission(Request $request){
+        $car = Car::findOrFail($request->car_id);
+
+        if(!$car->engine_id){
+            $engine = new Engine();
+            $engine->fill($request->all());
+            $engine->car_id = $car->id;
+            $engine->save();
+
+            $car->engine_id = $engine->id;
+            $car->save();
+        }else{
+            $car->engineTransmission->fill($request->all());
+            $car->engineTransmission->save();
+        }
+
+        $car->engineTransmission;
+
+        return response()->json([
+            'success' => true,
+            'car' => $car
+        ]);
+    }
+
+    public function editInteriorElectricalsAndAC(Request $request){
+        $car = Car::findOrFail($request->car_id);
+
+        if(!$car->interior_id){
+            $interior = new Interior();
+            $interior->fill($request->all());
+            $interior->car_id = $car->id;
+            $interior->save();
+
+            $car->interior_id = $interior->id;
+            $car->save();
+        }else{
+            $car->interior->fill($request->all());
+            $car->interior->save();
+        }
+
+        $car->interior;
+
+        return response()->json([
+            'success' => true,
+            'car' => $car
+        ]);
+    }
+
+    public function editSteeringSuspensionAndBrakes(Request $request){
+        $car = Car::findOrFail($request->car_id);
+
+        if(!$car->steering_id){
+            $steering = new Steering();
+            $steering->fill($request->all());
+            $steering->car_id = $car->id;
+            $steering->save();
+
+            $car->steering_id = $steering->id;
+            $car->save();
+        }else{
+            $car->steering->fill($request->all());
+            $car->steering->save();
+        }
+        
+        $car->steering;
+
+        return response()->json([
+            'success' => true,
+            'car' => $car
+        ]);
+    }
+
+    public function editWheels(Request $request){
+        $car = Car::findOrFail($request->car_id);
+
+        if(!$car->wheels_id){
+            $wheels = new Wheels();
+            $wheels->fill($request->all());
+            $wheels->car_id = $car->id;
+            $wheels->save();
+
+            $car->wheels_id = $wheels->id;
+            $car->save();
+        }else{
+            $car->wheels->fill($request->all());
+            $car->wheels->save();
+        }  
+        
+        $car->wheels;
 
         return response()->json([
             'success' => true,
