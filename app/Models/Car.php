@@ -22,6 +22,7 @@ class Car extends Model
         'wheels_id',
         'exterior_id',
         'images',
+        'status'
     ];
 
     protected $casts = [
@@ -40,7 +41,6 @@ class Car extends Model
         'specs_id',
         'wheels_id',
         'exterior_id',
-        'status'
     ];
 
     public function bids()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v1\Dealer;
+namespace App\Http\Controllers\Api\Dealer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBidRequest;
