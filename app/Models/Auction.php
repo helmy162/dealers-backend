@@ -15,4 +15,10 @@ class Auction extends Model
         'start_at',
         'end_at'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'duration'
+    ];
 }

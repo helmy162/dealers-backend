@@ -13,7 +13,7 @@ class SellerController extends Controller
         return response()->json(['data' => Seller::all()]);
     }
 
-    public function show(Request $request, $id){
+    public function show($id){
         $seller = Seller::findOrFail($id);
         return response()->json(['data' => $seller]);
     }
@@ -53,7 +53,7 @@ class SellerController extends Controller
 
     }
 
-    public function destory(Request $request, $id){
+    public function destory($id){
         $seller = Seller::findOrFail($id);
         $seller->delete();
 

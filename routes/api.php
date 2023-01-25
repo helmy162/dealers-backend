@@ -24,7 +24,8 @@ use App\Http\Controllers\Api\{
     WheelsController,
     DetailsController,
     ExteriorController,
-    SellerController
+    SellerController,
+    AuctionController
 };
 
 /*
@@ -65,7 +66,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('all-users', [UsersController::class, 'allUsers']);
 
             //seller routes
-            Route::apiResource('seller', SellerController::class);
+            Route::apiResource('sellers', SellerController::class);
+
+            Route::apiResource('auctions', AuctionController::class);
 
             // cars routes
             Route::post('edit/car/general-info', [CarController::class, 'editGeneralInfo']);

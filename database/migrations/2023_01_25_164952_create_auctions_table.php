@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('car_id');
+            $table->unsignedBigInteger('start_price');
             $table->string('duration');
             $table->timestamp('start_at');
-            $table->timestamp('end_at');
-            $table->unsignedBigInteger('start_price');
+            $table->timestamp('end_at')->nullable();
+            $table->timestamps();
         });
     }
 
