@@ -8,7 +8,16 @@ use Illuminate\Http\Request;
 use App\Models\Seller;
 
 class SellerController extends Controller
-{
+{   
+    public function index(){
+        return response()->json(['data' => Seller::all()]);
+    }
+
+    public function show(Request $request, $id){
+        $seller = Seller::findOrFail($id);
+        return response()->json(['data' => $seller]);
+    }
+
     public function store(Request $request){
         $validated = $request->validate([
             'name' => 'required',
@@ -20,7 +29,10 @@ class SellerController extends Controller
         $seller->fill($validated);
         $seller->save();
 
-        return response()->json($seller);
+        return response()->json([
+            "success" => true,
+            "seller" => $seller
+        ]);
     }
 
     public function update(Request $request, $id){
@@ -34,7 +46,20 @@ class SellerController extends Controller
         $seller->fill($validated);
         $seller->save();
 
-        return response()->json($seller);
+        return response()->json([
+            "success" => true,
+            "seller" => $seller
+        ]);
 
+    }
+
+    public function destory(Request $request, $id){
+        $seller = Seller::findOrFail($id);
+        $seller->delete();
+
+        return response()->json([
+            "success" => true,
+            "message" => 'Seller deleted Successfully!'
+        ]);
     }
 }

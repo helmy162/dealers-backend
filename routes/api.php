@@ -65,8 +65,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('all-users', [UsersController::class, 'allUsers']);
 
             //seller routes
-            Route::post('seller' ,[SellerController::class, 'store']);
-            Route::post('seller/{seller}' ,[SellerController::class, 'update']);
+            Route::apiResource('seller', SellerController::class);
 
             // cars routes
             Route::post('edit/car/general-info', [CarController::class, 'editGeneralInfo']);

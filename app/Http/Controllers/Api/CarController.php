@@ -166,6 +166,7 @@ class CarController extends Controller
 
         return response()->json([
             'success' => 'true',
+            "message" => 'Car deleted Successfully!'
         ]);
     }
 
