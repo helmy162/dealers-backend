@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use App\Models\Auction;
+use App\Models\Car;
 
 class AuctionController extends Controller
 {
@@ -53,13 +54,17 @@ class AuctionController extends Controller
         $start_at = Carbon::make($validated['date']);
         $end_at = $start_at->addSeconds($duration->totalSeconds);
 
-        $auction = new Auction();
+        $auction                    = new Auction();
         $auction->car_id            = $validated['car_id'];
         $auction->start_price       = $validated['start_price'];
         $auction->duration          = $validated['duration'];
         $auction->start_at          = $start_at;
         $auction->end_at            = $end_at;
         $auction->save();
+
+        $car                = Car::findOrFail($validated['car_id']);
+        $car->status        = 'approved';
+        $car->save();
 
         return response()->json([
             "success" => true,
@@ -100,7 +105,7 @@ class AuctionController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'car_id' => 'required|integer|unique:auctions',
+            'car_id' => 'required|integer|unique:auctions,car_id,'.$id,
             'date' => 'required',
             'duration' => 'required',
             'start_price' => 'required|integer'
@@ -121,6 +126,10 @@ class AuctionController extends Controller
         $auction->start_at          = $start_at;
         $auction->end_at            = $end_at;
         $auction->save();
+
+        $car                = Car::findOrFail($validated['car_id']);
+        $car->status        = 'approved';
+        $car->save();
 
         return response()->json([
             "success" => true,
