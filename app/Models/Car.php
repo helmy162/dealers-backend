@@ -30,7 +30,6 @@ class Car extends Model
     ];
 
     protected $hidden = [
-        'created_at',
         'updated_at',
         'details_id',
         'history_id',
@@ -83,6 +82,14 @@ class Car extends Model
 
     public function history(){
         return $this->hasOne(History::class);
+    }
+
+    public function inspector(){
+        return $this->belongsTo(User::class, 'inspector_id');
+    }
+
+    public function seller(){
+        return $this->belongsTo(Seller::class, 'seller_id');
     }
 }
 

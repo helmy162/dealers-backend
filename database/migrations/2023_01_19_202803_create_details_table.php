@@ -28,9 +28,11 @@ return new class extends Migration
             $table->string('specification')->nullable();
             $table->string('exterior_color')->nullable();
             $table->string('interior_color')->nullable();
+            $table->string('generation')->nullable();
             $table->unsignedTinyInteger('keys')->nullable();
             $table->boolean('is_new')->nullable();
             $table->boolean('first_owner')->nullable();
+            $table->unsignedBigInteger('seller_price')->nullable();
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ class WheelsController extends Controller
     public function addWheels(Request $request){
         $car = Car::findOrFail($request->car_id);
 
-        $car->wheels_id ? '' : abort(403, 'Forbidden');
+        $car->wheels_id ? abort(403, 'Forbidden') : '';
 
         $wheels = new Wheels();
         $wheels->fill($request->all());

@@ -23,7 +23,8 @@ use App\Http\Controllers\Api\{
     SpecsController,
     WheelsController,
     DetailsController,
-    ExteriorController
+    ExteriorController,
+    SellerController
 };
 
 /*
@@ -62,6 +63,10 @@ Route::group(['prefix' => 'v1'], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
             Route::get('all-users', [UsersController::class, 'allUsers']);
+
+            //seller routes
+            Route::post('seller' ,[SellerController::class, 'store']);
+            Route::post('seller/{seller}' ,[SellerController::class, 'update']);
 
             // cars routes
             Route::post('edit/car/general-info', [CarController::class, 'editGeneralInfo']);

@@ -87,19 +87,14 @@ class UsersController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        if ($user) {
-            $user->update($request->all());
-            return response()->json([
-                'message' => 'success',
-                'UserType' => 'Admin',
-                'data' => $user
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'user not found',
-            ], 404);
-        }
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return response()->json([
+            'message' => 'success',
+            'UserType' => 'Admin',
+            'data' => $user
+        ], 200);
     }
 
     public function show(Request $request, $id)

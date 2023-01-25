@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('specs_id')->nullable();
             $table->unsignedBigInteger('wheels_id')->nullable();
             $table->unsignedBigInteger('exterior_id')->nullable();
+            $table->unsignedBigInteger('seller_id')->nullable();
             $table->json('images')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
