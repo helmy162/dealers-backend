@@ -21,4 +21,12 @@ class Auction extends Model
         'updated_at',
         'duration'
     ];
+
+    public function bids(){
+        return $this->hasMany(Bid::class);
+    }
+
+    public function latestBid(){
+        return $this->bids->sortByDesc('bid')->first();
+    } 
 }

@@ -19,14 +19,14 @@ class NewBid implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(public string $msg)
+    public function __construct(public array  $auction_data, public int $auction_id)
     {
         //
     }
 
     public function broadcastWith(){
         return [
-            'message' => $this->msg
+            'auction' => $this->auction_data
         ];
     }
 
@@ -37,6 +37,10 @@ class NewBid implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('car_');
+        return new PrivateChannel('car.auction.'.$this->auction_id);
+    }
+
+    public function broadcastAs(){
+        return 'NewBid';
     }
 }

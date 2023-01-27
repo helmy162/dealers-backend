@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\{AdminCarsReqeustConctoller,UsersController};
 //use dealer controller for store dealer
 use App\Http\Controllers\Api\Dealer\{
-    BidController,
     DealersController,
 };
 
@@ -25,7 +24,9 @@ use App\Http\Controllers\Api\{
     DetailsController,
     ExteriorController,
     SellerController,
-    AuctionController
+    AuctionController,
+    BidController,
+    PusherController
 };
 
 /*
@@ -48,7 +49,7 @@ Route::group(['prefix' => 'v1'], function () {
     // user register
     Route::post('/register', [AuthController::class, 'register']);
     //login user
-    Route::post('/login', [AuthController::class , 'login']);
+    Route::post('/login', [AuthController::class , 'login'])->name('login');
     //reset password
     Route::post('/reset-password', [AuthController::class , 'resetPassword']);
 
@@ -98,6 +99,7 @@ Route::group(['prefix' => 'v1'], function () {
         });
 
         //route group for dealer
+        // Route::group(['prefix' => 'dealer', 'middleware' => ['is_dealer']], function () {
         Route::group(['prefix' => 'dealer'], function () {
             //add resourceApi route
             Route::apiResource('cars', DealersController::class);
@@ -107,14 +109,20 @@ Route::group(['prefix' => 'v1'], function () {
 
             //post data for car request when BidNow button clicked
             Route::post('/cars/request', [BidController::class, 'requestCar']);
+
+            Route::post('bid', [BidController::class, 'store']);
         });
+
+        Route::group(['prefix' => 'pusher'], function(){
+            // Route::post('auth-user', [PusherController::class, 'authenticateUser']);
+            Route::post('auth-channel', [PusherController::class, 'authorizeChannel']);
+        });
+
+        // get cars
+        Route::get('cars', [CarController::class, 'index']);
+        Route::get('cars/all', [CarController::class, 'getAllCars']);
 
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
     });
-    
-    // get cars
-    Route::get('cars', [CarController::class, 'index']);
-    Route::get('cars/all', [CarController::class, 'getAllCars']);
-
 });

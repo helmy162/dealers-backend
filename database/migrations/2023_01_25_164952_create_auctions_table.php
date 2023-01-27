@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('car_id');
             $table->unsignedBigInteger('start_price');
             $table->string('duration');
-            $table->timestamp('start_at');
+            $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
             $table->timestamps();
         });

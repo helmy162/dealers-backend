@@ -9,22 +9,14 @@ class Bid extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'car_id',
-        'user_id',
-        'bid',
-    ];
-
     public function car()
     {
         return $this->belongsTo(Car::class);
     }
 
-    public function user()
+    public function dealer()
     {
-        return $this->belongsTo(User::class);
-    } 
-    
-    
+        return $this->belongsTo(User::class, 'user_id');
+    }
     
 }
