@@ -69,6 +69,7 @@ Route::group(['prefix' => 'v1'], function () {
             //seller routes
             Route::apiResource('sellers', SellerController::class);
 
+            //auction routes
             Route::apiResource('auctions', AuctionController::class);
 
             // cars routes
@@ -105,11 +106,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('cars', DealersController::class);
 
             //search data cars by name and model and year and price
-            Route::get('/cars/search', [DealersController::class, 'search']);
+            // Route::get('/cars/search', [DealersController::class, 'search']);
 
-            //post data for car request when BidNow button clicked
-            Route::post('/cars/request', [BidController::class, 'requestCar']);
-
+            // make a bid
             Route::post('bid', [BidController::class, 'store']);
         });
 

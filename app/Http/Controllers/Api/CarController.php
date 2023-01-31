@@ -30,7 +30,7 @@ class CarController extends Controller
         //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
         //             ->paginate(5);
 
-        $cars = Car::with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->paginate(5);
+        $cars = Car::with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels', 'auction', 'seller', 'bids', 'bids.dealer')->paginate(5);
         
         return response()->json($cars);
     }
@@ -46,7 +46,7 @@ class CarController extends Controller
         //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
         //             ->get();
 
-        $cars = Car::with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')->get();
+        $cars = Car::with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels', 'auction', 'seller', 'bids', 'bids.dealer')->get();
 
         return response()->json($cars);
     }

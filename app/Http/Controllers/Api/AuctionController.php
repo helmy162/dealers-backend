@@ -49,6 +49,8 @@ class AuctionController extends Controller
             'car_id.unique' => 'Car already at auction!'
         ]);
 
+        $car = Car::findOrFail($validated['car_id']);
+
         $duration = CarbonInterval::make($validated['duration']);
         
         $start_at = Carbon::make($validated['date']);
@@ -62,8 +64,8 @@ class AuctionController extends Controller
         $auction->end_at            = $end_at;
         $auction->save();
 
-        $car                = Car::findOrFail($validated['car_id']);
-        $car->status        = 'approved';
+        
+        $car->status = 'approved';
         $car->save();
 
         return response()->json([
@@ -114,6 +116,7 @@ class AuctionController extends Controller
         ]);
         
         $auction = Auction::findOrFail($id);
+        $car = Car::findOrFail($validated['car_id']);
 
         $duration = CarbonInterval::make($validated['duration']);
         
@@ -127,8 +130,8 @@ class AuctionController extends Controller
         $auction->end_at            = $end_at;
         $auction->save();
 
-        $car                = Car::findOrFail($validated['car_id']);
-        $car->status        = 'approved';
+        
+        $car->status = 'approved';
         $car->save();
 
         return response()->json([

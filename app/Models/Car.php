@@ -27,6 +27,7 @@ class Car extends Model
 
     protected $casts = [
         'images' => 'array',
+        'latat' => 'collection'
     ];
 
     protected $hidden = [
@@ -90,6 +91,10 @@ class Car extends Model
 
     public function seller(){
         return $this->belongsTo(Seller::class, 'seller_id');
+    }
+
+    public function auction(){
+        return $this->hasOne(Auction::class);
     }
 }
 

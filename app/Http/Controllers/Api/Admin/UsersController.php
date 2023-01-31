@@ -103,7 +103,7 @@ class UsersController extends Controller
         if ($user) {
             return response()->json([
                 'status' => 'success',
-                'UserType' => 'Admin',
+                'UserType' => $user->type,
                 'data' => [
                     'id' => $user->id,
                     'name' => $user->name,

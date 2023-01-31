@@ -56,26 +56,10 @@ class DealersController extends Controller
     public function show($id)
     {
         //find car by id when status approved
-        $car = Car::withoutGlobalScopes()->where('status', 'approved')->find($id);
-        //if car not found
-        if (!$car) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Car Not Found',
-            ]);
-        }
-        //return car data
+        $car = Car::where('status','approved')->with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels', 'auction', 'seller', 'bids', 'bids.dealer')->findOrFail($id);
+
         return response()->json([
-            'status' => 'success',
-            'UserType' => 'Dealer',
-            'car' => [
-                'id' => $car->id,
-                'user_name' => $car->user->name ?? 'Test',
-                'car_name' => $car->name ?? 'Test',
-                'general_info' => json_decode($car->general_info , true),
-                'carData' => $car->carData,
-                'carImages' => $car->carImages,
-            ],
+            'car' => $car
         ]);
     }
 
