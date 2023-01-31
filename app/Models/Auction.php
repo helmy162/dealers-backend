@@ -27,6 +27,6 @@ class Auction extends Model
     }
 
     public function latestBid(){
-        return $this->bids->sortByDesc('bid')->first();
-    } 
+        return $this->hasOne(Bid::class)->orderBy('bid', 'asc');
+    }
 }

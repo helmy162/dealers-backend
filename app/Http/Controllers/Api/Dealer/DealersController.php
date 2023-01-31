@@ -56,7 +56,21 @@ class DealersController extends Controller
     public function show($id)
     {
         //find car by id when status approved
-        $car = Car::where('status','approved')->with('details', 'history', 'engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels', 'auction', 'seller', 'bids', 'bids.dealer')->findOrFail($id);
+        $car = Car::where('status','approved')->findOrFail($id)
+        ->load([
+            'details',
+            'history',
+            'engineTransmission',
+            'steering',
+            'interior',
+            'exterior',
+            'specs',
+            'wheels',
+            'seller',
+            'auction',
+            'auction.latestBid',
+            'auction.latestBid.dealer:id,name'
+        ]);
 
         return response()->json([
             'car' => $car

@@ -9,6 +9,11 @@ class Bid extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function car()
     {
         return $this->belongsTo(Car::class);
