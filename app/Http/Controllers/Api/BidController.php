@@ -41,12 +41,21 @@ class BidController extends Controller
             abort('400', 'Auction not started yet!');
         }
 
-        if( $auction->latestBid()->bid + 500 > $bid_amount ){
+        if( $auction->latestBid && $auction->latestBid->bid + 500 > $bid_amount ){
             return response()->json([
                 'success' => false,
-                'last_bid' => $auction->latestBid()->bid,
-                'last_bid_dealer' => $auction->latestBid()->dealer->name,
-                'next_min_bid' => $auction->latestBid()->bid + 500,
+                'last_bid' => $auction->latestBid->bid,
+                'last_bid_dealer' => $auction->latestBid->dealer->name,
+                'next_min_bid' => $auction->latestBid->bid + 500,
+                'end_at' => $auction->end_at,
+                'message' => 'Not enough bid amount!'
+            ], 400);
+        }
+
+        if( !$auction->latestBid && $auction->start_price > $bid_amount ){
+            return response()->json([
+                'success' => false,
+                'start_price' => $auction->start_price,
                 'end_at' => $auction->end_at,
                 'message' => 'Not enough bid amount!'
             ], 400);
@@ -64,6 +73,9 @@ class BidController extends Controller
         $bid->auction_id            = $auction->id;
         $bid->bid                   = $bid_amount;
         $bid->save();
+
+        $car->status = 'approved';
+        $car->save();
 
         broadcast(new NewBid([
             'last_bid' => $bid_amount,

@@ -54,14 +54,13 @@ class AuctionController extends Controller
         $duration = CarbonInterval::make($validated['duration']);
         
         $start_at = Carbon::make($validated['date']);
-        $end_at = $start_at->addSeconds($duration->totalSeconds);
 
         $auction                    = new Auction();
         $auction->car_id            = $validated['car_id'];
         $auction->start_price       = $validated['start_price'];
         $auction->duration          = $validated['duration'];
         $auction->start_at          = $start_at;
-        $auction->end_at            = $end_at;
+        $auction->end_at            = $start_at->addSeconds($duration->totalSeconds);
         $auction->save();
 
         
@@ -121,13 +120,12 @@ class AuctionController extends Controller
         $duration = CarbonInterval::make($validated['duration']);
         
         $start_at = Carbon::make($validated['date']);
-        $end_at = $start_at->addSeconds($duration->totalSeconds);
 
         $auction->car_id            = $validated['car_id'];
         $auction->start_price       = $validated['start_price'];
         $auction->duration          = $validated['duration'];
         $auction->start_at          = $start_at;
-        $auction->end_at            = $end_at;
+        $auction->end_at            = $start_at->addSeconds($duration->totalSeconds);
         $auction->save();
 
         
