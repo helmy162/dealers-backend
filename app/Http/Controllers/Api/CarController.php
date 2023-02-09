@@ -196,4 +196,23 @@ class CarController extends Controller
         ]);
     }
 
+    public function allCarDetails(Request $request, $id){
+        $car = Car::with([
+            'details',
+            'history',
+            'engineTransmission',
+            'steering',
+            'interior',
+            'exterior',
+            'specs',
+            'wheels',
+            'seller',
+            'auction',
+            'auction.bids',
+            'auction.bids.dealer'
+        ])->findOrFail($id);
+
+        return response()->json($car);
+    }
+
 }

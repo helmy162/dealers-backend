@@ -23,10 +23,10 @@ class Auction extends Model
     ];
 
     public function bids(){
-        return $this->hasMany(Bid::class);
+        return $this->hasMany(Bid::class)->orderBy('bid', 'desc');
     }
 
     public function latestBid(){
-        return $this->hasOne(Bid::class)->orderBy('bid', 'asc');
+        return $this->hasOne(Bid::class)->orderBy('bid', 'desc');
     }
 }

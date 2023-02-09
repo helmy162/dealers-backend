@@ -73,6 +73,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('auctions', AuctionController::class);
 
             // cars routes
+            Route::get('car/{car}', [CarController::class, 'allCarDetails']);
             Route::post('edit/car/general-info', [CarController::class, 'editGeneralInfo']);
             Route::post('edit/car/specs', [SpecsController::class, 'editSpecs']);
             Route::post('edit/car/engine-transmission', [EngineController::class, 'editEngineAndTransmission']);
@@ -82,6 +83,7 @@ Route::group(['prefix' => 'v1'], function () {
             // Route::post('edit/car/images', [CarController::class, 'editImages']);
             // Route::post('edit/car/exterior-condition', [ExteriorController::class, 'editExteriorCondition']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);
+
         });
         
         //route group for inspector

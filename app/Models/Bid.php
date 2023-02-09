@@ -10,7 +10,7 @@ class Bid extends Model
     use HasFactory;
 
     protected $hidden = [
-        'created_at',
+        // 'created_at',
         'updated_at',
     ];
 
