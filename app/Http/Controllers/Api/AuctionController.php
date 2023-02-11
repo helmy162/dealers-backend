@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use App\Models\Auction;
 use App\Models\Car;
+use App\Models\Bid;
+use App\Models\User;
 
 class AuctionController extends Controller
 {
@@ -153,5 +155,34 @@ class AuctionController extends Controller
             "success" => true,
             "message" => 'Auction deleted Successfully!'
         ]);
+    }
+
+    public function declareWinner(Request $request){
+        $validated = $request->validate([
+            'auction_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'bid_id' => 'required|integer',
+        ]);
+
+        $auction = Auction::findOrFail($validated['auction_id']);
+        $bid = Bid::findOrFail($validated['bid_id']);
+        $user = User::findOrFail($validated['user_id']);
+
+        if( $bid->user_id != $user->id ){
+            abort(400, 'Bid and user not matched!');
+        }
+
+        if($bid->car_id != $auction->car_id || $bid->auction_id != $auction->id){
+            abort(400, 'Auction and bid not matched!');
+        }
+
+        $auction->winner_bid = $bid->id;
+        $auction->save();
+
+        return response()->json([
+            'success' => true,
+            'auction' => $auction
+        ]);
+
     }
 }

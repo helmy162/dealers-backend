@@ -68,32 +68,55 @@ class UsersController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed',
-            'type' => 'required|string'
+            'role' => 'required|string',
+            'isVerified' => 'required|boolean',
+            'status' => 'required|string',
+            'phoneNumber' => 'string',
+            'company' => 'string'
         ]);
 
-        $user = new User([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'type' => $request->type
-        ]);
-
+        $user                       = new User();
+        $user->name                 = $request->name;
+        $user->email                = $request->email;
+        $user->type                 = $request->role;
+        $user->is_verified          = $request->isVerified;
+        $user->status               = $request->status;
+        $user->phone                = $request->phoneNumber;
+        $user->company              = $request->company;
         $user->save();
 
+
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created user!',
+            'user' => $user
         ], 201);
     }
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email,'.$id,
+            'role' => 'required|string',
+            'isVerified' => 'required|boolean',
+            'status' => 'required|string',
+            'phoneNumber' => 'string',
+            'company' => 'string'
+        ]);
+
+        $user                       = User::findOrFail($id);
+        $user->name                 = $request->name;
+        $user->email                = $request->email;
+        $user->type                 = $request->role;
+        $user->is_verified          = $request->isVerified;
+        $user->status               = $request->status;
+        $user->phone                = $request->phoneNumber;
+        $user->company              = $request->company;
+        $user->save();
 
         return response()->json([
-            'message' => 'success',
-            'UserType' => 'Admin',
-            'data' => $user
+            'sucess' => true,
+            'user' => $user
         ], 200);
     }
 

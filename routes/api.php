@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\{AdminCarsReqeustConctoller,UsersController};
-//use dealer controller for store dealer
-use App\Http\Controllers\Api\Dealer\{
-    DealersController,
-};
-
-
+use App\Http\Controllers\Api\Dealer\DealersController;
 
 use App\Http\Controllers\Api\{
     CarController,
@@ -70,6 +65,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('sellers', SellerController::class);
 
             //auction routes
+            Route::put('auction/declare-winner', [AuctionController::class, 'declareWinner']);
             Route::apiResource('auctions', AuctionController::class);
 
             // cars routes
