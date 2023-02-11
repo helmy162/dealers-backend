@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('bid_limit')->nullable()->after('password');
             $table->string('company')->nullable()->after('password');
             $table->boolean('is_verified')->default(false)->after('email_verified_at');
             

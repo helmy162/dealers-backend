@@ -72,7 +72,8 @@ class UsersController extends Controller
             'isVerified' => 'required|boolean',
             'status' => 'required|string',
             'phoneNumber' => 'string',
-            'company' => 'string'
+            'company' => 'string',
+            'bidLimit' => 'integer'
         ]);
 
         $user                       = new User();
@@ -83,6 +84,7 @@ class UsersController extends Controller
         $user->status               = $request->status;
         $user->phone                = $request->phoneNumber;
         $user->company              = $request->company;
+        $user->bid_limit            = $request->bidLimit;
         $user->save();
 
 
@@ -101,7 +103,8 @@ class UsersController extends Controller
             'isVerified' => 'required|boolean',
             'status' => 'required|string',
             'phoneNumber' => 'string',
-            'company' => 'string'
+            'company' => 'string',
+            'bidLimit' => 'integer'
         ]);
 
         $user                       = User::findOrFail($id);
@@ -112,6 +115,7 @@ class UsersController extends Controller
         $user->status               = $request->status;
         $user->phone                = $request->phoneNumber;
         $user->company              = $request->company;
+        $user->bid_limit            = $request->bidLimit;
         $user->save();
 
         return response()->json([
@@ -122,41 +126,12 @@ class UsersController extends Controller
 
     public function show(Request $request, $id)
     {
-        $user = User::with('cars')->find($id);
-        if ($user) {
-            return response()->json([
-                'status' => 'success',
-                'UserType' => $user->type,
-                'data' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'cars' => $user->cars->map(function ($car) {
-                        return [
-                            'id' => $car->id,
-                            'name' => $car->name,
-                            'status' => $car->status,
-                            'carData' => $car->carData,
-                            //use getCarImagesAttribute from CarImage model
-                            'carImages' => $car->carImages,
-
-                        ];
-                    }),
-                    'bids' => $user->bids->map(function ($bid) {
-                        return [
-                            'id' => $bid->id,
-                            'car_id' => $bid->car_id,
-                            'user_id' => $bid->user_id,
-                            'bid' => $bid->bid,
-                        ];
-                    }),
-                ]
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'user not found',
-            ], 404);
-        }
+        $user = User::findOrFail($id);
+        return response()->json([
+            'status' => 'success',
+            'UserType' => $user->type,
+            'data' => $user->load('bids')
+        ]);
     }
 
     public function destroy(Request $request, $id)
