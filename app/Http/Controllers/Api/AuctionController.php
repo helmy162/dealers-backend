@@ -149,7 +149,13 @@ class AuctionController extends Controller
     public function destroy($id)
     {
         $auction = Auction::findOrFail($id);
+        
+        $car = Car::findOrFail($auction->car_id);
+        $car->status = 'pending';
+        $car->save();
+
         $auction->delete();
+        
 
         return response()->json([
             "success" => true,
