@@ -79,6 +79,7 @@ class UsersController extends Controller
         $user                       = new User();
         $user->name                 = $request->name;
         $user->email                = $request->email;
+        $user->password             = bcrypt($request->password);
         $user->type                 = $request->role;
         $user->is_verified          = $request->isVerified;
         $user->status               = $request->status;
@@ -110,7 +111,6 @@ class UsersController extends Controller
         $user                       = User::findOrFail($id);
         $user->name                 = $request->name;
         $user->email                = $request->email;
-        $user->password             = bcrypt($request->password);
         $user->type                 = $request->role;
         $user->is_verified          = $request->isVerified;
         $user->status               = $request->status;
