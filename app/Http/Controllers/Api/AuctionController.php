@@ -12,6 +12,7 @@ use App\Models\Car;
 use App\Models\Bid;
 use App\Models\User;
 use App\Mail\newAuction;
+use App\Mail\wonAuction;
 use Mail;
 
 class AuctionController extends Controller
@@ -181,6 +182,7 @@ class AuctionController extends Controller
         $auction = Auction::findOrFail($validated['auction_id']);
         $bid = Bid::findOrFail($validated['bid_id']);
         $user = User::findOrFail($validated['user_id']);
+        $car = Car::findOrFail($auction->car_id);
 
         if( $bid->user_id != $user->id ){
             abort(400, 'Bid and user not matched!');
@@ -192,6 +194,8 @@ class AuctionController extends Controller
 
         $auction->winner_bid = $bid->id;
         $auction->save();
+
+        Mail::to($user->email)->send(new wonAuction($car, $user));
 
         return response()->json([
             'success' => true,

@@ -128,7 +128,7 @@ u+.emailify .gs{background:#000;mix-blend-mode:screen;display:inline-block;paddi
 <table role="none" border="0" cellpadding="0" cellspacing="0"><tr><td class="m-outlook c-outlook -outlook -outlook" style="vertical-align:top;width:260px;">
 <![endif]--><div class="xc260 ogf m c" style="font-size:0;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
 <table border="0" cellpadding="0" cellspacing="0" role="none" style="border:none;vertical-align:top;" width="100%"><tbody><tr><td align="center" class="i  fw-1" style="font-size:0;padding:0;word-break:break-word;">
-<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:260px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset('storage/car_images/'.$car->images[0]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="260">
+<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:260px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset($car->images[0]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="260">
 </td></tr></tbody></table>
 </td></tr></tbody></table></div>
 <!--[if mso | IE]>

@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class newAuction extends Mailable
+class wonAuction extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,7 +20,7 @@ class newAuction extends Mailable
      */
     public function __construct(public $car, public $user)
     {
-        
+        //
     }
 
     /**
@@ -31,7 +31,7 @@ class newAuction extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: "{$this->car->details->make} {$this->car->details->model} {$this->car->details->year} is Up For Auction",
+            subject: "Congratulations on Winning the Auction for {$this->car->details->make} {$this->car->details->model} {$this->car->details->year}",
         );
     }
 
@@ -43,7 +43,7 @@ class newAuction extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.new-auction',
+            view: 'emails.won-auction',
             with: [
                 'car' => $this->car,
                 'user' => $this->user
