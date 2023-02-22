@@ -114,12 +114,12 @@ Route::group(['prefix' => 'v1'], function () {
             // Route::post('auth-user', [PusherController::class, 'authenticateUser']);
             Route::post('auth-channel', [PusherController::class, 'authorizeChannel']);
         });
-
-        // get cars
-        Route::get('cars', [CarController::class, 'index']);
-        Route::get('cars/all', [CarController::class, 'getAllCars']);
-
+    
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
     });
+    
+    // get cars
+    Route::get('cars', [CarController::class, 'index']);
+    Route::get('cars/all', [CarController::class, 'getAllCars']);
 });

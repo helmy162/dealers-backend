@@ -11,6 +11,8 @@ use App\Models\Auction;
 use App\Models\Car;
 use App\Models\Bid;
 use App\Models\User;
+use App\Mail\newAuction;
+use Mail;
 
 class AuctionController extends Controller
 {
@@ -134,6 +136,11 @@ class AuctionController extends Controller
         $car->status = 'approved';
         $car->save();
 
+        $dealers = User::whereStatus('active')->whereType('dealer')->get();
+        foreach($dealers as $dealer){
+            Mail::to($dealer->email)->send(new newAuction($car, $dealer));
+        }
+
         return response()->json([
             "success" => true,
             "auction" => $auction
@@ -155,6 +162,7 @@ class AuctionController extends Controller
         $car->save();
 
         $auction->delete();
+        $auction->bids()->delete();
         
 
         return response()->json([

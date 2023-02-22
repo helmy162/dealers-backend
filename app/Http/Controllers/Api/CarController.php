@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateCarRequest;
 use App\Models\Car;
 use App\Models\Details;
 use App\Models\History;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -19,18 +21,13 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){  
-       
-        // $cars = Car::whereNotNUll('engine_id')
-        //             ->whereNotNUll('steering_id')
-        //             ->whereNotNUll('interior_id')
-        //             ->whereNotNUll('exterior_id')
-        //             ->whereNotNUll('specs_id')
-        //             ->whereNotNUll('wheels_id')
-        //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
-        //             ->paginate(5);
+    public function index(){ 
 
-        $cars = Car::with([
+        $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
+            ->select('cars.*')
+            ->where('auctions.end_at','>', Carbon::now())
+            ->orderBy('auctions.end_at')
+            ->with([
                 'details',
                 'history',
                 'engineTransmission',
@@ -43,21 +40,12 @@ class CarController extends Controller
                 'auction',
                 'auction.latestBid',
                 'auction.latestBid.dealer:id,name'
-            ])->paginate(5);
+            ])->orderBy('auctions.end_at')->paginate(5);
         
         return response()->json($cars);
     }
 
     public function getAllCars(){
-
-        // $cars = Car::whereNotNUll('engine_id')
-        //             ->whereNotNUll('steering_id')
-        //             ->whereNotNUll('interior_id')
-        //             ->whereNotNUll('exterior_id')
-        //             ->whereNotNUll('specs_id')
-        //             ->whereNotNUll('wheels_id')
-        //             ->with('engineTransmission', 'steering', 'interior', 'exterior', 'specs', 'wheels')
-        //             ->get();
 
         $cars = Car::with([
                 'details',

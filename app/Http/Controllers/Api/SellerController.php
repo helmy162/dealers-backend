@@ -53,7 +53,7 @@ class SellerController extends Controller
 
     }
 
-    public function destory($id){
+    public function destroy($id){
         $seller = Seller::findOrFail($id);
         $seller->delete();
 

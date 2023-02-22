@@ -41,6 +41,14 @@ class BidController extends Controller
             abort('400', 'Auction not started yet!');
         }
 
+        if($bid_amount > auth()->user()->bid_limit){
+            return response()->json([
+                'success' => false,
+                'bid_limit' => auth()->user()->bid_limit,
+                'message' => 'Bid limit exceeded!'
+            ], 400);
+        }
+
         if( $auction->latestBid && $auction->latestBid->bid + 500 > $bid_amount ){
             return response()->json([
                 'success' => false,

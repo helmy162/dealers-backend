@@ -18,9 +18,9 @@ class newAuction extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public $car, public $user)
     {
-        //
+        
     }
 
     /**
@@ -31,7 +31,7 @@ class newAuction extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'New Auction',
+            subject: "{$this->car->details->make} {$this->car->details->model} {$this->car->details->year} is Up For Auction",
         );
     }
 
@@ -44,7 +44,11 @@ class newAuction extends Mailable
     {
         return new Content(
             view: 'emails.new-auction',
-        );
+            with: [
+                'car' => $this->car,
+                'user' => $this->user
+            ]
+            );
     }
 
     /**

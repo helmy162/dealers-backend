@@ -27,7 +27,6 @@ class Car extends Model
 
     protected $casts = [
         'images' => 'array',
-        'latat' => 'collection'
     ];
 
     protected $hidden = [
