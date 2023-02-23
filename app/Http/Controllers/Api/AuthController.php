@@ -58,6 +58,13 @@ class AuthController extends Controller
 
         $user = $request->user();
 
+        if($user->status == "inactive"){
+            return response()->json([
+                'success' => false,
+                'message' => 'User not activated!'
+            ], 401);
+        }
+
         $tokenResult = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
@@ -124,10 +131,16 @@ class AuthController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return response([
+            $user = User::whereEmail($request->email)->first();
+            $tokenResult = $user->createToken('authToken')->plainTextToken;
+
+            return response()->json([
                 'success' => true,
-                'message'=> 'Password reset successfully'
-            ]);
+                'message' => 'Password reset successfully',
+                'access_token' => $tokenResult,
+                'token_type' => 'Bearer',
+                'user' => $user
+            ], 200);
         }
 
         return response([

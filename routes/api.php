@@ -21,7 +21,8 @@ use App\Http\Controllers\Api\{
     SellerController,
     AuctionController,
     BidController,
-    PusherController
+    PusherController,
+    UserController
 };
 
 /*
@@ -108,6 +109,9 @@ Route::group(['prefix' => 'v1'], function () {
 
             // make a bid
             Route::post('bid', [BidController::class, 'store']);
+
+            // edit profile recieved notifications
+            Route::put('profile/notifications' ,[UserController::class, 'updateNotifications']);
         });
 
         Route::group(['prefix' => 'pusher'], function(){
