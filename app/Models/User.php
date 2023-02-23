@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Notifications\ResetPasswordNotification;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -45,6 +47,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'notify_new_auction' => 'boolean',
+        'notify_won_auction' => 'boolean'
     ];
 
     //get the user's cars
@@ -74,5 +78,11 @@ class User extends Authenticatable
     public function scopeType($query, $type)
     {
         return $query->where('type', $type);
+    }
+
+    public function sendPasswordResetNotification($token){
+        $url = env('FE_RESET_PASSWORD').'?token='.$token.'&email='.$this->email;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 }

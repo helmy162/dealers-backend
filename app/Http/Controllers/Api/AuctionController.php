@@ -137,7 +137,7 @@ class AuctionController extends Controller
         $car->status = 'approved';
         $car->save();
 
-        $dealers = User::whereStatus('active')->whereType('dealer')->get();
+        $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
         foreach($dealers as $dealer){
             Mail::to($dealer->email)->send(new newAuction($car, $dealer));
         }
@@ -195,7 +195,9 @@ class AuctionController extends Controller
         $auction->winner_bid = $bid->id;
         $auction->save();
 
-        Mail::to($user->email)->send(new wonAuction($car, $user));
+        if($user->notify_won_auction){
+            Mail::to($user->email)->send(new wonAuction($car, $user));
+        }
 
         return response()->json([
             'success' => true,

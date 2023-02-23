@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Events\PasswordReset;
 
 use App\Models\User;
 use Auth;
@@ -83,51 +86,52 @@ class AuthController extends Controller
             'email' => 'required|string|email',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $status = Password::sendResetLink($request->only('email'));
 
-        if (!$user) {
+        if($status == Password::RESET_LINK_SENT){
             return response()->json([
-                'message' => 'We can\'t find a user with that e-mail address.'
-            ], 404);
+                'success' => true,
+                'status' => __($status)
+            ]);
         }
 
-        $user->sendPasswordResetNotification($user->createToken('authToken')->plainTextToken);
+        throw ValidationException::withMessages([
+            'email' => [trans($status)]
+        ]);
 
-        return response()->json([
-            'message' => 'We have e-mailed your password reset link!'
-        ], 200);
     }
 
     //newPassword user
     public function newPassword(Request $request)
     {
         $request->validate([
-            'token' => 'required|string',
-            'email' => 'required|string|email',
-            'password' => 'required|string|confirmed'
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|confirmed',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => bcrypt($request->password),
+                ])->save();
 
-        if (!$user) {
-            return response()->json([
-                'message' => 'We can\'t find a user with that e-mail address.'
-            ], 404);
+                $user->tokens()->delete();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status == Password::PASSWORD_RESET) {
+            return response([
+                'success' => true,
+                'message'=> 'Password reset successfully'
+            ]);
         }
 
-        if ($request->token != $user->currentAccessToken()->plainTextToken) {
-            return response()->json([
-                'message' => 'This password reset token is invalid.'
-            ], 404);
-        }
-
-        $user->password = bcrypt($request->password);
-        $user->save();
-
-        return response()->json([
-            'message' => 'Your password has been reset!'
-        ], 200);
-
-
+        return response([
+            'message'=> __($status)
+        ], 500);
     }
 }
