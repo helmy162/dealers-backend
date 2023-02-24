@@ -72,6 +72,11 @@ class AuctionController extends Controller
         $car->status = 'approved';
         $car->save();
 
+        $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
+        foreach($dealers as $dealer){
+            Mail::to($dealer->email)->send(new newAuction($car, $dealer));
+        }
+
         return response()->json([
             "success" => true,
             "auction" => $auction
@@ -136,11 +141,6 @@ class AuctionController extends Controller
         
         $car->status = 'approved';
         $car->save();
-
-        $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
-        foreach($dealers as $dealer){
-            Mail::to($dealer->email)->send(new newAuction($car, $dealer));
-        }
 
         return response()->json([
             "success" => true,

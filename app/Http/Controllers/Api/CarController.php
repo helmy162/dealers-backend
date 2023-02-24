@@ -70,7 +70,6 @@ class CarController extends Controller
         $car = new Car();
         $car->inspector_id = auth()->user()->id;
         $car->seller_id = $request->seller_id;
-        $car->seller_price = $request->seller_price;
         $car->save();
 
         $details = new Details();
