@@ -9,8 +9,16 @@ use App\Http\Requests\UpdateCarRequest;
 use App\Models\Car;
 use App\Models\Details;
 use App\Models\History;
+use App\Models\Engine;
+use App\Models\Exterior;
+use App\Models\Interior;
+use App\Models\Specs;
+use App\Models\Steering;
+use App\Models\Wheels;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+
+
 
 use Illuminate\Http\Request;
 
@@ -67,6 +75,10 @@ class CarController extends Controller
 
     public function createCar(Request $request){
 
+        $validated = $request->validate([
+            'seller_id' => 'required|integer',
+        ]);
+
         $car = new Car();
         $car->inspector_id = auth()->user()->id;
         $car->seller_id = $request->seller_id;
@@ -83,23 +95,68 @@ class CarController extends Controller
         $history->car_id = $car->id;
         $history->save();
 
-        $car->details_id = $details->id;
-        $car->history_id = $history->id;
-        $car->save();
-        $car->history;
-        $car->details;
+        $engine = new Engine();
+        $engine->fill($request->all());
+        $engine->car_id = $car->id;
+        $engine->save();
 
-        return response()->json([
-            'success' => true,
-            'car' => $car
-        ]);
-    }
+        $interior = new Interior();
+        $interior->fill($request->all());
+        $interior->car_id = $car->id;
+        $interior->save();
 
-    public function addImages(Request $request){
-        $car = Car::findOrFail($request->car_id);
+        $specs = new Specs();
+        $specs->fill($request->all());
+        $specs->car_id = $car->id;
+        $specs->save();
 
-        $car->images ? abort(403, 'Forbidden') : '';
+        $steering = new Steering();
+        $steering->fill($request->all());
+        $steering->car_id = $car->id;
+        $steering->save();
+
+        $wheels = new Wheels();
+        $wheels->fill($request->all());
+        $wheels->car_id = $car->id;
+        $wheels->save();
         
+        $defects = $request->markers;
+        $request->hasFile('exterior_images') ? $images = $request->file('exterior_images') : '';
+        $markers = [];
+        if($defects && is_array($defects)){
+            foreach ($defects as $defect) {
+                $defect = json_decode($defect);
+                if(isset($images) &&  is_array($images) && is_int($defect->photo)){
+                    //get image from images array
+                    $image = $images[$defect->photo];
+    
+                    //get file name with the extension
+                    $fileNameWithExt= $image->getClientOriginalName();
+    
+                    //get just filename
+                    $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+    
+                    //get just the extension
+                    $extension = $image->getClientOriginalExtension();
+    
+                    //file name to store(unique)
+                    $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+    
+                    //upload image
+                    $path = $image->storeAs('public/defect_images',$fileNameToStore);
+    
+                    $defect->photo = $fileNameToStore;
+                }else{
+                    $defect->photo = null;
+                }
+                array_push($markers, $defect);
+            }
+        }
+        $exterior = new Exterior();
+        $exterior->markers = $markers;
+        $exterior->car_id = $car->id;
+        $exterior->save();
+
         if ($request->hasFile('images')) {
 
             $images = $request->file('images');
@@ -121,57 +178,114 @@ class CarController extends Controller
                 $path = $image->storeAs('public/car_images',$fileNameToStore);
 
                 //add car images array
-                array_push($imagesNameArr, '/storage/car_images/'.$fileNameToStore);
+                array_push($imagesNameArr, $fileNameToStore);
             }
 
             $car->images = $imagesNameArr;
-            $car->save();
         }
 
+        if ($request->hasFile('id_images')) {
+
+            $images = $request->file('id_images');
+            $imagesNameArr = array();
+            foreach ($images as $image) {
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/id_images',$fileNameToStore);
+
+                //add car images array
+                array_push($imagesNameArr, $fileNameToStore);
+            }
+
+            $car->id_images = $imagesNameArr;
+        }
+
+        if ($request->hasFile('registeration_card_images')) {
+
+            $images = $request->file('registeration_card_images');
+            $imagesNameArr = array();
+            foreach ($images as $image) {
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/registeration_card_images',$fileNameToStore);
+
+                //add car images array
+                array_push($imagesNameArr, $fileNameToStore);
+            }
+
+            $car->registeration_card_images = $imagesNameArr;
+        }
+
+        if ($request->hasFile('vin_images')) {
+
+            $images = $request->file('vin_images');
+            $imagesNameArr = array();
+            foreach ($images as $image) {
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/vin_images',$fileNameToStore);
+
+                //add car images array
+                array_push($imagesNameArr, $fileNameToStore);
+            }
+
+            $car->vin_images = $imagesNameArr;
+        }
         
-        return response()->json([
-            'success' => 'true',
-            'car' => $car
-        ]);
-    }
-
-    public function editGeneralInfo(Request $request){
-
-        $car = Car::findOrFail($request->car_id);
-
-        if(!$car->details_id){
-            $details = new Details();
-            $details->fill($request->all());
-            $details->car_id = $car->id;
-            $details->save();
-
-            $car->details_id = $details->id;
-        }else{
-            $car->details->fill($request->all());
-            $car->details->save();
-        }
-
-        if(!$car->history_id){
-            $history = new History();
-            $history->fill($request->all());
-            $history->ownership = $request->first_owner;
-            $history->car_id = $car->id;
-            $history->save();
-
-            $car->history_id = $history->id;
-        }else{
-            $car->history->fill($request->all());
-            $car->history->save();
-        }
-        
+        $car->details_id = $details->id;
+        $car->history_id = $history->id;
+        $car->engine_id = $engine->id;
+        $car->interior_id = $interior->id;
+        $car->specs_id = $specs->id;
+        $car->steering_id = $steering->id;
+        $car->wheels_id = $wheels->id;
+        $car->exterior_id = $exterior->id;
         $car->save();
-        $car->history;
-        $car->details;
 
         return response()->json([
             'success' => true,
-            'car' => $car
-        ]);
+            'car' => $car->load('details',
+            'history',
+            'engineTransmission',
+            'steering',
+            'interior',
+            'exterior',
+            'specs',
+            'wheels')
+        ], 201);
     }
 
     public function destroy(Request $request, $id)

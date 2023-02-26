@@ -87,14 +87,7 @@ Route::group(['prefix' => 'v1'], function () {
         // Route::group(['prefix' => 'inspector', 'middleware' => ['is_inspector']], function () {
         Route::group(['prefix' => 'inspector'], function () {
             
-            Route::post('add/car/general-info', [CarController::class, 'createCar']);
-            Route::post('add/car/specs', [SpecsController::class, 'addSpecs']);
-            Route::post('add/car/engine-transmission', [EngineController::class, 'addEngineAndTransmission']);
-            Route::post('add/car/interior-electricals-AC', [InteriorController::class, 'addInteriorElectricalsAndAC']);
-            Route::post('add/car/steering-suspension-brakes', [SteeringController::class, 'addSteeringSuspensionAndBrakes']);
-            Route::post('add/car/wheels', [WheelsController::class, 'addWheels']);
-            Route::post('add/car/images', [CarController::class, 'addImages']);
-            Route::post('add/car/exterior-condition', [ExteriorController::class, 'addExteriorCondition']);
+            Route::post('car', [CarController::class, 'createCar']);
             
         });
 

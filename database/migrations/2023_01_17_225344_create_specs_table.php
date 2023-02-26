@@ -43,7 +43,7 @@ return new class extends Migration
             $table->boolean("View_Camera")->nullable();
             $table->boolean("Blind_Spot_Indicator")->nullable();
             $table->boolean("Anti_Lock_Brakes_ABS")->nullable();
-            $table->boolean("Cruise_Control")->nullable();
+            $table->boolean("Adaptive_Cruise_Control")->nullable();
             $table->boolean("Power_Steering")->nullable();
             $table->boolean("Front_Airbags")->nullable();
             $table->boolean("Side_Airbags")->nullable();
