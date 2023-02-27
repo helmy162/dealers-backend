@@ -79,44 +79,55 @@ class CarController extends Controller
             'seller_id' => 'required|integer',
         ]);
 
+        $requestData = $request->all();
+        foreach($requestData as $key => $value){
+            if( $value === "true"){
+                $requestData[$key] = true ;
+            }elseif( $value === "false"){
+                $requestData[$key] = false ;
+            }
+        }
+
+        return response()->json($requestData);
+
         $car = new Car();
         $car->inspector_id = auth()->user()->id;
         $car->seller_id = $request->seller_id;
         $car->save();
 
         $details = new Details();
-        $details->fill($request->all());
+        $details->fill($requestData);
         $details->car_id = $car->id;
         $details->save();
 
         $history = new History();
-        $history->fill($request->all());
+        $history->fill($requestData);
         $history->ownership = $request->first_owner;
         $history->car_id = $car->id;
         $history->save();
 
         $engine = new Engine();
-        $engine->fill($request->all());
+        $engine->fill($requestData);
         $engine->car_id = $car->id;
         $engine->save();
 
         $interior = new Interior();
-        $interior->fill($request->all());
+        $interior->fill($requestData);
         $interior->car_id = $car->id;
         $interior->save();
 
         $specs = new Specs();
-        $specs->fill($request->all());
+        $specs->fill($requestData);
         $specs->car_id = $car->id;
         $specs->save();
 
         $steering = new Steering();
-        $steering->fill($request->all());
+        $steering->fill($requestData);
         $steering->car_id = $car->id;
         $steering->save();
 
         $wheels = new Wheels();
-        $wheels->fill($request->all());
+        $wheels->fill($requestData);
         $wheels->car_id = $car->id;
         $wheels->save();
         
