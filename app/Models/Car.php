@@ -27,6 +27,10 @@ class Car extends Model
 
     protected $casts = [
         'images' => 'array',
+        'id_images' => 'array',
+        'vin_images' => 'array',
+        'registeration_card_images' => 'array',
+        'insurance_images' => 'array',
     ];
 
     protected $hidden = [
@@ -40,6 +44,10 @@ class Car extends Model
         'specs_id',
         'wheels_id',
         'exterior_id',
+        'id_images',
+        'vin_images',
+        'registeration_card_images',
+        'insurance_images'
     ];
 
     public function bids()

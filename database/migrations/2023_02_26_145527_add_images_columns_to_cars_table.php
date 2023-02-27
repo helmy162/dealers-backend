@@ -17,6 +17,7 @@ return new class extends Migration
             $table->json('id_images')->nullable();
             $table->json('registeration_card_images')->nullable();
             $table->json('vin_images')->nullable();
+            $table->json('insurance_images')->nullable();
         });
     }
 
@@ -28,7 +29,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('cars', function (Blueprint $table) {
-            $table->dropColumn('id_images', 'registeration_card_images', 'vin_images');
+            $table->dropColumn('id_images', 'registeration_card_images', 'vin_images', 'insurance_images');
         });
     }
 };

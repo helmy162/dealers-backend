@@ -88,8 +88,6 @@ class CarController extends Controller
             }
         }
 
-        return response()->json($requestData);
-
         $car = new Car();
         $car->inspector_id = auth()->user()->id;
         $car->seller_id = $request->seller_id;
@@ -102,7 +100,7 @@ class CarController extends Controller
 
         $history = new History();
         $history->fill($requestData);
-        $history->ownership = $request->first_owner;
+        $history->ownership = $requestData['first_owner'];
         $history->car_id = $car->id;
         $history->save();
 
@@ -275,6 +273,33 @@ class CarController extends Controller
 
             $car->vin_images = $imagesNameArr;
         }
+
+        if ($request->hasFile('insurance_images')) {
+
+            $images = $request->file('insurance_images');
+            $imagesNameArr = array();
+            foreach ($images as $image) {
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/insurance_images',$fileNameToStore);
+
+                //add car images array
+                array_push($imagesNameArr, $fileNameToStore);
+            }
+
+            $car->insurance_images = $imagesNameArr;
+        }
         
         $car->details_id = $details->id;
         $car->history_id = $history->id;
@@ -324,7 +349,7 @@ class CarController extends Controller
             'auction',
             'auction.bids',
             'auction.bids.dealer'
-        ])->findOrFail($id);
+        ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registeration_card_images']);
 
         return response()->json($car);
     }

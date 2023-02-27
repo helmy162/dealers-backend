@@ -71,14 +71,6 @@ Route::group(['prefix' => 'v1'], function () {
 
             // cars routes
             Route::get('car/{car}', [CarController::class, 'allCarDetails']);
-            Route::post('edit/car/general-info', [CarController::class, 'editGeneralInfo']);
-            Route::post('edit/car/specs', [SpecsController::class, 'editSpecs']);
-            Route::post('edit/car/engine-transmission', [EngineController::class, 'editEngineAndTransmission']);
-            Route::post('edit/car/interior-electricals-AC', [InteriorController::class, 'editInteriorElectricalsAndAC']);
-            Route::post('edit/car/steering-suspension-brakes', [SteeringController::class, 'editSteeringSuspensionAndBrakes']);
-            Route::post('edit/car/wheels', [WheelsController::class, 'editWheels']);
-            // Route::post('edit/car/images', [CarController::class, 'editImages']);
-            // Route::post('edit/car/exterior-condition', [ExteriorController::class, 'editExteriorCondition']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);
 
         });
