@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('Engine_Noise')->nullable();
             $table->string('Axels')->nullable();
             $table->string('Engine_Oil')->nullable();
-            $table->string('Engine_Belt')->nullable();
+            $table->string('Engine_Belts')->nullable();
             $table->string('Coolant')->nullable();
             $table->string('Battery_Condition')->nullable();
             $table->string('Engine_Idling')->nullable();

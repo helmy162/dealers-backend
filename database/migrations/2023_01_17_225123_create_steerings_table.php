@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('car_id');
             $table->string('Brake_Pads')->nullable();
-            $table->string('Brake_Disk')->nullable();
-            $table->string('Parking_Brake')->nullable();
+            $table->string('Brake_Discs_Or_Lining')->nullable();
+            $table->string('Parking_Brake_Operations')->nullable();
             $table->string('Suspension')->nullable();
-            $table->string('Shock_Absorber')->nullable();
+            $table->string('Shock_Absorber_Operation')->nullable();
             $table->string('Steering_Operation')->nullable();
             $table->string('Steering_Alignment')->nullable();
             $table->string('Wheel_Alignment')->nullable();

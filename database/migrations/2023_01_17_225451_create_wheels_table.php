@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('wheels', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('car_id');
-            $table->unsignedSmallInteger('Front_Right_Year')->nullable();
-            $table->unsignedSmallInteger('Rear_Right_Year')->nullable();
-            $table->unsignedSmallInteger('Front_Left_Year')->nullable();
-            $table->unsignedSmallInteger('Rear_Left_Year')->nullable();
-            $table->unsignedSmallInteger('Spare_Year')->nullable();
-            $table->string('Wheels_Comment')->nullable();
+            $table->unsignedSmallInteger('FrontRight')->nullable();
+            $table->unsignedSmallInteger('RearRight')->nullable();
+            $table->unsignedSmallInteger('FrontLeft')->nullable();
+            $table->unsignedSmallInteger('RearLeft')->nullable();
+            $table->unsignedSmallInteger('Spare_Tyre')->nullable();
+            $table->string('Tyers_Comment')->nullable();
             $table->timestamps();
         });
     }

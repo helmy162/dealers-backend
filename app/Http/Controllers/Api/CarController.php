@@ -95,6 +95,7 @@ class CarController extends Controller
 
         $details = new Details();
         $details->fill($requestData);
+        $details->engine = json_decode($engine);
         $details->car_id = $car->id;
         $details->save();
 
@@ -220,9 +221,9 @@ class CarController extends Controller
             $car->id_images = $imagesNameArr;
         }
 
-        if ($request->hasFile('registeration_card_images')) {
+        if ($request->hasFile('registration_card_images')) {
 
-            $images = $request->file('registeration_card_images');
+            $images = $request->file('registration_card_images');
             $imagesNameArr = array();
             foreach ($images as $image) {
                 //get file name with the extension
@@ -238,13 +239,13 @@ class CarController extends Controller
                 $fileNameToStore = $fileName.'_'.time().'.'.$extension;
 
                 //upload image
-                $path = $image->storeAs('public/registeration_card_images',$fileNameToStore);
+                $path = $image->storeAs('public/registration_card_images',$fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
             }
 
-            $car->registeration_card_images = $imagesNameArr;
+            $car->registration_card_images = $imagesNameArr;
         }
 
         if ($request->hasFile('vin_images')) {
@@ -349,7 +350,7 @@ class CarController extends Controller
             'auction',
             'auction.bids',
             'auction.bids.dealer'
-        ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registeration_card_images']);
+        ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
 
         return response()->json($car);
     }

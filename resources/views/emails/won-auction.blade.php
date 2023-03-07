@@ -131,7 +131,7 @@ u+.emailify .gs{background:#000;mix-blend-mode:screen;display:inline-block;paddi
 <table border="0" cellpadding="0" cellspacing="0" role="none"><tr><td style="vertical-align:middle;width:168px;">
 <![endif]--><div class="pc31-3433 ogf m c" style="font-size:0;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:31.3433%;">
 <table border="0" cellpadding="0" cellspacing="0" role="none" style="border:none;vertical-align:middle;" width="100%"><tbody><tr><td align="center" class="i  fw-1" style="font-size:0;padding:0;word-break:break-word;">
-<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:168px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset($car->images[0]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="168">
+<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:168px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset('storage/car_images/'.$car->images[0]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="168">
 </td></tr></tbody></table>
 </td></tr></tbody></table></div>
 <!--[if mso | IE]>
@@ -144,7 +144,7 @@ u+.emailify .gs{background:#000;mix-blend-mode:screen;display:inline-block;paddi
 </td><td style="vertical-align:middle;width:168px;">
 <![endif]--><div class="pc31-3433 ogf m c" style="font-size:0;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:31.3433%;">
 <table border="0" cellpadding="0" cellspacing="0" role="none" style="border:none;vertical-align:middle;" width="100%"><tbody><tr><td align="center" class="i  fw-1" style="font-size:0;padding:0;word-break:break-word;">
-<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:168px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset($car->images[1]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="168">
+<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:168px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset('storage/car_images/'.$car->images[1]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="168">
 </td></tr></tbody></table>
 </td></tr></tbody></table></div>
 <!--[if mso | IE]>
@@ -157,7 +157,7 @@ u+.emailify .gs{background:#000;mix-blend-mode:screen;display:inline-block;paddi
 </td><td style="vertical-align:middle;width:168px;">
 <![endif]--><div class="pc31-3433 ogf c" style="font-size:0;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:31.3433%;">
 <table border="0" cellpadding="0" cellspacing="0" role="none" style="border:none;vertical-align:middle;" width="100%"><tbody><tr><td align="center" class="i  fw-1" style="font-size:0;padding:0;word-break:break-word;">
-<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:168px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset($car->images[2]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="168">
+<table border="0" cellpadding="0" cellspacing="0" role="none" style="border-collapse:collapse;border-spacing:0;" class="fwm"><tbody><tr><td style="width:168px;" class="fwm"> <img alt="" height="auto" src="{{$message->embed(asset('storage/car_images/'.$car->images[2]))}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" title="" width="168">
 </td></tr></tbody></table>
 </td></tr></tbody></table></div>
 <!--[if mso | IE]>

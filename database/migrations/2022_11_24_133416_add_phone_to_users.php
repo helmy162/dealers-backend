@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone')->after('type')->nullable();
-            $table->enum('status', ['active', 'inactive'])->after('email')->default('active');
+            $table->enum('status', ['active', 'inactive'])->after('email')->default('inactive');
         });
     }
 

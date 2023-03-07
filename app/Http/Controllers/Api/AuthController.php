@@ -29,14 +29,14 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'phone' => $request->phoneNumber
+            'phone' => $request->phoneNumber,
         ]);
 
         $user->save();
 
         return response()->json([
             'message' => 'Successfully created user!',
-            'user' => $user
+            'user' => $user->fresh()
         ], 201);
     }
 

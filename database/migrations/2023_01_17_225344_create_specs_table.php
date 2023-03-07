@@ -26,7 +26,7 @@ return new class extends Migration
             $table->boolean("Rear_Video")->nullable();
             $table->boolean("Premium_Sound")->nullable();
             $table->boolean("Heads_Up_Display")->nullable();
-            $table->boolean("Aux_Audio_In")->nullable();
+            $table->boolean("Aux_Audio")->nullable();
             $table->boolean("Bluetooth")->nullable();
             $table->boolean("Climate_Control")->nullable();
             $table->boolean("Keyless_Entry")->nullable();
@@ -37,17 +37,15 @@ return new class extends Migration
             $table->boolean("Heated_Seats")->nullable();
             $table->boolean("Power_Seats")->nullable();
             $table->boolean("Power_Locks")->nullable();
-            $table->boolean("Power_Mirros")->nullable();
+            $table->boolean("Power_Mirrors")->nullable();
             $table->boolean("Power_Windows")->nullable();
             $table->boolean("Memory_Seats")->nullable();
             $table->boolean("View_Camera")->nullable();
             $table->boolean("Blind_Spot_Indicator")->nullable();
-            $table->boolean("Anti_Lock_Brakes_ABS")->nullable();
+            $table->boolean("Anti_Lock")->nullable();
             $table->boolean("Adaptive_Cruise_Control")->nullable();
             $table->boolean("Power_Steering")->nullable();
-            $table->boolean("Front_Airbags")->nullable();
-            $table->boolean("Side_Airbags")->nullable();
-            $table->string("Trip_Gears")->nullable();
+            $table->string("Tiptronic_Gears")->nullable();
             $table->boolean("Night_Vision")->nullable();
             $table->boolean("Lift_Kit")->nullable();
             $table->boolean("Park_Assist")->nullable();
@@ -57,7 +55,7 @@ return new class extends Migration
             $table->string("Drives")->nullable();
             $table->string("Sunroof_Type")->nullable();
             $table->boolean("N29_System")->nullable();
-            $table->string("Wheels_Type")->nullable();
+            $table->string("Wheel_Type")->nullable();
             $table->boolean("Side_Steps")->nullable();
             $table->string("Convertible")->nullable();
             $table->string('Other_Features')->nullable();
