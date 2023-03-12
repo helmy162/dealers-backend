@@ -20,10 +20,6 @@ class History extends Model
         'car_id',
         'id'
     ];
-
-    protected $casts = [
-        'ownership' => 'boolean',
-    ];
     
     public function car(){
         $this->belongsTo(Car::class);

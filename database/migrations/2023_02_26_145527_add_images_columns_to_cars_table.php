@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('cars', function (Blueprint $table) {
             $table->json('id_images')->nullable();
-            $table->json('registeration_card_images')->nullable();
+            $table->json('registration_card_images')->nullable();
             $table->json('vin_images')->nullable();
             $table->json('insurance_images')->nullable();
         });

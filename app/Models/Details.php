@@ -24,7 +24,6 @@ class Details extends Model
     protected $casts = [
         'engine' => 'array',
         'is_new' => 'boolean',
-        'first_owner' => 'boolean',
     ];
 
     public function car(){

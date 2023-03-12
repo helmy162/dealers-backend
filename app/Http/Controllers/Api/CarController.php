@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+
 use App\Models\Car;
 use App\Models\Details;
 use App\Models\History;
@@ -15,11 +16,9 @@ use App\Models\Interior;
 use App\Models\Specs;
 use App\Models\Steering;
 use App\Models\Wheels;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
-
-
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -95,13 +94,12 @@ class CarController extends Controller
 
         $details = new Details();
         $details->fill($requestData);
-        $details->engine = json_decode($engine);
+        $details->engine = json_decode($requestData['engine']);
         $details->car_id = $car->id;
         $details->save();
 
         $history = new History();
         $history->fill($requestData);
-        $history->ownership = $requestData['first_owner'];
         $history->car_id = $car->id;
         $history->save();
 
@@ -136,7 +134,7 @@ class CarController extends Controller
         if($defects && is_array($defects)){
             foreach ($defects as $defect) {
                 $defect = json_decode($defect);
-                if(isset($images) &&  is_array($images) && is_int($defect->photo)){
+                if(isset($images) &&  is_array($images) && is_int($defect->photo) && array_key_exists($defect->photo, $images) ){
                     //get image from images array
                     $image = $images[$defect->photo];
     

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('Exhaust')->nullable();
             $table->string('Silencer')->nullable();
             $table->string('Engine_Comment')->nullable();
-            $table->string('Airbag ')->nullable();
+            $table->string('Airbag')->nullable();
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Mail\newAuction;
 use App\Mail\wonAuction;
 use Mail;
+use Illuminate\Support\Facades\Http;
 
 class AuctionController extends Controller
 {
@@ -71,6 +72,19 @@ class AuctionController extends Controller
         
         $car->status = 'approved';
         $car->save();
+
+        $data = [
+            'make' => $car->details->make,
+            'model' => $car->details->model,
+            'year' => $car->details->year,
+            'mileage' => $car->details->mileage,
+            'start_price' => $auction->start_price,
+            'start_at' => $auction->start_at,
+            'end_at' => $auction->end_at,
+            'image' => asset('/storage/car_images/'.$car->images[0])
+        ];
+        // Sending data to WhatsApp webhook
+        $response = Http::post('https://hook.us1.make.com/gwrof533jp0974w43brsjpo6kj3qvekl', $data);
 
         $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
         foreach($dealers as $dealer){

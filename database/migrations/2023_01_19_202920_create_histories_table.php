@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('service_history')->nullable();
             $table->string('manuals')->nullable();
             $table->boolean('warranty')->nullable();
-            $table->boolean('ownership')->nullable();
             $table->string('accident_history')->nullable();
-            $table->boolean('bank_finance')->nullable();
+            $table->string('bank_finance')->nullable();
             $table->string('car_history_comment')->nullable();
             $table->timestamps();
         });
