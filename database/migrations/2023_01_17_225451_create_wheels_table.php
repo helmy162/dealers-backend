@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('FrontLeft')->nullable();
             $table->unsignedSmallInteger('RearLeft')->nullable();
             $table->unsignedSmallInteger('Spare_Tyre')->nullable();
-            $table->string('Tyers_Comment')->nullable();
+            $table->string('Tyres_Comment')->nullable();
             $table->timestamps();
         });
     }

@@ -71,6 +71,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             // cars routes
             Route::get('car/{car}', [CarController::class, 'allCarDetails']);
+            Route::put('car/{car}', [CarController::class, 'editCar']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);
 
         });

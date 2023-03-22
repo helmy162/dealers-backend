@@ -323,13 +323,82 @@ class CarController extends Controller
         ], 201);
     }
 
+    public function editCar(Request $request, $id){
+        $validated = $request->validate([
+            'seller_id' => 'required|integer',
+            'car_id' => 'required|integer',
+        ]);
+        
+        $car = Car::findOrFail($id);
+
+        $car->seller_id = $request->seller_id;
+        $car->save();
+
+        $requestData = $request->all();
+        foreach($requestData as $key => $value){
+            if( $value === "true"){
+                $requestData[$key] = true ;
+            }elseif( $value === "false"){
+                $requestData[$key] = false ;
+            }
+        }
+
+        $car->details->fill($requestData);
+        $car->details->save();
+
+        $car->history->fill($requestData);
+        $car->history->save();
+
+        $car->engineTransmission->fill($requestData);
+        $car->engineTransmission->save();
+
+        $car->steering->fill($requestData);
+        $car->steering->save();
+
+        $car->interior->fill($requestData);
+        $car->interior->save();
+
+        $car->exterior->fill($requestData);
+        $car->exterior->save();
+
+        $car->specs->fill($requestData);
+        $car->specs->save();
+
+        $car->wheels->fill($requestData);
+        $car->wheels->save();
+
+        $car->seller->fill($requestData);
+        $car->seller->save();
+
+        $car = Car::with([
+            'details',
+            'history',
+            'engineTransmission',
+            'steering',
+            'interior',
+            'exterior',
+            'specs',
+            'wheels',
+            'seller',
+            'auction',
+            'auction.bids',
+            'auction.bids.dealer'
+        ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
+
+        return response()->json([
+            'success' => true,
+            "message" => 'Car edited Successfully!',
+            'car' => $car
+        ]);
+    }
+
     public function destroy(Request $request, $id)
     {
         $car = Car::findOrFail($id);
         $car->delete();
 
         return response()->json([
-            'success' => 'true',
+            'success' => true,
             "message" => 'Car deleted Successfully!'
         ]);
     }
