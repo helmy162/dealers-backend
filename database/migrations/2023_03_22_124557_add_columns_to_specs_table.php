@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('specs', function (Blueprint $table) {
-            $table->string('Carbon_Fiber_Interior')->nullable();
-            $table->string('Line_Change_Assist')->nullable();
+            $table->boolean('Carbon_Fiber_Interior')->nullable();
+            $table->boolean('Line_Change_Assist')->nullable();
         });
     }
 

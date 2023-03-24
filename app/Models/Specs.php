@@ -32,7 +32,7 @@ class Specs extends Model
         'Rear_Video' => 'boolean',
         'Premium_Sound' => 'boolean',
         'Heads_Up_Display' => 'boolean',
-        'Aux_Audio_In' => 'boolean',
+        'Aux_Audio' => 'boolean',
         'Bluetooth' => 'boolean',
         'Climate_Control' => 'boolean',
         'Keyless_Entry' => 'boolean',
@@ -48,7 +48,7 @@ class Specs extends Model
         'Memory_Seats' => 'boolean',
         'View_Camera' => 'boolean',
         'Blind_Spot_Indicator' => 'boolean',
-        'Anti_Lock_Brakes_ABS' => 'boolean',
+        'Anti_Lock' => 'boolean',
         'Cruise_Control' => 'boolean',
         'Power_Steering' => 'boolean',
         'Front_Airbags' => 'boolean',
@@ -61,6 +61,10 @@ class Specs extends Model
         'Navigation_System' => 'boolean',
         'N29_System' => 'boolean',
         'Side_Steps' => 'boolean',
+        'Power_Mirrors' => 'boolean',
+        'Adaptive_Cruise_Control' => 'boolean',
+        'Carbon_Fiber_Interior' => 'boolean',
+        'Line_Change_Assist' => 'boolean'
     ];
 
     public function car(){
