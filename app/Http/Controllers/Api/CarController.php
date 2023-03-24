@@ -324,14 +324,9 @@ class CarController extends Controller
     }
 
     public function editCar(Request $request, $id){
-        $validated = $request->validate([
-            'seller_id' => 'required|integer',
-            'car_id' => 'required|integer',
-        ]);
-        
         $car = Car::findOrFail($id);
 
-        $car->seller_id = $request->seller_id;
+        $car->fill($request->all());
         $car->save();
 
         $requestData = $request->all();
@@ -366,9 +361,6 @@ class CarController extends Controller
 
         $car->wheels->fill($requestData);
         $car->wheels->save();
-
-        $car->seller->fill($requestData);
-        $car->seller->save();
 
         $car = Car::with([
             'details',
