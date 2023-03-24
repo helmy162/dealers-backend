@@ -33,6 +33,17 @@ class CarController extends Controller
         $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
             ->where('auctions.end_at','>', Carbon::now())
+            ->whereNotNull([
+                'details_id',
+                'history_id',
+                'engine_id',
+                'steering_id',
+                'interior_id',
+                'specs_id',
+                'wheels_id',
+                'exterior_id',
+                'seller_id'
+            ])
             ->orderBy('auctions.end_at')
             ->with([
                 'details',
@@ -54,7 +65,17 @@ class CarController extends Controller
 
     public function getAllCars(){
 
-        $cars = Car::with([
+        $cars = Car::whereNotNull([
+            'details_id',
+            'history_id',
+            'engine_id',
+            'steering_id',
+            'interior_id',
+            'specs_id',
+            'wheels_id',
+            'exterior_id',
+            'seller_id'
+            ])->with([
                 'details',
                 'history',
                 'engineTransmission',
@@ -339,6 +360,7 @@ class CarController extends Controller
         }
 
         $car->details->fill($requestData);
+        $car->details->engine = json_decode($requestData['engine']);
         $car->details->save();
 
         $car->history->fill($requestData);

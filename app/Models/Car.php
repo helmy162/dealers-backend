@@ -29,7 +29,7 @@ class Car extends Model
         'images' => 'array',
         'id_images' => 'array',
         'vin_images' => 'array',
-        'registeration_card_images' => 'array',
+        'registration_card_images' => 'array',
         'insurance_images' => 'array',
     ];
 
