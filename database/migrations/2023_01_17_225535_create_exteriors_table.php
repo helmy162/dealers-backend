@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('car_id');
             $table->json('markers')->nullable();
+            $table->string('exteriors_comment')->nullable();
             $table->timestamps();
         });
     }

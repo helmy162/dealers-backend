@@ -48,8 +48,8 @@ class AuctionController extends Controller
     {
         $validated = $request->validate([
             'car_id' => 'required|integer|unique:auctions',
-            'date' => 'required',
-            'duration' => 'required',
+            'start_at' => 'required',
+            'end_at' => 'required',
             'start_price' => 'required|integer'
         ],[
             'car_id.unique' => 'Car already at auction!'
@@ -57,16 +57,11 @@ class AuctionController extends Controller
 
         $car = Car::findOrFail($validated['car_id']);
 
-        $duration = CarbonInterval::make($validated['duration']);
-        
-        $start_at = Carbon::make($validated['date']);
-
         $auction                    = new Auction();
         $auction->car_id            = $validated['car_id'];
         $auction->start_price       = $validated['start_price'];
-        $auction->duration          = $validated['duration'];
-        $auction->start_at          = $start_at;
-        $auction->end_at            = $start_at->addSeconds($duration->totalSeconds);
+        $auction->start_at          = Carbon::make($validated['start_at']);
+        $auction->end_at            = Carbon::make($validated['end_at']);
         $auction->save();
 
         
@@ -131,8 +126,8 @@ class AuctionController extends Controller
     {
         $validated = $request->validate([
             'car_id' => 'required|integer|unique:auctions,car_id,'.$id,
-            'date' => 'required',
-            'duration' => 'required',
+            'start_at' => 'required',
+            'end_at' => 'required',
             'start_price' => 'required|integer'
         ],[
             'car_id.unique' => 'Car already at auction!'
@@ -141,15 +136,10 @@ class AuctionController extends Controller
         $auction = Auction::findOrFail($id);
         $car = Car::findOrFail($validated['car_id']);
 
-        $duration = CarbonInterval::make($validated['duration']);
-        
-        $start_at = Carbon::make($validated['date']);
-
         $auction->car_id            = $validated['car_id'];
         $auction->start_price       = $validated['start_price'];
-        $auction->duration          = $validated['duration'];
-        $auction->start_at          = $start_at;
-        $auction->end_at            = $start_at->addSeconds($duration->totalSeconds);
+        $auction->start_at          = Carbon::make($validated['start_at']);
+        $auction->end_at            = Carbon::make($validated['end_at']);
         $auction->save();
 
         
