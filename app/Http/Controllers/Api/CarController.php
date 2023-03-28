@@ -182,8 +182,8 @@ class CarController extends Controller
             }
         }
         $exterior = new Exterior();
+        $exterior->fill($requestData);
         $exterior->markers = $markers;
-        $exterior->exterior_comment = $requestData['exterior_comment'];
         $exterior->car_id = $car->id;
         $exterior->save();
 

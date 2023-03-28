@@ -12,6 +12,7 @@ class Exterior extends Model
     protected $guarded = [
         'id',
         'car_id',
+        'markers'
     ];
 
     protected $hidden = [

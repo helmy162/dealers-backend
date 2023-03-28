@@ -64,6 +64,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             //seller routes
             Route::apiResource('sellers', SellerController::class);
+            Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
 
             //auction routes
             Route::put('auction/declare-winner', [AuctionController::class, 'declareWinner']);
@@ -112,4 +113,7 @@ Route::group(['prefix' => 'v1'], function () {
     // get cars
     Route::get('cars', [CarController::class, 'index']);
     Route::get('cars/all', [CarController::class, 'getAllCars']);
+
+    // pipedrive creating sellers webhook
+    Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
 });

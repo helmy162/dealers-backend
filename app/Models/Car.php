@@ -9,20 +9,8 @@ class Car extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        'id',
-        'inspector_id',
-        'details_id',
-        'history_id',
-        'inspector_id',
-        'engine_id',
-        'steering_id',
-        'interior_id',
-        'specs_id',
-        'wheels_id',
-        'exterior_id',
-        'images',
-        'status'
+    protected $fillable = [
+        'seller_id',
     ];
 
     protected $casts = [

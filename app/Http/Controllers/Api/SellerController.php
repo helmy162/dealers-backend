@@ -62,4 +62,8 @@ class SellerController extends Controller
             "message" => 'Seller deleted Successfully!'
         ]);
     }
+
+    public function webhook(Request $request){
+        \Illuminate\Support\Facades\Log::info($request->all());
+    }
 }
