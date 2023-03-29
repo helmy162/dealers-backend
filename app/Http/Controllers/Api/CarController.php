@@ -430,6 +430,7 @@ class CarController extends Controller
             'wheels',
             'seller',
             'auction',
+            'inspector',
             'auction.bids',
             'auction.bids.dealer'
         ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);

@@ -49,9 +49,6 @@ Route::group(['prefix' => 'v1'], function () {
     //reset password
     Route::post('/reset-password', [AuthController::class , 'resetPassword']);
 
-    //new password
-    Route::post('/new-password', [AuthController::class , 'newPassword']);
-
     //route group for auth user
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -108,6 +105,9 @@ Route::group(['prefix' => 'v1'], function () {
     
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
+
+            //new password
+            Route::post('/new-password', [AuthController::class , 'newPassword']);
     });
     
     // get cars

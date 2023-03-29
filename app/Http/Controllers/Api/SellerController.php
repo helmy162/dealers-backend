@@ -64,6 +64,10 @@ class SellerController extends Controller
     }
 
     public function webhook(Request $request){
-        \Illuminate\Support\Facades\Log::info($request->all());
+        $seller             = new Seller();
+        $seller->name       = $request->current['name'];
+        $seller->email      = $request->current['email'][0]['value'];
+        $seller->phone      = $request->current['phone'][0]['value'];
+        $seller->save();
     }
 }

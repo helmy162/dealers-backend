@@ -72,7 +72,6 @@ class UsersController extends Controller
             'isVerified' => 'required|boolean',
             'status' => 'required|string',
             'phoneNumber' => 'string',
-            'company' => 'string',
             'bidLimit' => 'integer'
         ]);
 
@@ -104,7 +103,6 @@ class UsersController extends Controller
             'isVerified' => 'required|boolean',
             'status' => 'required|string',
             'phoneNumber' => 'string',
-            'company' => 'string',
             'bidLimit' => 'integer'
         ]);
 

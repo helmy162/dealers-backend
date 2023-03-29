@@ -11,6 +11,7 @@ use Illuminate\Auth\Events\PasswordReset;
 
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class AuthController extends Controller
@@ -112,39 +113,22 @@ class AuthController extends Controller
     public function newPassword(Request $request)
     {
         $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|string|confirmed',
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|confirmed',
         ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => bcrypt($request->password),
-                ])->save();
-
-                $user->tokens()->delete();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        if ($status == Password::PASSWORD_RESET) {
-            $user = User::whereEmail($request->email)->first();
-            $tokenResult = $user->createToken('authToken')->plainTextToken;
-
+        if (!Hash::check($request->current_password, auth()->user()->password)){
             return response()->json([
-                'success' => true,
-                'message' => 'Password reset successfully',
-                'access_token' => $tokenResult,
-                'token_type' => 'Bearer',
-                'user' => $user
-            ], 200);
+                'message' => 'The current password does not match.',
+            ], 422);
         }
 
-        return response([
-            'message'=> __($status)
-        ], 500);
+        auth()->user()->password = bcrypt($request->new_password);
+        auth()->user()->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password changed successfully'
+        ], 200);
     }
 }
