@@ -22,13 +22,14 @@ return new class extends Migration
             $table->unsignedSmallInteger('year')->nullable();
             $table->unsignedBigInteger('mileage')->nullable();
             $table->string('registered_emirates')->nullable();
-            $table->json('engine')->nullable();
+            // $table->json('engine')->nullable();
+            $table->unsignedBigInteger('engine_size')->nullable();
+            $table->unsignedBigInteger('number_of_cylinders')->nullable();
             $table->string('interior_type')->nullable();
             $table->string('body_type')->nullable();
             $table->string('specification')->nullable();
             $table->string('exterior_color')->nullable();
             $table->string('interior_color')->nullable();
-            $table->string('generation')->nullable();
             $table->string('keys')->nullable();
             $table->string('first_owner')->nullable();
             $table->unsignedBigInteger('seller_price')->nullable();

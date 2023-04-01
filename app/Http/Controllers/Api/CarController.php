@@ -115,7 +115,6 @@ class CarController extends Controller
 
         $details = new Details();
         $details->fill($requestData);
-        $details->engine = json_decode($requestData['engine']);
         $details->car_id = $car->id;
         $details->save();
 
@@ -361,7 +360,6 @@ class CarController extends Controller
         }
 
         $car->details->fill($requestData);
-        $car->details->engine = json_decode($requestData['engine']);
         $car->details->save();
 
         $car->history->fill($requestData);
