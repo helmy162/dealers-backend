@@ -148,41 +148,41 @@ class CarController extends Controller
         $wheels->car_id = $car->id;
         $wheels->save();
         
-        $defects = $request->markers;
-        $request->hasFile('exterior_images') ? $images = $request->file('exterior_images') : '';
-        $markers = [];
-        if($defects && is_array($defects)){
-            foreach ($defects as $defect) {
-                $defect = json_decode($defect);
-                if(isset($images) &&  is_array($images) && is_int($defect->photo) && array_key_exists($defect->photo, $images) ){
-                    //get image from images array
-                    $image = $images[$defect->photo];
+        // $defects = $request->markers;
+        // $request->hasFile('exterior_images') ? $images = $request->file('exterior_images') : '';
+        // $markers = [];
+        // if($defects && is_array($defects)){
+        //     foreach ($defects as $defect) {
+        //         $defect = json_decode($defect);
+        //         if(isset($images) &&  is_array($images) && is_int($defect->photo) && array_key_exists($defect->photo, $images) ){
+        //             //get image from images array
+        //             $image = $images[$defect->photo];
     
-                    //get file name with the extension
-                    $fileNameWithExt= $image->getClientOriginalName();
+        //             //get file name with the extension
+        //             $fileNameWithExt= $image->getClientOriginalName();
     
-                    //get just filename
-                    $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+        //             //get just filename
+        //             $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
     
-                    //get just the extension
-                    $extension = $image->getClientOriginalExtension();
+        //             //get just the extension
+        //             $extension = $image->getClientOriginalExtension();
     
-                    //file name to store(unique)
-                    $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        //             //file name to store(unique)
+        //             $fileNameToStore = $fileName.'_'.time().'.'.$extension;
     
-                    //upload image
-                    $path = $image->storeAs('public/defect_images',$fileNameToStore);
+        //             //upload image
+        //             $path = $image->storeAs('public/defect_images',$fileNameToStore);
     
-                    $defect->photo = $fileNameToStore;
-                }else{
-                    $defect->photo = null;
-                }
-                array_push($markers, $defect);
-            }
-        }
+        //             $defect->photo = $fileNameToStore;
+        //         }else{
+        //             $defect->photo = null;
+        //         }
+        //         array_push($markers, $defect);
+        //     }
+        // }
         $exterior = new Exterior();
         $exterior->fill($requestData);
-        $exterior->markers = $markers;
+        $exterior->markers = json_decode($request->markers);
         $exterior->car_id = $car->id;
         $exterior->save();
 

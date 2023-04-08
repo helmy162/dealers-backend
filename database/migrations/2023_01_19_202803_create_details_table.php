@@ -22,7 +22,6 @@ return new class extends Migration
             $table->unsignedSmallInteger('year')->nullable();
             $table->unsignedBigInteger('mileage')->nullable();
             $table->string('registered_emirates')->nullable();
-            // $table->json('engine')->nullable();
             $table->unsignedBigInteger('engine_size')->nullable();
             $table->unsignedBigInteger('number_of_cylinders')->nullable();
             $table->string('interior_type')->nullable();
