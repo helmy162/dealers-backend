@@ -182,7 +182,7 @@ class CarController extends Controller
         // }
         $exterior = new Exterior();
         $exterior->fill($requestData);
-        $exterior->markers = json_decode($request->markers);
+        $exterior->markers = json_decode($request->defects);
         $exterior->car_id = $car->id;
         $exterior->save();
 
@@ -382,6 +382,10 @@ class CarController extends Controller
 
         $car->wheels->fill($requestData);
         $car->wheels->save();
+
+        $car->exterior->fill($requestData);
+        $car->exterior->markers = json_decode($request->defects);
+        $car->exterior->save();
 
         $car = Car::with([
             'details',
