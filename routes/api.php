@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\{
     SellerController,
     AuctionController,
     BidController,
+    OfferController,
     PusherController,
     UserController
 };
@@ -94,6 +95,9 @@ Route::group(['prefix' => 'v1'], function () {
             // make a bid
             Route::post('bid', [BidController::class, 'store']);
 
+            // make an offer
+            Route::post('offer', [OfferController::class, 'store']);
+
             // edit profile recieved notifications
             Route::put('profile/notifications' ,[UserController::class, 'updateNotifications']);
         });
@@ -113,6 +117,7 @@ Route::group(['prefix' => 'v1'], function () {
     // get cars
     Route::get('cars', [CarController::class, 'index']);
     Route::get('cars/all', [CarController::class, 'getAllCars']);
+    Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
 
     // pipedrive creating sellers webhook
     Route::post('pipedrive/seller', [SellerController::class, 'webhook']);

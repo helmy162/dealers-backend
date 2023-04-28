@@ -70,8 +70,8 @@ class BidController extends Controller
         }
 
         
-        if($auction->end_at->diffInSeconds(Carbon::now()) < 30){
-            $auction->end_at = Carbon::now()->addSeconds(30);
+        if($auction->end_at->diffInSeconds(Carbon::now()) < 60){
+            $auction->end_at = Carbon::now()->addSeconds(60);
             $auction->save();
         }
         

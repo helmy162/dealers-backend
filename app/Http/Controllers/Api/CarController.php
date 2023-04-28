@@ -93,6 +93,40 @@ class CarController extends Controller
         return response()->json($cars);
     }
 
+    public function carsWithExpiredAuctions(){
+        $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
+            ->select('cars.*')
+            ->where('auctions.end_at','<', Carbon::now())
+            ->whereNotNull([
+                'details_id',
+                'history_id',
+                'engine_id',
+                'steering_id',
+                'interior_id',
+                'specs_id',
+                'wheels_id',
+                'exterior_id',
+                'seller_id'
+            ])
+            ->orderBy('auctions.end_at')
+            ->with([
+                'details',
+                'history',
+                'engineTransmission',
+                'steering',
+                'interior',
+                'exterior',
+                'specs',
+                'wheels',
+                'seller',
+                'auction',
+                'auction.latestBid',
+                'auction.latestBid.dealer:id,name'
+            ])->orderByDesc('auctions.end_at')->paginate(5);
+        
+        return response()->json($cars);
+    }
+
     public function createCar(Request $request){
 
         $validated = $request->validate([
@@ -432,9 +466,11 @@ class CarController extends Controller
             'wheels',
             'seller',
             'auction',
-            'inspector',
             'auction.bids',
-            'auction.bids.dealer'
+            'auction.bids.dealer',
+            'offers',
+            'offers.dealer',
+            'inspector'
         ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
 
         return response()->json($car);
