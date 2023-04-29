@@ -110,8 +110,13 @@ Route::group(['prefix' => 'v1'], function () {
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
 
-            //new password
-            Route::post('/new-password', [AuthController::class , 'newPassword']);
+        //new password
+        Route::post('/new-password', [AuthController::class , 'newPassword']);
+
+        // user data
+        Route::get('/profile', [UserController::class, 'index']);
+        Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
+        Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
     });
     
     // get cars

@@ -48,6 +48,10 @@ class Car extends Model
         return $this->hasMany(Offer::class);
     }
 
+    public function highestOffer(){
+        return $this->hasOne(Offer::class)->orderBy('amount', 'desc');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

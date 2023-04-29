@@ -7,6 +7,18 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function index(){
+        return response()->json(auth()->user());
+    }
+
+    public function getOwnBids(){
+        return response()->json(auth()->user()->bids->load('car', 'car.details', 'auction', 'auction.latestBid'));
+    }
+
+    public function getOwnOffers(){
+        return response()->json(auth()->user()->offers->load('car', 'car.details'));
+    }
+
     public function updateNotifications(Request $request){
         $validated = $request->validate([
             'notify_new_auction' => 'required|boolean',

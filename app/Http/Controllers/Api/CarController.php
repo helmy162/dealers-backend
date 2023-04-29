@@ -56,8 +56,7 @@ class CarController extends Controller
                 'wheels',
                 'seller',
                 'auction',
-                'auction.latestBid',
-                'auction.latestBid.dealer:id,name'
+                'auction.latestBid'
             ])->orderBy('auctions.end_at')->paginate(5);
         
         return response()->json($cars);
@@ -470,6 +469,8 @@ class CarController extends Controller
             'auction.bids.dealer',
             'offers',
             'offers.dealer',
+            'highestOffer',
+            'highestOffer.dealer',
             'inspector'
         ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
 

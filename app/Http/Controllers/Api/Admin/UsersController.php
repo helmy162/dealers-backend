@@ -129,7 +129,17 @@ class UsersController extends Controller
         return response()->json([
             'status' => 'success',
             'UserType' => $user->type,
-            'data' => $user->load('bids')
+            'data' => $user->load(
+                    'bids',
+                    'bids.car',
+                    'bids.car.details',
+                    'bids.car.auction',
+                    'bids.car.auction.latestBid',
+                    'offers',
+                    'offers.car',
+                    'offers.car.details',
+                    'offers.car.highestOffer'
+                )
         ]);
     }
 
