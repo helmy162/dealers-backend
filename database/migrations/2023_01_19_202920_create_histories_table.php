@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('accident_history')->nullable();
             $table->string('bank_finance')->nullable();
             $table->string('car_history_comment')->nullable();
+            $table->string('bank_finance_status')->nullable();
             $table->timestamps();
         });
     }

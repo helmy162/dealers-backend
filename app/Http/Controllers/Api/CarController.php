@@ -107,7 +107,7 @@ class CarController extends Controller
                 'exterior_id',
                 'seller_id'
             ])
-            ->orderBy('auctions.end_at')
+            ->orderByDesc('auctions.end_at')
             ->with([
                 'details',
                 'history',

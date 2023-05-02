@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('Steering_Alignment')->nullable();
             $table->string('Wheel_Alignment')->nullable();
             $table->string('Steering_Comment')->nullable();
+            $table->string('Rotors_and_Drums')->nullable();
+            $table->string('Struts_and_Shocks')->nullable();
             $table->timestamps();
         });
     }

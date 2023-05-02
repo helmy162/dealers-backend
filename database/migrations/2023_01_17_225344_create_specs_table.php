@@ -45,7 +45,6 @@ return new class extends Migration
             $table->boolean("Anti_Lock")->nullable();
             $table->boolean("Adaptive_Cruise_Control")->nullable();
             $table->boolean("Power_Steering")->nullable();
-            $table->string("Tiptronic_Gears")->nullable();
             $table->boolean("Night_Vision")->nullable();
             $table->boolean("Lift_Kit")->nullable();
             $table->boolean("Park_Assist")->nullable();
@@ -55,7 +54,6 @@ return new class extends Migration
             $table->string("Drives")->nullable();
             $table->string("Sunroof_Type")->nullable();
             $table->boolean("N29_System")->nullable();
-            $table->string("Wheel_Type")->nullable();
             $table->boolean("Side_Steps")->nullable();
             $table->string("Convertible")->nullable();
             $table->string('Other_Features')->nullable();

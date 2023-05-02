@@ -31,6 +31,11 @@ return new class extends Migration
             $table->string('interior_color')->nullable();
             $table->string('keys')->nullable();
             $table->string('first_owner')->nullable();
+            $table->string('fuel_type')->nullable();
+            $table->string('transmission')->nullable();
+            $table->string('wheel_type')->nullable();
+            $table->string('car_options')->nullable();
+            $table->string('safety_belt')->nullable();
             $table->unsignedBigInteger('seller_price')->nullable();
             $table->timestamps();
         });

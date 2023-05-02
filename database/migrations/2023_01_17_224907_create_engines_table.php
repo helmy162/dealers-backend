@@ -20,18 +20,15 @@ return new class extends Migration
             $table->string('Radiator_Fan')->nullable();
             $table->string('Engine_Noise')->nullable();
             $table->string('Axels')->nullable();
-            $table->string('Engine_Oil')->nullable();
-            $table->string('Engine_Belts')->nullable();
             $table->string('Coolant')->nullable();
-            $table->string('Battery_Condition')->nullable();
             $table->string('Engine_Idling')->nullable();
             $table->string('Engine_Smoke')->nullable();
-            $table->string('Gear_Shifting')->nullable();
-            $table->string('Gear_Lever')->nullable();
-            $table->string('Exhaust')->nullable();
+            $table->string('Transmission_Condition')->nullable();
             $table->string('Silencer')->nullable();
             $table->string('Engine_Comment')->nullable();
             $table->string('Airbag')->nullable();
+            $table->string('Engine_Group')->nullable();
+            $table->string('Hoses_and_Pipes_Condition')->nullable();
             $table->timestamps();
         });
     }
