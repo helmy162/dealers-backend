@@ -381,6 +381,41 @@ class CarController extends Controller
         $car = Car::findOrFail($id);
 
         $car->fill($request->all());
+
+        if($request->deletedImages && is_array($request->deletedImages) && count($request->deletedImages)){
+            $car_images = collect($car->images);
+            foreach($request->deletedImages as $del){
+                $car_images = $car_images->reject(fn ($img) => $img == $del)->all();
+            }
+            $car->images = $car_images;
+        }
+
+        if ($request->hasFile('images')) {
+
+            $images = $request->file('images');
+            $imagesNameArr = $car->images;
+            foreach ($images as $image) {
+                //get file name with the extension
+                $fileNameWithExt= $image->getClientOriginalName();
+
+                //get just filename
+                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+
+                //get just the extension
+                $extension = $image->getClientOriginalExtension();
+
+                //file name to store(unique)
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                //upload image
+                $path = $image->storeAs('public/car_images',$fileNameToStore);
+
+                //add car images array
+                array_push($imagesNameArr, $fileNameToStore);
+            }
+
+            $car->images = $imagesNameArr;
+        }
         $car->save();
 
         $requestData = $request->all();
