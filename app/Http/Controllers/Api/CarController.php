@@ -30,7 +30,7 @@ class CarController extends Controller
      */
     public function index(){ 
 
-        $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
+        $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
             ->where('auctions.end_at','>', Carbon::now())
             ->whereNotNull([
@@ -57,9 +57,40 @@ class CarController extends Controller
                 'seller',
                 'auction',
                 'auction.latestBid'
-            ])->orderBy('auctions.end_at')->paginate(5);
+            ])->orderBy('auctions.end_at')->get();
+
+        // expired cars in the last 24h
+        $expiredCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
+            ->select('cars.*')
+            ->where('auctions.end_at','>', Carbon::now()->subDay())
+            ->where('auctions.end_at','<', Carbon::now())
+            ->whereNotNull([
+                'details_id',
+                'history_id',
+                'engine_id',
+                'steering_id',
+                'interior_id',
+                'specs_id',
+                'wheels_id',
+                'exterior_id',
+                'seller_id'
+            ])
+            ->orderBy('auctions.end_at')
+            ->with([
+                'details',
+                'history',
+                'engineTransmission',
+                'steering',
+                'interior',
+                'exterior',
+                'specs',
+                'wheels',
+                'seller',
+                'auction',
+                'auction.latestBid'
+            ])->orderBy('auctions.end_at')->get(); 
         
-        return response()->json($cars);
+        return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
     }
 
     public function getAllCars(){
@@ -385,9 +416,9 @@ class CarController extends Controller
         if($request->deletedImages && is_array($request->deletedImages) && count($request->deletedImages)){
             $car_images = collect($car->images);
             foreach($request->deletedImages as $del){
-                $car_images = $car_images->reject(fn ($img) => $img == $del)->all();
+                $car_images = $car_images->reject(fn ($img) => $img == $del);
             }
-            $car->images = $car_images;
+            $car->images = $car_images->values()->all();
         }
 
         if ($request->hasFile('images')) {
