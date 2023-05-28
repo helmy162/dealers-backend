@@ -44,7 +44,6 @@ class CarController extends Controller
                 'exterior_id',
                 'seller_id'
             ])
-            ->orderBy('auctions.end_at')
             ->with([
                 'details',
                 'history',
@@ -88,7 +87,7 @@ class CarController extends Controller
                 'seller',
                 'auction',
                 'auction.latestBid'
-            ])->orderBy('auctions.end_at')->get(); 
+            ])->orderByDesc('auctions.end_at')->get();
         
         return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
     }

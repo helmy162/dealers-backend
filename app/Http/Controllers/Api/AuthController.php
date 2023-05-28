@@ -113,18 +113,23 @@ class AuthController extends Controller
     public function newPassword(Request $request)
     {
         $request->validate([
-            'current_password' => 'required|string',
-            'new_password' => 'required|string|confirmed',
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
         ]);
-
-        if (!Hash::check($request->current_password, auth()->user()->password)){
-            return response()->json([
-                'message' => 'The current password does not match.',
-            ], 422);
-        }
-
-        auth()->user()->password = bcrypt($request->new_password);
-        auth()->user()->save();
+     
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+     
+                $user->save();
+     
+                event(new PasswordReset($user));
+            }
+        );
 
         return response()->json([
             'success' => true,
