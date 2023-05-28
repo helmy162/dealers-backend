@@ -12,6 +12,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -87,7 +88,7 @@ class AuthController extends Controller
         ]);
     }
 
-    //resetPassword user
+    // Reset Password
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -109,8 +110,31 @@ class AuthController extends Controller
 
     }
 
-    //newPassword user
+    // New Password
     public function newPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, auth()->user()->password)){
+            return response()->json([
+                'message' => 'The current password does not match.',
+            ], 422);
+        }
+
+        auth()->user()->password = bcrypt($request->new_password);
+        auth()->user()->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password changed successfully'
+        ], 200);
+    }
+
+    // Confirm Reset Password
+    public function confirmResetPassword(Request $request)
     {
         $request->validate([
             'token' => 'required',
