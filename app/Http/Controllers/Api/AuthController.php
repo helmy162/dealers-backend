@@ -155,9 +155,9 @@ class AuthController extends Controller
             }
         );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Password changed successfully'
-        ], 200);
+        return $status === Password::PASSWORD_RESET
+                        ? response()->json([ 'success' => true, 'message' => __($status) ])
+                        : response()->json(['email' => [__($status)]]);
+
     }
 }
