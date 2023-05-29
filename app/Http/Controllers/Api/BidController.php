@@ -53,7 +53,7 @@ class BidController extends Controller
             return response()->json([
                 'success' => false,
                 'last_bid' => $auction->latestBid->bid,
-                'last_bid_dealer' => $auction->latestBid->dealer->name,
+                // 'last_bid_dealer' => $auction->latestBid->dealer->name,
                 'next_min_bid' => $auction->latestBid->bid + 500,
                 'end_at' => $auction->end_at,
                 'message' => 'Not enough bid amount!'
@@ -87,7 +87,7 @@ class BidController extends Controller
 
         broadcast(new NewBid([
             'last_bid' => $bid_amount,
-            'last_bid_dealer' => auth()->user()->name,
+            // 'last_bid_dealer' => auth()->user()->name,
             'next_min_bid' => $bid_amount + 500,
             'end_at' => $auction->end_at
         ], $auction->id))->toOthers();
@@ -99,7 +99,6 @@ class BidController extends Controller
         return response()->json([
             'success' => true,
             'last_bid' => $bid_amount,
-            'last_bid_dealer' => auth()->user()->name,
             'next_min_bid' => $bid_amount + 500,
             'end_at' => $auction->end_at
         ]);

@@ -52,12 +52,11 @@ Route::group(['prefix' => 'v1'], function () {
     //reset password
     Route::post('/confirm-reset-password', [AuthController::class , 'confirmResetPassword']);
 
-    //route group for auth user
+    // Authenticated User Routes
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
         //route group for admin 
-        // Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function () {
-        Route::group(['prefix' => 'admin'], function () {
+        Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
             Route::get('all-users', [UsersController::class, 'allUsers']);
@@ -78,16 +77,14 @@ Route::group(['prefix' => 'v1'], function () {
         });
         
         //route group for inspector
-        // Route::group(['prefix' => 'inspector', 'middleware' => ['is_inspector']], function () {
-        Route::group(['prefix' => 'inspector'], function () {
+        Route::group(['prefix' => 'inspector', 'middleware' => ['is_inspector']], function () {
             
             Route::post('car', [CarController::class, 'createCar']);
             
         });
 
         //route group for dealer
-        // Route::group(['prefix' => 'dealer', 'middleware' => ['is_dealer']], function () {
-        Route::group(['prefix' => 'dealer'], function () {
+        Route::group(['prefix' => 'dealer', 'middleware' => ['is_dealer']], function () {
             //add resourceApi route
             Route::apiResource('cars', DealersController::class);
 
@@ -99,9 +96,6 @@ Route::group(['prefix' => 'v1'], function () {
 
             // make an offer
             Route::post('offer', [OfferController::class, 'store']);
-
-            // edit profile recieved notifications
-            Route::put('profile/notifications' ,[UserController::class, 'updateNotifications']);
         });
 
         Route::group(['prefix' => 'pusher'], function(){
@@ -111,14 +105,16 @@ Route::group(['prefix' => 'v1'], function () {
     
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
-
         //new password
         Route::post('/new-password', [AuthController::class , 'newPassword']);
+        // edit profile recieved notifications
+        Route::put('profile/notifications' ,[UserController::class, 'updateNotifications']);
 
         // user data
         Route::get('/profile', [UserController::class, 'index']);
         Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
         Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
+        
     });
     
     // get cars

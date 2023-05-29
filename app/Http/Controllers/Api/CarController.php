@@ -45,24 +45,15 @@ class CarController extends Controller
                 'seller_id'
             ])
             ->with([
-                'details',
-                'history',
-                'engineTransmission',
-                'steering',
-                'interior',
-                'exterior',
-                'specs',
-                'wheels',
-                'seller',
-                'auction',
-                'auction.latestBid'
+                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
+                'auction:id,car_id,end_at',
             ])->orderBy('auctions.end_at')->get();
 
         // expired cars in the last 24h
         $expiredCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
-            ->where('auctions.end_at','>', Carbon::now()->subDay())
-            ->where('auctions.end_at','<', Carbon::now())
+            ->where('auctions.end_at','>', Carbon::now()->subDays(3))
+            ->where('auctions.end_at','<', Carbon::now()->subDay())
             ->whereNotNull([
                 'details_id',
                 'history_id',
@@ -76,17 +67,8 @@ class CarController extends Controller
             ])
             ->orderBy('auctions.end_at')
             ->with([
-                'details',
-                'history',
-                'engineTransmission',
-                'steering',
-                'interior',
-                'exterior',
-                'specs',
-                'wheels',
-                'seller',
-                'auction',
-                'auction.latestBid'
+                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
+                'auction:id,car_id,end_at',
             ])->orderByDesc('auctions.end_at')->get();
         
         return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
@@ -137,20 +119,9 @@ class CarController extends Controller
                 'exterior_id',
                 'seller_id'
             ])
-            ->orderByDesc('auctions.end_at')
             ->with([
-                'details',
-                'history',
-                'engineTransmission',
-                'steering',
-                'interior',
-                'exterior',
-                'specs',
-                'wheels',
-                'seller',
-                'auction',
-                'auction.latestBid',
-                'auction.latestBid.dealer:id,name'
+                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
+                'auction:id,car_id,end_at',
             ])->orderByDesc('auctions.end_at')->paginate(5);
         
         return response()->json($cars);

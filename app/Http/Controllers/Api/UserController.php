@@ -12,11 +12,11 @@ class UserController extends Controller
     }
 
     public function getOwnBids(){
-        return response()->json(auth()->user()->bids->load('car', 'car.details', 'auction', 'auction.latestBid'));
+        return response()->json(auth()->user()->bids->load('car', 'car.details:id,car_id,make,model,year', 'auction:id,car_id,end_at,winner_bid', 'auction.latestBid:auction_id,bid'));
     }
 
     public function getOwnOffers(){
-        return response()->json(auth()->user()->offers->load('car', 'car.details'));
+        return response()->json(auth()->user()->offers->load('car', 'car.details:id,car_id,make,model,year'));
     }
 
     public function updateNotifications(Request $request){

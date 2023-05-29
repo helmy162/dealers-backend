@@ -34,8 +34,9 @@ class Car extends Model
         'exterior_id',
         'id_images',
         'vin_images',
-        'registeration_card_images',
-        'insurance_images'
+        'registration_card_images',
+        'insurance_images',
+        'seller_id'
     ];
 
     public function bids()

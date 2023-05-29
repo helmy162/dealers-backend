@@ -66,10 +66,8 @@ class DealersController extends Controller
             'exterior',
             'specs',
             'wheels',
-            'seller',
-            'auction',
-            'auction.latestBid',
-            'auction.latestBid.dealer:id,name'
+            'auction:id,car_id,end_at',
+            'auction.latestBid:auction_id,bid',
         ]);
 
         return response()->json([
