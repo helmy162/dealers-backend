@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('year')->nullable();
             $table->unsignedBigInteger('mileage')->nullable();
             $table->string('registered_emirates')->nullable();
-            $table->unsignedBigInteger('engine_size')->nullable();
+            $table->unsignedDecimal('engine_size', $precision = 8, $scale = 1)->nullable();
             $table->unsignedBigInteger('number_of_cylinders')->nullable();
             $table->string('interior_type')->nullable();
             $table->string('body_type')->nullable();

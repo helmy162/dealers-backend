@@ -46,7 +46,7 @@ class CarController extends Controller
             ])
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
-                'auction:id,car_id,end_at',
+                'auction:id,car_id,end_at,start_price',
             ])->orderBy('auctions.end_at')->get();
 
         // expired cars in the last 24h
@@ -68,7 +68,7 @@ class CarController extends Controller
             ->orderBy('auctions.end_at')
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
-                'auction:id,car_id,end_at',
+                'auction:id,car_id,end_at,start_price',
             ])->orderByDesc('auctions.end_at')->get();
         
         return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
@@ -121,7 +121,7 @@ class CarController extends Controller
             ])
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
-                'auction:id,car_id,end_at',
+                'auction:id,car_id,end_at,start_price',
             ])->orderByDesc('auctions.end_at')->paginate(5);
         
         return response()->json($cars);
