@@ -38,6 +38,7 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'email_verified_at',
+        'assigned_by'
     ];
 
     /**
@@ -89,5 +90,9 @@ class User extends Authenticatable
         $url = env('FE_RESET_PASSWORD').'?token='.$token.'&email='.$this->email;
 
         $this->notify(new ResetPasswordNotification($url));
+    }
+
+    public function assignedBy(){
+        return $this->belongsTo(User::class, 'assigned_by');
     }
 }

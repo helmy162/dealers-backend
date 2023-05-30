@@ -55,4 +55,30 @@ class SalesController extends Controller
 
         return response()->json($users);
     }
+
+    public function showDealer($id){
+        $dealer = User::whereType('dealer')->select('id', 'name', 'email', 'phone', 'bid_limit', 'type', 'company', 'assigned_by')->find($id) ?? abort(404, 'Dealer not a Found!');
+
+        return response()->json($dealer->load('assignedBy:id,name'));
+    }
+
+    public function showAllSales(){
+        $users = User::whereType('sales')->latest()->select('id', 'name')->get();
+
+        return response()->json($users);
+    }
+
+    public function updateDealer(Request $request, $id){
+        $request->validate([
+            'assigned_by' => 'required|integer'
+        ]);
+
+        $sales = User::whereType('sales')->find($request->assigned_by) ?? abort(404, 'Sales user not a Found!');
+        $dealer = User::whereType('dealer')->select('id', 'name', 'email', 'phone', 'bid_limit', 'type')->find($id) ?? abort(404, 'Dealer not a Found!');
+
+        $dealer->assigned_by = $request->assigned_by;
+        $dealer->save();
+        
+        return response()->json($dealer->load('assignedBy:id,name'));
+    }
 }

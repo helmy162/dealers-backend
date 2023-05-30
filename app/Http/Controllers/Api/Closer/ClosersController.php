@@ -16,7 +16,7 @@ class ClosersController extends Controller
             'details:id,car_id,make,model,year,seller_price',
             'seller:id,name,email,phone',
             'inspector:id,name',
-            'auction:id,car_id,end_at,start_price',
+            'auction:id,car_id,start_at,end_at,start_price',
             'auction.latestBid:auction_id,bid',
         ]);
 

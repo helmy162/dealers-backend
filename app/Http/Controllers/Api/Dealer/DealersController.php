@@ -66,7 +66,7 @@ class DealersController extends Controller
             'exterior',
             'specs',
             'wheels',
-            'auction:id,car_id,end_at,start_price',
+            'auction:id,car_id,start_at,end_at,start_price',
             'auction.latestBid:auction_id,bid',
         ]);
 

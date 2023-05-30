@@ -113,6 +113,11 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('cars', [SalesController::class, 'showAllCars']);
             Route::get('cars/{car}', [SalesController::class, 'showCar']);
             Route::get('users', [SalesController::class, 'showAllDealers']);
+            Route::get('users/{id}', [SalesController::class, 'showDealer']);
+            Route::get('sales', [SalesController::class, 'showAllSales']);
+
+            // update dealers assigned by
+            Route::put('dealers/{id}', [SalesController::class, 'updateDealer']);
 
             Route::post('auctions', [AuctionController::class, 'store']);
             Route::put('auctions/{id}', [AuctionController::class, 'update']);

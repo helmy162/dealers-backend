@@ -72,7 +72,8 @@ class UsersController extends Controller
             'isVerified' => 'required|boolean',
             'status' => 'required|string',
             'phoneNumber' => 'string',
-            'bidLimit' => 'integer'
+            'bidLimit' => 'integer',
+            'assigned_by' => 'integer',
         ]);
 
         $user                       = new User();
@@ -85,6 +86,7 @@ class UsersController extends Controller
         $user->phone                = $request->phoneNumber;
         $user->company              = $request->company;
         $user->bid_limit            = $request->bidLimit;
+        $user->assigned_by          = $request->assigned_by ?? $user->assigned_by;
         $user->save();
 
 
@@ -103,7 +105,8 @@ class UsersController extends Controller
             'isVerified' => 'required|boolean',
             'status' => 'required|string',
             'phoneNumber' => 'string',
-            'bidLimit' => 'integer'
+            'bidLimit' => 'integer',
+            'assigned_by' => 'integer',
         ]);
 
         $user                       = User::findOrFail($id);
@@ -115,11 +118,12 @@ class UsersController extends Controller
         $user->phone                = $request->phoneNumber;
         $user->company              = $request->company;
         $user->bid_limit            = $request->bidLimit;
+        $user->assigned_by          = $request->assigned_by ?? $user->assigned_by;
         $user->save();
 
         return response()->json([
             'sucess' => true,
-            'user' => $user
+            'user' => $user->makeVisible('assigned_by')
         ], 200);
     }
 
