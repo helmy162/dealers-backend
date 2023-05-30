@@ -136,7 +136,6 @@ class AuctionController extends Controller
         $auction = Auction::findOrFail($id);
         $car = Car::findOrFail($validated['car_id']);
 
-        $auction->car_id            = $validated['car_id'];
         $auction->start_price       = $validated['start_price'];
         $auction->start_at          = Carbon::make($validated['start_at']);
         $auction->end_at            = Carbon::make($validated['end_at']);

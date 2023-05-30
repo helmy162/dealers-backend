@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\{AdminCarsReqeustConctoller,UsersController};
 use App\Http\Controllers\Api\Dealer\DealersController;
+use App\Http\Controllers\Api\Closer\ClosersController;
+use App\Http\Controllers\Api\Sales\SalesController;
 
 use App\Http\Controllers\Api\{
     CarController,
@@ -96,6 +98,25 @@ Route::group(['prefix' => 'v1'], function () {
 
             // make an offer
             Route::post('offer', [OfferController::class, 'store']);
+        });
+
+        //route group for closer
+        Route::group(['prefix' => 'closer', 'middleware' => ['is_closer']], function () {
+            Route::get('cars/{car}', [ClosersController::class, 'showCar']);
+            Route::get('cars', [ClosersController::class, 'showAllCars']);
+
+            Route::get('sellers', [ClosersController::class, 'showAllSellers']);
+        });
+
+        //route group for sales
+        Route::group(['prefix' => 'sales', 'middleware' => ['is_sales']], function () {
+            Route::get('cars', [SalesController::class, 'showAllCars']);
+            Route::get('cars/{car}', [SalesController::class, 'showCar']);
+            Route::get('users', [SalesController::class, 'showAllDealers']);
+
+            Route::post('auctions', [AuctionController::class, 'store']);
+            Route::put('auctions/{id}', [AuctionController::class, 'update']);
+            Route::delete('auctions/{id}', [AuctionController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'pusher'], function(){

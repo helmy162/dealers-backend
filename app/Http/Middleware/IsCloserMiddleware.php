@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsDealerMiddleware
+class IsCloserMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class IsDealerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if( !auth()->check() || !in_array(auth()->user()->type, ['admin', 'dealer', 'sales'])){
+        if( !auth()->check() || !in_array(auth()->user()->type, ['admin','closer'])){
             abort(403, 'Forbidden');
         }
 
