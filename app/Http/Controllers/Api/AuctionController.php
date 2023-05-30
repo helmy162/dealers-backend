@@ -83,7 +83,7 @@ class AuctionController extends Controller
 
         $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
         foreach($dealers as $dealer){
-            Mail::to($dealer->email)->send(new newAuction($car, $dealer));
+            Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
         }
 
         return response()->json([

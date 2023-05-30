@@ -141,13 +141,14 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
         Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
         
+        Route::group(['middleware' => ['is_dealer']], function () {
+            // get cars
+            Route::get('cars', [CarController::class, 'index']);
+            Route::get('cars/all', [CarController::class, 'getAllCars']);
+            Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
+        });
     });
     
-    // get cars
-    Route::get('cars', [CarController::class, 'index']);
-    Route::get('cars/all', [CarController::class, 'getAllCars']);
-    Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
-
     // pipedrive creating sellers webhook
     Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
 });
