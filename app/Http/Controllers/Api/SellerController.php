@@ -78,5 +78,7 @@ class SellerController extends Controller
         $seller->email      = $request->current['email'][0]['value'];
         $seller->phone      = $request->current['phone'][0]['value'];
         $seller->save();
+
+        return response()->json($seller);
     }
 }

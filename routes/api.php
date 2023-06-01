@@ -124,6 +124,13 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('auctions/{id}', [AuctionController::class, 'destroy']);
         });
 
+        Route::group(['middleware' => ['is_dealer']], function () {
+            // get cars
+            Route::get('cars', [CarController::class, 'index']);
+            Route::get('cars/all', [CarController::class, 'getAllCars']);
+            Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
+        });
+
         Route::group(['prefix' => 'pusher'], function(){
             // Route::post('auth-user', [PusherController::class, 'authenticateUser']);
             Route::post('auth-channel', [PusherController::class, 'authorizeChannel']);
@@ -140,13 +147,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/profile', [UserController::class, 'index']);
         Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
         Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
-        
-        Route::group(['middleware' => ['is_dealer']], function () {
-            // get cars
-            Route::get('cars', [CarController::class, 'index']);
-            Route::get('cars/all', [CarController::class, 'getAllCars']);
-            Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
-        });
     });
     
     // pipedrive creating sellers webhook

@@ -134,6 +134,7 @@ class UsersController extends Controller
             'status' => 'success',
             'UserType' => $user->type,
             'data' => $user->load(
+                    'assignedBy',
                     'bids',
                     'bids.car',
                     'bids.car.details',
