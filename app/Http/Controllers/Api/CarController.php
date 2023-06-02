@@ -28,7 +28,7 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){ 
+    public function index(Request $request){ 
 
         $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
@@ -73,7 +73,11 @@ class CarController extends Controller
                 'auction.latestBid:auction_id,bid'
             ])->orderByDesc('auctions.end_at')->get();
         
-        return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
+        if($request->source == "dealer_app"){
+            return response()->json($ActiveCars->merge($expiredCars));
+        }else{
+            return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
+        }
     }
 
     public function getAllCars(){
