@@ -28,7 +28,7 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index(Request $request){
 
         $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
