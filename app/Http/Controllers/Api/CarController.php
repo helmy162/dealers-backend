@@ -110,7 +110,7 @@ class CarController extends Controller
         return response()->json($cars);
     }
 
-    public function carsWithExpiredAuctions(){
+    public function carsWithExpiredAuctions(Request $request){
         $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
             ->where('auctions.end_at','<', Carbon::now())
@@ -128,9 +128,13 @@ class CarController extends Controller
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,end_at,start_price',
-            ])->orderByDesc('auctions.end_at')->paginate(5);
+            ])->orderByDesc('auctions.end_at')->get();
         
-        return response()->json($cars);
+        if($request->source == "dealer_app"){
+            return response()->json($cars);
+        }else{
+            return response()->json($cars->paginate(5));
+        }
     }
 
     public function createCar(Request $request){
