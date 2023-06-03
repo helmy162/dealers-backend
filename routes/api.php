@@ -87,9 +87,6 @@ Route::group(['prefix' => 'v1'], function () {
 
         //route group for dealer
         Route::group(['prefix' => 'dealer', 'middleware' => ['is_dealer']], function () {
-            //add resourceApi route
-            Route::apiResource('cars', DealersController::class);
-
             //search data cars by name and model and year and price
             // Route::get('/cars/search', [DealersController::class, 'search']);
 
@@ -127,7 +124,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['middleware' => ['is_dealer']], function () {
             // get cars
             Route::get('cars', [CarController::class, 'index']);
-            Route::get('cars/all', [CarController::class, 'getAllCars']);
             Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
         });
 
@@ -148,6 +144,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
         Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
     });
+
+    Route::get('cars/{id}', [CarController::class, 'showCar']);
     
     // pipedrive creating sellers webhook
     Route::post('pipedrive/seller', [SellerController::class, 'webhook']);

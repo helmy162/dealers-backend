@@ -28,7 +28,7 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request){ 
+    public function index(){
 
         $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
@@ -45,7 +45,7 @@ class CarController extends Controller
                 'seller_id'
             ])
             ->with([
-                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
+                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,start_at,end_at,start_price',
                 'auction.latestBid:auction_id,bid'
             ])->orderBy('auctions.end_at')->get();
@@ -68,7 +68,7 @@ class CarController extends Controller
             ])
             ->orderBy('auctions.end_at')
             ->with([
-                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
+                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,end_at,start_price',
                 'auction.latestBid:auction_id,bid'
             ])->orderByDesc('auctions.end_at')->get();
@@ -126,7 +126,7 @@ class CarController extends Controller
                 'seller_id'
             ])
             ->with([
-                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification',
+                'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,end_at,start_price',
             ])->orderByDesc('auctions.end_at')->paginate(5);
         
@@ -460,6 +460,28 @@ class CarController extends Controller
         return response()->json([
             'success' => true,
             "message" => 'Car deleted Successfully!'
+        ]);
+    }
+
+    public function showCar($id)
+    {
+        //find car by id when status approved
+        $car = Car::where('status','approved')->findOrFail($id)
+        ->load([
+            'details',
+            'history',
+            'engineTransmission',
+            'steering',
+            'interior',
+            'exterior',
+            'specs',
+            'wheels',
+            'auction:id,car_id,start_at,end_at,start_price',
+            'auction.latestBid:auction_id,bid',
+        ]);
+
+        return response()->json([
+            'car' => $car
         ]);
     }
 
