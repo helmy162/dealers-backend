@@ -72,6 +72,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('auctions', AuctionController::class);
 
             // cars routes
+            Route::get('cars', [AdminCarsReqeustConctoller::class, 'showAllCars']);
             Route::get('car/{car}', [CarController::class, 'allCarDetails']);
             Route::post('car/{car}', [CarController::class, 'editCar']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);

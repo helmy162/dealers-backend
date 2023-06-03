@@ -103,4 +103,25 @@ class AdminCarsReqeustConctoller extends Controller
             'message' => 'Car pending successfully',
         ]);
     }
+
+    public function showAllCars(){
+        $cars = Car::whereNotNull([
+            'details_id',
+            'history_id',
+            'engine_id',
+            'steering_id',
+            'interior_id',
+            'specs_id',
+            'wheels_id',
+            'exterior_id',
+            'seller_id'
+            ])->with([
+                'details:id,car_id,make,model,year',
+                'seller:id,name',
+                'auction:car_id,start_at,end_at',
+                'inspector:id,name'
+            ])->get();
+
+        return response()->json($cars);
+    }
 }
