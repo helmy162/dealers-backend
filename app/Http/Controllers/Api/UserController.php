@@ -12,7 +12,7 @@ class UserController extends Controller
     }
 
     public function getOwnBids(){
-        return response()->json(auth()->user()->bids->load('car', 'car.details:id,car_id,make,model,year', 'auction:id,car_id,end_at,winner_bid', 'auction.latestBid:auction_id,bid'));
+        return response()->json(auth()->user()->bids->load('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates', 'auction:id,car_id,end_at,winner_bid', 'auction.latestBid:auction_id,bid'));
     }
 
     public function getOwnOffers(){
