@@ -12,7 +12,14 @@ class UserController extends Controller
     }
 
     public function getOwnBids(){
-        return response()->json(auth()->user()->bids->load('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates', 'auction:id,car_id,end_at,winner_bid', 'auction.latestBid:auction_id,bid'));
+        $bids = auth()->user()->bids
+            ->load('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates', 'auction:id,car_id,end_at,winner_bid')
+            ->groupBy('car_id') 
+            ->map(function ($carBid) {
+                return $carBid->last(); // return only last bid for each car
+            });
+
+        return response()->json($bids);
     }
 
     public function getOwnOffers(){
