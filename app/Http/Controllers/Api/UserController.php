@@ -16,15 +16,22 @@ class UserController extends Controller
             ->with('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates', 'auction:id,car_id,end_at,winner_bid', 'auction.latestBid:auction_id,bid')
             ->get()
             ->groupBy('car_id')
-            ->map(function ($group) {
-                return $group->last(); // return only last bid for each car
+            ->map(function ($carBids) {
+                return $carBids->last(); // return only last bid for each car
             });
 
         return response()->json($bids->values());
     }
 
     public function getOwnOffers(){
-        return response()->json(auth()->user()->offers->load('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates'));
+        $offers = auth()->user()->offers()
+            ->with('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates')
+            ->get()
+            ->groupBy('car_id')
+            ->map(function ($carOffers) {
+                return $carOffers->last(); // return only last offer for each car
+            });
+        return response()->json($offers->values());
     }
 
     public function updateNotifications(Request $request){
