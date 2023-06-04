@@ -37,4 +37,26 @@ class UserController extends Controller
             'user' => $user
         ]);
     }
+
+    public function updateProfile(Request $request){
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email,'.auth()->user()->id,
+            'phoneNumber' => 'string',
+            'company' => 'string'
+        ]);
+
+        
+        $user                       = auth()->user();
+        $user->name                 = $request->name;
+        $user->email                = $request->email;
+        $user->phone                = $request->phoneNumber;
+        $user->company              = $request->company;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user
+        ]);
+    }
 }

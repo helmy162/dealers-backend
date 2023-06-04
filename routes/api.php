@@ -142,6 +142,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         // user data
         Route::get('/profile', [UserController::class, 'index']);
+        Route::put('/profile', [UserController::class, 'updateProfile']);
         Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
         Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
     });

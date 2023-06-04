@@ -466,7 +466,7 @@ class CarController extends Controller
     public function showCar($id)
     {
         //find car by id when status approved
-        $car = Car::where('status','approved')->findOrFail($id)
+        $car = Car::findOrFail($id)
         ->load([
             'details',
             'history',
