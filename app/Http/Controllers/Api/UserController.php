@@ -24,7 +24,7 @@ class UserController extends Controller
     }
 
     public function getOwnOffers(){
-        return response()->json(auth()->user()->offers->load('car', 'car.details:id,car_id,make,model,year'));
+        return response()->json(auth()->user()->offers->load('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates'));
     }
 
     public function updateNotifications(Request $request){
