@@ -82,6 +82,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'inspector', 'middleware' => ['is_inspector']], function () {
             
             Route::post('car', [CarController::class, 'createCar']);
+            Route::get('sellers', [SellerController::class, 'index']);
             
         });
 
@@ -101,8 +102,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'closer', 'middleware' => ['is_closer']], function () {
             Route::get('cars/{car}', [ClosersController::class, 'showCar']);
             Route::get('cars', [ClosersController::class, 'showAllCars']);
-
-            Route::get('sellers', [ClosersController::class, 'showAllSellers']);
+        
+            Route::apiResource('sellers', SellerController::class);
         });
 
         //route group for sales

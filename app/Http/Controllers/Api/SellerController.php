@@ -10,7 +10,7 @@ use App\Models\Seller;
 class SellerController extends Controller
 {   
     public function index(){
-        return response()->json(Seller::all());
+        return response()->json(Seller::latest()->get());
     }
 
     public function show($id){

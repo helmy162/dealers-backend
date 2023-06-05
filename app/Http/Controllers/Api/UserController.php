@@ -15,9 +15,9 @@ class UserController extends Controller
         $bids = auth()->user()->bids()
             ->with(
                 'car',
-                'car.details:id, car_id, make, model, year, mileage, engine_size, registered_emirates',
-                'auction:id, car_id, start_at, end_at, winner_bid',
-                'auction.latestBid:auction_id, bid'
+                'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates',
+                'auction:id,car_id,start_at,end_at,winner_bid',
+                'auction.latestBid:auction_id,bid'
             )->get()
             ->groupBy('car_id')
             ->map(function ($carBids) {

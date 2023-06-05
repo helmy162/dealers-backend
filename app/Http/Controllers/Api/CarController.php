@@ -80,36 +80,6 @@ class CarController extends Controller
         }
     }
 
-    public function getAllCars(){
-
-        $cars = Car::whereNotNull([
-            'details_id',
-            'history_id',
-            'engine_id',
-            'steering_id',
-            'interior_id',
-            'specs_id',
-            'wheels_id',
-            'exterior_id',
-            'seller_id'
-            ])->with([
-                'details',
-                'history',
-                'engineTransmission',
-                'steering',
-                'interior',
-                'exterior',
-                'specs',
-                'wheels',
-                'seller',
-                'auction',
-                'auction.latestBid',
-                'auction.latestBid.dealer:id,name'
-            ])->get();
-
-        return response()->json($cars);
-    }
-
     public function carsWithExpiredAuctions(Request $request){
         $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')

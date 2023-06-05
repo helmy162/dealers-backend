@@ -45,10 +45,4 @@ class ClosersController extends Controller
 
         return response()->json($cars);
     }
-
-    public function showAllSellers(){
-        $sellers = Seller::latest()->get();
-
-        return response()->json($sellers);
-    }
 }
