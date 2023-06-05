@@ -13,8 +13,12 @@ class UserController extends Controller
 
     public function getOwnBids(){
         $bids = auth()->user()->bids()
-            ->with('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates', 'auction:id,car_id,end_at,winner_bid', 'auction.latestBid:auction_id,bid')
-            ->get()
+            ->with(
+                'car',
+                'car.details:id, car_id, make, model, year, mileage, engine_size, registered_emirates',
+                'auction:id, car_id, start_at, end_at, winner_bid',
+                'auction.latestBid:auction_id, bid'
+            )->get()
             ->groupBy('car_id')
             ->map(function ($carBids) {
                 return $carBids->last(); // return only last bid for each car

@@ -7,54 +7,9 @@ use Illuminate\Http\Request;
 use \App\Models\User;
 
 class UsersController extends Controller
-{    
-   //constucture where type user 
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:api');
-    //     $this->middleware('scope:admin');
-    // }
+{  
 
-    public function index(Request $request)
-    {   
-
-        //get all users with relation to cars
-        //get all users with car data and car images
-        $users = User::with('cars')->get()->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'cars' => $user->cars->map(function ($car) {
-                    return [
-                        'id' => $car->id,
-                        'name' => $car->name,
-                        'status' => $car->status,
-                        'carData' => $car->carData,
-                      //use getCarImagesAttribute from CarImage model
-                        'carImages' => $car->carImages,
-
-                    ];
-                }),
-                'bids' => $user->bids->map(function ($bid) {
-                    return [
-                        'id' => $bid->id,
-                        'car_id' => $bid->car_id,
-                        'user_id' => $bid->user_id,
-                        'bid' => $bid->bid,
-                    ];
-                }),
-
-            ];
-        });
-        return response()->json([
-            'status' => 'success',
-            'UserTable' => 'Admin',
-            'data' => $users
-        ]);
-    }
-
-    public function allUsers(){
+    public function index(){
         $users = User::all();
 
         return response()->json($users);

@@ -61,7 +61,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
-            Route::get('all-users', [UsersController::class, 'allUsers']);
 
             //seller routes
             Route::apiResource('sellers', SellerController::class);
@@ -73,8 +72,8 @@ Route::group(['prefix' => 'v1'], function () {
 
             // cars routes
             Route::get('cars', [AdminCarsReqeustConctoller::class, 'showAllCars']);
-            Route::get('car/{car}', [CarController::class, 'allCarDetails']);
-            Route::post('car/{car}', [CarController::class, 'editCar']);
+            Route::get('cars/{car}', [CarController::class, 'allCarDetails']);
+            Route::post('cars/{car}', [CarController::class, 'editCar']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);
 
         });

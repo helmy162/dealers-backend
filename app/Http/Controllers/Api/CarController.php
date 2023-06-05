@@ -510,7 +510,9 @@ class CarController extends Controller
             'inspector'
         ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
 
-        return response()->json($car);
+        return response()->json([
+            'car' => $car
+        ]);
     }
 
 }

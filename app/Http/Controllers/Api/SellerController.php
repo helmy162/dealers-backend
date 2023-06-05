@@ -10,12 +10,12 @@ use App\Models\Seller;
 class SellerController extends Controller
 {   
     public function index(){
-        return response()->json(['data' => Seller::all()]);
+        return response()->json(Seller::all());
     }
 
     public function show($id){
         $seller = Seller::findOrFail($id);
-        return response()->json(['data' => $seller]);
+        return response()->json(['seller' => $seller]);
     }
 
     public function store(Request $request){
