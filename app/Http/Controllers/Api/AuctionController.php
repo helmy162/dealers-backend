@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 
 use Carbon\Carbon;
@@ -85,6 +86,10 @@ class AuctionController extends Controller
         foreach($dealers as $dealer){
             Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
         }
+
+        // send a push notification to subscriped dealers
+        $isPushNotificationSent = NotificationController::sendNewAuctionNotification($car); // returns bool
+
 
         return response()->json([
             "success" => true,
