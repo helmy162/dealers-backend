@@ -454,8 +454,19 @@ class CarController extends Controller
             'auction.latestBid:auction_id,bid',
         ]);
 
+        // return my last bid & offer for each car (in case of authenticated route)
+        $myBid = null;
+        $myOffer = null;
+
+        if(auth()->check()){
+            $myBid = auth()->user()->bids->where('car_id', $id)->last();
+            $myOffer = auth()->user()->offers->where('car_id', $id)->last();
+        }
+
         return response()->json([
-            'car' => $car
+            'car' => $car,
+            'my_bid' => $myBid,
+            'my_offer' => $myOffer,
         ]);
     }
 

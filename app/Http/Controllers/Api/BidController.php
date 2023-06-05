@@ -87,7 +87,7 @@ class BidController extends Controller
 
         broadcast(new NewBid([
             'last_bid' => $bid_amount,
-            // 'last_bid_dealer' => auth()->user()->name,
+            'last_bid_dealer' => auth()->user()->id,
             'next_min_bid' => $bid_amount + 500,
             'end_at' => $auction->end_at
         ], $auction->id))->toOthers();
