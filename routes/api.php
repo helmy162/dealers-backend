@@ -95,6 +95,9 @@ Route::group(['prefix' => 'v1'], function () {
 
             // make an offer
             Route::post('offer', [OfferController::class, 'store']);
+
+            // get a car
+            Route::get('cars/{car}', [CarController::class, 'showCar']);
         });
 
         //route group for closer
