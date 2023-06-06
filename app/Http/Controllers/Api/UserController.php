@@ -29,7 +29,11 @@ class UserController extends Controller
 
     public function getOwnOffers(){
         $offers = auth()->user()->offers()
-            ->with('car', 'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates')
+            ->with(
+                'car',
+                'car.details:id,car_id,make,model,year,mileage,engine_size,registered_emirates',
+                'car.auction.latestBid'
+            )
             ->get()
             ->groupBy('car_id')
             ->map(function ($carOffers) {
