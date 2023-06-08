@@ -17,9 +17,14 @@ use App\Models\Specs;
 use App\Models\Steering;
 use App\Models\Wheels;
 
+use App\Mail\newAuction;
+use App\Http\Controllers\NotificationController;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Mail;
 
 class CarController extends Controller
 {
@@ -311,7 +316,36 @@ class CarController extends Controller
         $car->steering_id = $steering->id;
         $car->wheels_id = $wheels->id;
         $car->exterior_id = $exterior->id;
+        $car->status = 'approved';
         $car->save();
+
+        $auction                    = new Auction();
+        $auction->car_id            = $car->id;
+        $auction->start_price       = 0;
+        $auction->start_at          = Carbon::now();
+        $auction->end_at            = Carbon::now()->addMinutes(20);
+        $auction->save();
+
+        $data = [
+            'make' => $car->details->make,
+            'model' => $car->details->model,
+            'year' => $car->details->year,
+            'mileage' => $car->details->mileage,
+            'start_price' => $auction->start_price,
+            'start_at' => $auction->start_at,
+            'end_at' => $auction->end_at,
+            'image' => asset('/storage/car_images/'.$car->images[0])
+        ];
+        // Sending data to WhatsApp webhook
+        $response = Http::post('https://hook.us1.make.com/gwrof533jp0974w43brsjpo6kj3qvekl', $data);
+
+        $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
+        foreach($dealers as $dealer){
+            Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
+        }
+
+        // send a push notification to subscriped dealers
+        $isPushNotificationSent = NotificationController::sendNewAuctionNotification($car); // returns bool
 
         return response()->json([
             'success' => true,
