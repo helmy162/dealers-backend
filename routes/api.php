@@ -148,6 +148,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('/profile', [UserController::class, 'updateProfile']);
         Route::get('/profile/bids', [UserController::class, 'getOwnBids']);
         Route::get('/profile/offers', [UserController::class, 'getOwnOffers']);
+        Route::post('/profile/deactivate', [UserController::class, 'deactivateAccount']);
     });
 
     Route::get('cars/{id}', [CarController::class, 'showCar']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -80,6 +81,18 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'user' => $user
+        ]);
+    }
+
+    public function deactivateAccount(){
+        auth()->user()->status = 'inactive';
+        auth()->user()->save();
+
+        auth()->user()->tokens()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User deactivated successfully!'
         ]);
     }
 }
