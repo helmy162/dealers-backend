@@ -16,6 +16,7 @@ use App\Models\Interior;
 use App\Models\Specs;
 use App\Models\Steering;
 use App\Models\Wheels;
+use App\Models\Auction;
 
 use App\Mail\newAuction;
 use App\Http\Controllers\NotificationController;
@@ -349,14 +350,18 @@ class CarController extends Controller
 
         return response()->json([
             'success' => true,
-            'car' => $car->load('details',
-            'history',
-            'engineTransmission',
-            'steering',
-            'interior',
-            'exterior',
-            'specs',
-            'wheels')
+            'car' => $car->load(
+                'details',
+                'history',
+                'engineTransmission',
+                'steering',
+                'interior',
+                'exterior',
+                'specs',
+                'wheels',
+                'auction',
+                'auction.latestBid'
+            )
         ], 201);
     }
 
