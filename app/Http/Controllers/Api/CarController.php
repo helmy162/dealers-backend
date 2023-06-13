@@ -15,6 +15,7 @@ use App\Models\Exterior;
 use App\Models\Interior;
 use App\Models\Specs;
 use App\Models\Steering;
+use App\Models\User;
 use App\Models\Wheels;
 use App\Models\Auction;
 
@@ -112,7 +113,6 @@ class CarController extends Controller
     }
 
     public function createCar(Request $request){
-
         $validated = $request->validate([
             'seller_id' => 'required|integer',
         ]);
