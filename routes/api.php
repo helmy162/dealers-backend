@@ -11,9 +11,9 @@ use App\Http\Controllers\Api\Dealer\DealersController;
 use App\Http\Controllers\Api\Closer\ClosersController;
 use App\Http\Controllers\Api\Sales\SalesController;
 
-use App\Http\Controllers\Api\{
-    CarController,
+use App\Http\Controllers\Api\{CarController,
     EngineController,
+    Inspector\InspectorsController,
     InteriorController,
     SteeringController,
     SpecsController,
@@ -25,8 +25,7 @@ use App\Http\Controllers\Api\{
     BidController,
     OfferController,
     PusherController,
-    UserController
-};
+    UserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +56,7 @@ Route::group(['prefix' => 'v1'], function () {
     // Authenticated User Routes
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
-        //route group for admin 
+        //route group for admin
         Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function () {
             //route get all users
             Route::apiResource('/users', UsersController::class);
@@ -75,15 +74,15 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('cars/{car}', [CarController::class, 'allCarDetails']);
             Route::post('cars/{car}', [CarController::class, 'editCar']);
             Route::delete('cars/{car}',  [CarController::class, 'destroy']);
-
         });
-        
+
         //route group for inspector
         Route::group(['prefix' => 'inspector', 'middleware' => ['is_inspector']], function () {
-            
             Route::post('car', [CarController::class, 'createCar']);
-            Route::get('sellers', [SellerController::class, 'index']);
-            
+
+            Route::get('cars/{car}', [InspectorsController::class, 'showCar']);
+
+            Route::get('sellers', [InspectorsController::class, 'index']);
         });
 
         //route group for dealer
@@ -105,7 +104,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'closer', 'middleware' => ['is_closer']], function () {
             Route::get('cars/{car}', [ClosersController::class, 'showCar']);
             Route::get('cars', [ClosersController::class, 'showAllCars']);
-        
+
             Route::apiResource('sellers', SellerController::class);
         });
 
@@ -135,7 +134,7 @@ Route::group(['prefix' => 'v1'], function () {
             // Route::post('auth-user', [PusherController::class, 'authenticateUser']);
             Route::post('auth-channel', [PusherController::class, 'authorizeChannel']);
         });
-    
+
         //add logout route
         Route::post('/logout', [AuthController::class , 'logout']);
         //new password
@@ -152,7 +151,7 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::get('cars/{id}', [CarController::class, 'showCar']);
-    
+
     // pipedrive creating sellers webhook
     Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
 });
