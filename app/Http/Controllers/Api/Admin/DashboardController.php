@@ -13,7 +13,19 @@ class DashboardController extends Controller
 {
 
     public function index()
-    {
+    {   
+        $totalInspectedCars = Car::whereNotNull([
+                'details_id',
+                'history_id',
+                'engine_id',
+                'steering_id',
+                'interior_id',
+                'specs_id',
+                'wheels_id',
+                'exterior_id',
+                'seller_id'
+            ])->count();
+
         // get inspection stats for everyday of last 7 days
         $startOfWeek = Carbon::now()->subDays(7)->startOfDay();
         $endOfWeek = Carbon::now()->endOfDay();
@@ -66,6 +78,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'inspection_stats' => [
+                'total_inspected_cars' => $totalInspectedCars,
                 'this_week' => array_values(array_slice($carCountsPerDay, 1)), // arranged from first day of the week until today
                 'last_week_last_day' => array_values(array_slice($carCountsPerDay, 0, 1))[0],
                 ],
