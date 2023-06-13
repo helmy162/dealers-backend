@@ -59,6 +59,7 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($user) {
                 $user->name = $user->dealer->name;
+                $user->email = $user->dealer->email;
                 unset($user->dealer);
                 return $user;
             });
