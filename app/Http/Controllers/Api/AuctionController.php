@@ -207,6 +207,9 @@ class AuctionController extends Controller
             Mail::to($user->email)->send(new wonAuction($car, $user));
         }
 
+        // send a mobile push notification to the winner user, handle the result later
+        $isPushNotificationSent = NotificationController::sendWonAuctionNotification($car, $user->id); // returns bool
+
         return response()->json([
             'success' => true,
             'auction' => $auction
