@@ -77,13 +77,13 @@ class NotificationController extends Controller
         }  
     }
 
-    static function sendOutbiddenNotification(Car $car, $outbiddn_user_ids=array())
+    static function sendOutbiddenNotification(Car $car, $outbiddn_user_id="")
     {
         $title = "🛑 YOU HAVE BEEN OUTBIDDEN! 🛑";
         $body = "The auction on ({$car->details->make} {$car->details->model} {$car->details->year}) has new bids higher than yours. Come back and start bidding!";
         $fields = array(
             'app_id' => "545398d4-a4bd-4202-b82a-152eed4c9e33",
-            'include_external_user_ids' => array_map('strval', $outbiddn_user_ids), // onesignal's external user id is same as our system's user id
+            'include_external_user_ids' => array("{$outbiddn_user_id}"), // onesignal's external user id is same as our system's user id
             'headings' => array('en' => $title),
             'contents' =>  array('en' => $body)
         );

@@ -93,14 +93,15 @@ class BidController extends Controller
             'end_at' => $auction->end_at
         ], $auction->id))->toOthers();
 
-        $outbiddenUserIds =  Bid::where('car_id', $bid->car_id)
+        $outbiddenUserId =  Bid::where('car_id', $bid->car_id)
                                 ->where('auction_id', $bid->auction_id)
-                                ->where('user_id', '!=', $bid->user_id)
-                                ->pluck('user_id')
-                                ->toArray();
+                                ->orderBy('bid', 'desc')
+                                ->first()['user_id'];
 
-        // send a mobile push notification to the outbidden users, handle the result later
-        $isPushNotificationSent = NotificationController::sendOutbiddenNotification($car, $outbiddenUserIds); // returns bool
+        if($outbiddenUserId != auth()->user()->id){
+            // I'm not the last top bidder, then send a mobile push notification to the outbidden user
+            $isPushNotificationSent = NotificationController::sendOutbiddenNotification($car, $outbiddenUserId); // returns bool, handle result later
+        }
 
 
         //add notification for admin
