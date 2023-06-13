@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\Admin\{AdminCarsReqeustConctoller,UsersController};
+use App\Http\Controllers\Api\Admin\{AdminCarsReqeustConctoller,UsersController,DashboardController};
 use App\Http\Controllers\Api\Dealer\DealersController;
 use App\Http\Controllers\Api\Closer\ClosersController;
 use App\Http\Controllers\Api\Sales\SalesController;
@@ -58,6 +58,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         //route group for admin
         Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function () {
+            //route get dashboard stats
+            Route::apiResource('/stats', DashboardController::class);
+
             //route get all users
             Route::apiResource('/users', UsersController::class);
 
