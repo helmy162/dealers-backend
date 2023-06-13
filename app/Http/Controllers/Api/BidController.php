@@ -82,10 +82,14 @@ class BidController extends Controller
         $bid->auction_id            = $auction->id;
         $bid->bid                   = $bid_amount;
 
-        $outbiddenUserId =  Bid::where('car_id', $bid->car_id)
-                                ->where('auction_id', $bid->auction_id)
-                                ->orderBy('bid', 'desc')
-                                ->first()['user_id'];
+        $outbiddenUserId =  ""; 
+        // check if there are previous bids on this car
+        if(Bid::where('car_id', $bid->car_id)->where('auction_id', $bid->auction_id)->count() > 0){
+            $outbiddenUserId = Bid::where('car_id', $bid->car_id)
+                                    ->where('auction_id', $bid->auction_id)
+                                    ->orderBy('bid', 'desc')
+                                    ->first()['user_id'];
+        }
 
         // save details after getting the last top bidder
         $bid->save();
@@ -100,7 +104,7 @@ class BidController extends Controller
             'end_at' => $auction->end_at
         ], $auction->id))->toOthers();
 
-        if($outbiddenUserId != auth()->user()->id){
+        if($outbiddenUserId != "" && $outbiddenUserId != null && $outbiddenUserId != auth()->user()->id){
             // I'm not the last top bidder, then send a mobile push notification to the outbidden user
             $isPushNotificationSent = NotificationController::sendOutbiddenNotification($car, $outbiddenUserId); // returns bool, handle result later
         }
