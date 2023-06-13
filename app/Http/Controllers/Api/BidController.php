@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreBidRequest;
@@ -91,6 +92,15 @@ class BidController extends Controller
             'next_min_bid' => $bid_amount + 500,
             'end_at' => $auction->end_at
         ], $auction->id))->toOthers();
+
+        $outbiddenUserIds =  Bid::where('car_id', $bid->car_id)
+                                ->where('auction_id', $bid->auction_id)
+                                ->where('user_id', '!=', $bid->user_id)
+                                ->pluck('user_id')
+                                ->toArray();
+
+        // send a mobile push notification to the outbidden users, handle the result later
+        $isPushNotificationSent = NotificationController::sendOutbiddenNotification($car, $outbiddenUserIds); // returns bool
 
 
         //add notification for admin
