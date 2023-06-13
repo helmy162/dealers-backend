@@ -7,16 +7,19 @@ use Illuminate\Http\Request;
 use \App\Models\User;
 
 class UsersController extends Controller
-{  
+{
 
-    public function index(){
+    public function index()
+    {
         $users = User::all();
 
         return response()->json($users);
     }
 
 
-    //add new user inspecter or dealer
+    /**
+     * Add new inspector or dealer
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -103,6 +106,9 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Deactivate user. This doesn't actually (hard/soft) delete the user's account
+     */
     public function destroy(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -114,6 +120,4 @@ class UsersController extends Controller
             'user' => $user
         ]);
     }
-
-
 }

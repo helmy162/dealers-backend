@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return response()->json(auth()->user());
     }
 
-    public function getOwnBids(){
+    public function getOwnBids()
+    {
         $bids = auth()->user()->bids()
             ->with(
                 'car',
@@ -28,7 +30,8 @@ class UserController extends Controller
         return response()->json($bids->values());
     }
 
-    public function getOwnOffers(){
+    public function getOwnOffers()
+    {
         $offers = auth()->user()->offers()
             ->with(
                 'car',
@@ -43,7 +46,8 @@ class UserController extends Controller
         return response()->json($offers->values());
     }
 
-    public function updateNotifications(Request $request){
+    public function updateNotifications(Request $request)
+    {
         $validated = $request->validate([
             'notify_new_auction' => 'required|boolean',
             'notify_won_auction' => 'required|boolean'
@@ -62,7 +66,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users,email,'.auth()->user()->id,
@@ -70,7 +75,7 @@ class UserController extends Controller
             'company' => 'string'
         ]);
 
-        
+
         $user                       = auth()->user();
         $user->name                 = $request->name;
         $user->email                = $request->email;
@@ -84,7 +89,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function deactivateAccount(){
+    public function deactivateAccount()
+    {
         auth()->user()->status = 'inactive';
         auth()->user()->save();
 

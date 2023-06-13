@@ -31,8 +31,6 @@ class CarController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
 
@@ -78,7 +76,7 @@ class CarController extends Controller
                 'auction:id,car_id,end_at,start_price',
                 'auction.latestBid:auction_id,bid'
             ])->orderByDesc('auctions.end_at')->get();
-        
+
         if($request->source == "dealer_app"){
             return response()->json($ActiveCars->merge($expiredCars));
         }else{
@@ -105,7 +103,7 @@ class CarController extends Controller
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,end_at,start_price',
             ])->orderByDesc('auctions.end_at')->get();
-        
+
         if($request->source == "dealer_app"){
             return response()->json($cars);
         }else{
@@ -167,7 +165,7 @@ class CarController extends Controller
         $wheels->fill($requestData);
         $wheels->car_id = $car->id;
         $wheels->save();
-        
+
         $exterior = new Exterior();
         $exterior->fill($requestData);
         $exterior->markers = json_decode($request->defects);
@@ -308,7 +306,7 @@ class CarController extends Controller
 
             $car->insurance_images = $imagesNameArr;
         }
-        
+
         $car->details_id = $details->id;
         $car->history_id = $history->id;
         $car->engine_id = $engine->id;
@@ -534,5 +532,4 @@ class CarController extends Controller
             'car' => $car
         ]);
     }
-
 }

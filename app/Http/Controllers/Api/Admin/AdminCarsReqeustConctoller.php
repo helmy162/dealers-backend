@@ -11,8 +11,6 @@ class AdminCarsReqeustConctoller extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -32,7 +30,7 @@ class AdminCarsReqeustConctoller extends Controller
             'cars' => $cars,
         ]);
     }
-   
+
     //search for data in cars table
     public function search(Request $request)
     {

@@ -8,17 +8,20 @@ use Illuminate\Http\Request;
 use App\Models\Seller;
 
 class SellerController extends Controller
-{   
-    public function index(){
+{
+    public function index()
+    {
         return response()->json(Seller::latest()->get());
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $seller = Seller::findOrFail($id);
         return response()->json(['seller' => $seller]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:sellers',
@@ -35,7 +38,8 @@ class SellerController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:sellers,email,'.$id,
@@ -53,7 +57,8 @@ class SellerController extends Controller
 
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $seller = Seller::findOrFail($id);
         $seller->delete();
 
@@ -63,7 +68,8 @@ class SellerController extends Controller
         ]);
     }
 
-    public function webhook(Request $request){
+    public function webhook(Request $request)
+    {
         $request->validate([
             'current' => 'required|array',
             '*.name' => 'required|string',

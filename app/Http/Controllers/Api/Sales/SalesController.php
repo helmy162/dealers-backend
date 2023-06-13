@@ -10,26 +10,29 @@ use App\Models\User;
 
 class SalesController extends Controller
 {
-    public function showCar(Request $request, $id){
+    public function showCar(Request $request, $id)
+    {
         $car = Car::findOrFail($id)
-        ->load([
-            'details:id,car_id,make,model,year,seller_price',
-            'seller:id,name',
-            'inspector:id,name',
-            'auction',
-            'auction.bids',
-            'auction.latestBid',
-            'auction.bids.dealer:id,name',
-            'offers',
-            'offers.dealer:id,name'
-        ]);
+            ->makeVisible(['id_images', 'vin_images', 'insurance_images', 'registration_card_images'])
+            ->load([
+                'details:id,car_id,make,model,year,seller_price',
+                'seller:id,name',
+                'inspector:id,name',
+                'auction',
+                'auction.bids',
+                'auction.latestBid',
+                'auction.bids.dealer:id,name',
+                'offers',
+                'offers.dealer:id,name'
+            ]);
 
         return response()->json([
             'car' => $car
         ]);
     }
 
-    public function showAllCars(){
+    public function showAllCars()
+    {
         $cars = Car::whereNotNull([
             'details_id',
             'history_id',
@@ -40,35 +43,39 @@ class SalesController extends Controller
             'wheels_id',
             'exterior_id',
             'seller_id'
-            ])->with([
-                'details:id,car_id,make,model,year',
-                'seller:id,name',
-                'auction:car_id,start_at,end_at',
-                'inspector:id,name'
-            ])->get();
+        ])->with([
+            'details:id,car_id,make,model,year',
+            'seller:id,name',
+            'auction:car_id,start_at,end_at',
+            'inspector:id,name'
+        ])->get();
 
         return response()->json($cars);
     }
 
-    public function showAllDealers(){
+    public function showAllDealers()
+    {
         $users = User::whereType('dealer')->latest()->select('id', 'name', 'email', 'phone', 'bid_limit', 'type')->get();
 
         return response()->json($users);
     }
 
-    public function showDealer($id){
+    public function showDealer($id)
+    {
         $dealer = User::whereType('dealer')->select('id', 'name', 'email', 'phone', 'bid_limit', 'type', 'company', 'assigned_by')->find($id) ?? abort(404, 'Dealer not a Found!');
 
         return response()->json($dealer->load('assignedBy:id,name'));
     }
 
-    public function showAllSales(){
+    public function showAllSales()
+    {
         $users = User::whereType('sales')->latest()->select('id', 'name')->get();
 
         return response()->json($users);
     }
 
-    public function updateDealer(Request $request, $id){
+    public function updateDealer(Request $request, $id)
+    {
         $request->validate([
             'assigned_by' => 'required|integer'
         ]);
@@ -78,7 +85,7 @@ class SalesController extends Controller
 
         $dealer->assigned_by = $request->assigned_by;
         $dealer->save();
-        
+
         return response()->json($dealer->load('assignedBy:id,name'));
     }
 }
