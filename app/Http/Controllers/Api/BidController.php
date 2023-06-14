@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreBidRequest;
@@ -80,6 +81,17 @@ class BidController extends Controller
         $bid->car_id                = $car->id;
         $bid->auction_id            = $auction->id;
         $bid->bid                   = $bid_amount;
+
+        $outbiddenUserId =  ""; 
+        // check if there are previous bids on this car
+        if(Bid::where('car_id', $bid->car_id)->where('auction_id', $bid->auction_id)->count() > 0){
+            $outbiddenUserId = Bid::where('car_id', $bid->car_id)
+                                    ->where('auction_id', $bid->auction_id)
+                                    ->orderBy('bid', 'desc')
+                                    ->first()['user_id'];
+        }
+
+        // save details after getting the last top bidder
         $bid->save();
 
         $car->status = 'approved';
@@ -91,6 +103,11 @@ class BidController extends Controller
             'next_min_bid' => $bid_amount + 500,
             'end_at' => $auction->end_at
         ], $auction->id))->toOthers();
+
+        if($outbiddenUserId != "" && $outbiddenUserId != null && $outbiddenUserId != auth()->user()->id){
+            // I'm not the last top bidder, then send a mobile push notification to the outbidden user
+            $isPushNotificationSent = NotificationController::sendOutbiddenNotification($car, $outbiddenUserId); // returns bool, handle result later
+        }
 
 
         //add notification for admin
