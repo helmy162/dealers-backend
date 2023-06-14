@@ -5,7 +5,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | For interacitng with the Pipedrive API. See https://developers.pipedrive.com/docs/api/v1
+    | For interacting with the Pipedrive API. See https://developers.pipedrive.com/docs/api/v1
     |--------------------------------------------------------------------------
     */
 
@@ -29,6 +29,5 @@ return [
     'activity' => [
       'inspection_appointment' => 'inspection_appintment',
     ],
-
 
 ];

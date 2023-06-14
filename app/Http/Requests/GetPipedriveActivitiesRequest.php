@@ -27,6 +27,7 @@ class GetPipedriveActivitiesRequest extends FormRequest
             'start' => 'required|int',
             'limit' => 'required|int',
             'done' => 'required|boolean',
+            'search' => 'sometimes|string',
             'start_date' => 'sometimes|date',
             'end_date' => 'required_with:start_date|date',
         ];
