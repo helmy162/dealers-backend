@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\{CarController,
     EngineController,
     Inspector\InspectorsController,
     InteriorController,
+    PipedriveController,
     SteeringController,
     SpecsController,
     WheelsController,
@@ -152,6 +153,12 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('cars/{id}', [CarController::class, 'showCar']);
 
-    // pipedrive creating sellers webhook
+    /**
+     * Webhook for creating sellers
+     * @see https://pipedrive.readme.io/docs/guide-for-webhooks
+     */
     Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
+
+    // Get activities from Pipedrive
+    Route::post('pipedrive/activities', [PipedriveController::class, 'getActivities']);
 });
