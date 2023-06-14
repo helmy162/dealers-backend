@@ -70,14 +70,14 @@ class SellerController extends Controller
 
     public function webhook(Request $request)
     {
-        $request->validate([
-            'current' => 'required|array',
-            '*.name' => 'required|string',
-            '*.email' => 'required|array',
-            '*.email.*.value' => 'required|string',
-            '*.phone' => 'required|array',
-            '*.phone.*.value' => 'required|string'
-        ]);
+        // $request->validate([
+        //     'current' => 'required|array',
+        //     '*.name' => 'required|string',
+        //     '*.email' => 'required|array',
+        //     '*.email.*.value' => 'required|string',
+        //     '*.phone' => 'required|array',
+        //     '*.phone.*.value' => 'required|string'
+        // ]);
 
         $seller             = new Seller();
         $seller->name       = $request->current['name'];
