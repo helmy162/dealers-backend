@@ -18,6 +18,9 @@ class PipedriveController extends Controller
     {
         try {
             $params = [
+                'api_token' => config('pipedrive.token'),
+                'type' => config('pipedrive.activity.inspection_appointment'),
+                'user_id' => config('pipedrive.user_id'),
                 'start' => $request->start,
                 'limit' => $request->has('search') ? self::MAX_LIMIT : $request->limit,
                 'done' => $request->done,
@@ -48,12 +51,7 @@ class PipedriveController extends Controller
                 }
             }
 
-            $response = Http::get(config('pipedrive.url') . '/' . config('pipedrive.version') . '/activities', [
-                'api_token' => config('pipedrive.token'),
-                'type' => config('pipedrive.activity.inspection_appointment'),
-                'user_id' => config('pipedrive.user_id'),
-                ...$params
-            ]);
+            $response = Http::get(config('pipedrive.url') . '/' . config('pipedrive.version') . '/activities', $params);
 
             if (! $response->successful()) {
                 return response()->json(['error' => 'Failed to fetch activities'], $response->status());
