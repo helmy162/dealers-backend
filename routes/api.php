@@ -156,11 +156,14 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('cars/{id}', [CarController::class, 'showCar']);
 
-    /**
-     * Webhook for creating sellers
-     * @see https://pipedrive.readme.io/docs/guide-for-webhooks
-     */
-    Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
+    // TODO: Add Auth middleware for webhooks
+    Route::group(['prefix' => 'webhook'], function () {
+        /**
+         * Webhook for creating sellers
+         * @see https://pipedrive.readme.io/docs/guide-for-webhooks
+         */
+        Route::post('pipedrive/seller', [SellerController::class, 'webhook']);
+    });
 
     // Get activities from Pipedrive
     Route::post('pipedrive/activities', [PipedriveController::class, 'getActivities']);
