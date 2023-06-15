@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Webhook\StorePipedrivePersonRequest;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use App\Models\Seller;
 
@@ -89,12 +90,11 @@ class SellerController extends Controller
                 ['phone' => $phone]
             );
 
-            return response()->json($seller);
+            return response()->json($seller, Response::HTTP_OK);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->errors()], 400);
+            return response()->json(['error' => $e->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
