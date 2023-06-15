@@ -13,7 +13,7 @@ class StorePipedrivePersonRequest extends FormRequest
      */
     public function authorize()
     {
-        // TODO: Replace with
+        // TODO: Replace with proper HTTP username/password auth
         return true;
     }
 
