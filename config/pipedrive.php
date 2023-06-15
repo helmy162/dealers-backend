@@ -11,6 +11,7 @@ return [
 
     'url' => env('PIPEDRIVE_BASE_URL', ''),
 
+
     /*
     |--------------------------------------------------------------------------
     | Connection details
@@ -26,8 +27,14 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    /*
+    To fetch activities assigned to a specific user, set this to the user's ID.
+    Otherwise, set to 0 to fetch all company resources.
+    */
+    'user_id' => 0,
+
     'activity' => [
-      'inspection_appointment' => 'inspection_appintment',
+        'inspection_appointment' => 'inspection_appintment',
     ],
 
 ];
