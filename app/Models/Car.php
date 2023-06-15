@@ -36,7 +36,7 @@ class Car extends Model
         'vin_images',
         'registration_card_images',
         'insurance_images',
-        'seller_id'
+        'seller_id',
     ];
 
     public function bids()
@@ -49,7 +49,8 @@ class Car extends Model
         return $this->hasMany(Offer::class);
     }
 
-    public function highestOffer(){
+    public function highestOffer()
+    {
         return $this->hasOne(Offer::class)->orderBy('amount', 'desc');
     }
 
@@ -58,48 +59,58 @@ class Car extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function engineTransmission(){
+    public function engineTransmission()
+    {
         return $this->hasOne(Engine::class);
     }
 
-    public function exterior(){
+    public function exterior()
+    {
         return $this->hasOne(Exterior::class);
     }
 
-    public function interior(){
+    public function interior()
+    {
         return $this->hasOne(Interior::class);
     }
 
-    public function specs(){
+    public function specs()
+    {
         return $this->hasOne(Specs::class);
     }
 
-    public function steering(){
+    public function steering()
+    {
         return $this->hasOne(Steering::class);
     }
 
-    public function wheels(){
+    public function wheels()
+    {
         return $this->hasOne(Wheels::class);
     }
 
-    public function details(){
+    public function details()
+    {
         return $this->hasOne(Details::class);
     }
 
-    public function history(){
+    public function history()
+    {
         return $this->hasOne(History::class);
     }
 
-    public function inspector(){
+    public function inspector()
+    {
         return $this->belongsTo(User::class, 'inspector_id');
     }
 
-    public function seller(){
+    public function seller()
+    {
         return $this->belongsTo(Seller::class, 'seller_id');
     }
 
-    public function auction(){
+    public function auction()
+    {
         return $this->hasOne(Auction::class);
     }
 }
-

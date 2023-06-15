@@ -25,8 +25,7 @@ class InspectorsController extends Controller
             ]);
 
         return response()->json([
-            'car' => $car
+            'car' => $car,
         ]);
     }
-
 }

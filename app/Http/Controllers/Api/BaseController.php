@@ -1,24 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\v1\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
-    
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    // }
-
     //build function success response
     public function sendResponse($result, $message)
     {
         $response = [
             'success' => true,
-            'data'    => $result,
+            'data' => $result,
             'message' => $message,
         ];
 
@@ -34,7 +27,7 @@ class BaseController extends Controller
             'message' => $error,
         ];
 
-        if(!empty($errorMessages)){
+        if (! empty($errorMessages)) {
             $response['data'] = $errorMessages;
         }
 

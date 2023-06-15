@@ -3,27 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-
-use App\Http\Requests\StoreCarRequest;
-use App\Http\Requests\UpdateCarRequest;
-
+use App\Http\Controllers\NotificationController;
+use App\Mail\newAuction;
+use App\Models\Auction;
 use App\Models\Car;
 use App\Models\Details;
-use App\Models\History;
 use App\Models\Engine;
 use App\Models\Exterior;
+use App\Models\History;
 use App\Models\Interior;
 use App\Models\Specs;
 use App\Models\Steering;
 use App\Models\User;
 use App\Models\Wheels;
-use App\Models\Auction;
-
-use App\Mail\newAuction;
-use App\Http\Controllers\NotificationController;
-
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Mail;
@@ -33,11 +26,12 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
-            ->where('auctions.end_at','>', Carbon::now())
+            ->where('auctions.end_at', '>', Carbon::now())
             ->whereNotNull([
                 'details_id',
                 'history_id',
@@ -47,19 +41,19 @@ class CarController extends Controller
                 'specs_id',
                 'wheels_id',
                 'exterior_id',
-                'seller_id'
+                'seller_id',
             ])
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,start_at,end_at,start_price',
-                'auction.latestBid:auction_id,bid'
+                'auction.latestBid:auction_id,bid',
             ])->orderBy('auctions.end_at')->get();
 
         // expired cars in the last 24h
         $expiredCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
-            ->where('auctions.end_at','>', Carbon::now()->subDays(3))
-            ->where('auctions.end_at','<', Carbon::now()->subDay())
+            ->where('auctions.end_at', '>', Carbon::now()->subDays(3))
+            ->where('auctions.end_at', '<', Carbon::now()->subDay())
             ->whereNotNull([
                 'details_id',
                 'history_id',
@@ -69,26 +63,27 @@ class CarController extends Controller
                 'specs_id',
                 'wheels_id',
                 'exterior_id',
-                'seller_id'
+                'seller_id',
             ])
             ->orderBy('auctions.end_at')
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,end_at,start_price',
-                'auction.latestBid:auction_id,bid'
+                'auction.latestBid:auction_id,bid',
             ])->orderByDesc('auctions.end_at')->get();
 
-        if($request->source == "dealer_app"){
+        if ($request->source == 'dealer_app') {
             return response()->json($ActiveCars->merge($expiredCars));
-        }else{
+        } else {
             return response()->json($ActiveCars->merge($expiredCars)->paginate(5));
         }
     }
 
-    public function carsWithExpiredAuctions(Request $request){
+    public function carsWithExpiredAuctions(Request $request)
+    {
         $cars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
-            ->where('auctions.end_at','<', Carbon::now())
+            ->where('auctions.end_at', '<', Carbon::now())
             ->whereNotNull([
                 'details_id',
                 'history_id',
@@ -98,31 +93,32 @@ class CarController extends Controller
                 'specs_id',
                 'wheels_id',
                 'exterior_id',
-                'seller_id'
+                'seller_id',
             ])
             ->with([
                 'details:car_id,make,model,trim,year,mileage,exterior_color,engine_size,specification,registered_emirates',
                 'auction:id,car_id,end_at,start_price',
             ])->orderByDesc('auctions.end_at')->get();
 
-        if($request->source == "dealer_app"){
+        if ($request->source == 'dealer_app') {
             return response()->json($cars);
-        }else{
+        } else {
             return response()->json($cars->paginate(5));
         }
     }
 
-    public function createCar(Request $request){
+    public function createCar(Request $request)
+    {
         $validated = $request->validate([
             'seller_id' => 'required|integer',
         ]);
 
         $requestData = $request->all();
-        foreach($requestData as $key => $value){
-            if( $value === "true"){
-                $requestData[$key] = true ;
-            }elseif( $value === "false"){
-                $requestData[$key] = false ;
+        foreach ($requestData as $key => $value) {
+            if ($value === 'true') {
+                $requestData[$key] = true;
+            } elseif ($value === 'false') {
+                $requestData[$key] = false;
             }
         }
 
@@ -175,22 +171,22 @@ class CarController extends Controller
         if ($request->hasFile('images')) {
 
             $images = $request->file('images');
-            $imagesNameArr = array();
+            $imagesNameArr = [];
             foreach ($images as $image) {
                 //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
+                $fileNameWithExt = $image->getClientOriginalName();
 
                 //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+                $fileName = str_replace(' ', '', pathinfo($fileNameWithExt, PATHINFO_FILENAME));
 
                 //get just the extension
                 $extension = $image->getClientOriginalExtension();
 
                 //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+                $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
                 //upload image
-                $path = $image->storeAs('public/car_images',$fileNameToStore);
+                $path = $image->storeAs('public/car_images', $fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
@@ -202,22 +198,22 @@ class CarController extends Controller
         if ($request->hasFile('id_images')) {
 
             $images = $request->file('id_images');
-            $imagesNameArr = array();
+            $imagesNameArr = [];
             foreach ($images as $image) {
                 //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
+                $fileNameWithExt = $image->getClientOriginalName();
 
                 //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+                $fileName = str_replace(' ', '', pathinfo($fileNameWithExt, PATHINFO_FILENAME));
 
                 //get just the extension
                 $extension = $image->getClientOriginalExtension();
 
                 //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+                $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
                 //upload image
-                $path = $image->storeAs('public/id_images',$fileNameToStore);
+                $path = $image->storeAs('public/id_images', $fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
@@ -229,22 +225,22 @@ class CarController extends Controller
         if ($request->hasFile('registration_card_images')) {
 
             $images = $request->file('registration_card_images');
-            $imagesNameArr = array();
+            $imagesNameArr = [];
             foreach ($images as $image) {
                 //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
+                $fileNameWithExt = $image->getClientOriginalName();
 
                 //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+                $fileName = str_replace(' ', '', pathinfo($fileNameWithExt, PATHINFO_FILENAME));
 
                 //get just the extension
                 $extension = $image->getClientOriginalExtension();
 
                 //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+                $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
                 //upload image
-                $path = $image->storeAs('public/registration_card_images',$fileNameToStore);
+                $path = $image->storeAs('public/registration_card_images', $fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
@@ -256,22 +252,22 @@ class CarController extends Controller
         if ($request->hasFile('vin_images')) {
 
             $images = $request->file('vin_images');
-            $imagesNameArr = array();
+            $imagesNameArr = [];
             foreach ($images as $image) {
                 //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
+                $fileNameWithExt = $image->getClientOriginalName();
 
                 //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+                $fileName = str_replace(' ', '', pathinfo($fileNameWithExt, PATHINFO_FILENAME));
 
                 //get just the extension
                 $extension = $image->getClientOriginalExtension();
 
                 //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+                $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
                 //upload image
-                $path = $image->storeAs('public/vin_images',$fileNameToStore);
+                $path = $image->storeAs('public/vin_images', $fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
@@ -283,22 +279,22 @@ class CarController extends Controller
         if ($request->hasFile('insurance_images')) {
 
             $images = $request->file('insurance_images');
-            $imagesNameArr = array();
+            $imagesNameArr = [];
             foreach ($images as $image) {
                 //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
+                $fileNameWithExt = $image->getClientOriginalName();
 
                 //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+                $fileName = str_replace(' ', '', pathinfo($fileNameWithExt, PATHINFO_FILENAME));
 
                 //get just the extension
                 $extension = $image->getClientOriginalExtension();
 
                 //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+                $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
                 //upload image
-                $path = $image->storeAs('public/insurance_images',$fileNameToStore);
+                $path = $image->storeAs('public/insurance_images', $fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
@@ -318,11 +314,11 @@ class CarController extends Controller
         $car->status = 'approved';
         $car->save();
 
-        $auction                    = new Auction();
-        $auction->car_id            = $car->id;
-        $auction->start_price       = 0;
-        $auction->start_at          = Carbon::now();
-        $auction->end_at            = Carbon::now()->addMinutes(20);
+        $auction = new Auction();
+        $auction->car_id = $car->id;
+        $auction->start_price = 0;
+        $auction->start_at = Carbon::now();
+        $auction->end_at = Carbon::now()->addMinutes(20);
         $auction->save();
 
         $data = [
@@ -333,13 +329,13 @@ class CarController extends Controller
             'start_price' => $auction->start_price,
             'start_at' => $auction->start_at,
             'end_at' => $auction->end_at,
-            'image' => asset('/storage/car_images/'.$car->images[0])
+            'image' => asset('/storage/car_images/' . $car->images[0]),
         ];
         // Sending data to WhatsApp webhook
         $response = Http::post('https://hook.us1.make.com/gwrof533jp0974w43brsjpo6kj3qvekl', $data);
 
         $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
-        foreach($dealers as $dealer){
+        foreach ($dealers as $dealer) {
             Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
         }
 
@@ -359,18 +355,19 @@ class CarController extends Controller
                 'wheels',
                 'auction',
                 'auction.latestBid'
-            )
+            ),
         ], 201);
     }
 
-    public function editCar(Request $request, $id){
+    public function editCar(Request $request, $id)
+    {
         $car = Car::findOrFail($id);
 
         $car->fill($request->all());
 
-        if($request->deletedImages && is_array($request->deletedImages) && count($request->deletedImages)){
+        if ($request->deletedImages && is_array($request->deletedImages) && count($request->deletedImages)) {
             $car_images = collect($car->images);
-            foreach($request->deletedImages as $del){
+            foreach ($request->deletedImages as $del) {
                 $car_images = $car_images->reject(fn ($img) => $img == $del);
             }
             $car->images = $car_images->values()->all();
@@ -382,19 +379,19 @@ class CarController extends Controller
             $imagesNameArr = $car->images;
             foreach ($images as $image) {
                 //get file name with the extension
-                $fileNameWithExt= $image->getClientOriginalName();
+                $fileNameWithExt = $image->getClientOriginalName();
 
                 //get just filename
-                $fileName = str_replace(' ','',pathinfo($fileNameWithExt, PATHINFO_FILENAME));
+                $fileName = str_replace(' ', '', pathinfo($fileNameWithExt, PATHINFO_FILENAME));
 
                 //get just the extension
                 $extension = $image->getClientOriginalExtension();
 
                 //file name to store(unique)
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+                $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
                 //upload image
-                $path = $image->storeAs('public/car_images',$fileNameToStore);
+                $path = $image->storeAs('public/car_images', $fileNameToStore);
 
                 //add car images array
                 array_push($imagesNameArr, $fileNameToStore);
@@ -405,11 +402,11 @@ class CarController extends Controller
         $car->save();
 
         $requestData = $request->all();
-        foreach($requestData as $key => $value){
-            if( $value === "true"){
-                $requestData[$key] = true ;
-            }elseif( $value === "false"){
-                $requestData[$key] = false ;
+        foreach ($requestData as $key => $value) {
+            if ($value === 'true') {
+                $requestData[$key] = true;
+            } elseif ($value === 'false') {
+                $requestData[$key] = false;
             }
         }
 
@@ -453,13 +450,13 @@ class CarController extends Controller
             'seller',
             'auction',
             'auction.bids',
-            'auction.bids.dealer'
-        ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
+            'auction.bids.dealer',
+        ])->findOrFail($id)->makeVisible(['id_images', 'vin_images', 'insurance_images', 'registration_card_images']);
 
         return response()->json([
             'success' => true,
-            "message" => 'Car edited Successfully!',
-            'car' => $car
+            'message' => 'Car edited Successfully!',
+            'car' => $car,
         ]);
     }
 
@@ -470,7 +467,7 @@ class CarController extends Controller
 
         return response()->json([
             'success' => true,
-            "message" => 'Car deleted Successfully!'
+            'message' => 'Car deleted Successfully!',
         ]);
     }
 
@@ -478,24 +475,24 @@ class CarController extends Controller
     {
         //find car by id when status approved
         $car = Car::findOrFail($id)
-        ->load([
-            'details',
-            'history',
-            'engineTransmission',
-            'steering',
-            'interior',
-            'exterior',
-            'specs',
-            'wheels',
-            'auction:id,car_id,start_at,end_at,start_price',
-            'auction.latestBid:auction_id,bid',
-        ]);
+            ->load([
+                'details',
+                'history',
+                'engineTransmission',
+                'steering',
+                'interior',
+                'exterior',
+                'specs',
+                'wheels',
+                'auction:id,car_id,start_at,end_at,start_price',
+                'auction.latestBid:auction_id,bid',
+            ]);
 
         // return my last bid & offer for each car (in case of authenticated route)
         $myBid = null;
         $myOffer = null;
 
-        if(auth()->check()){
+        if (auth()->check()) {
             $myBid = auth()->user()->bids->where('car_id', $id)->last();
             $myOffer = auth()->user()->offers->where('car_id', $id)->last();
         }
@@ -507,7 +504,8 @@ class CarController extends Controller
         ]);
     }
 
-    public function allCarDetails(Request $request, $id){
+    public function allCarDetails(Request $request, $id)
+    {
         $car = Car::with([
             'details',
             'history',
@@ -525,11 +523,11 @@ class CarController extends Controller
             'offers.dealer',
             'highestOffer',
             'highestOffer.dealer',
-            'inspector'
-        ])->findOrFail($id)->makeVisible(['id_images','vin_images','insurance_images','registration_card_images']);
+            'inspector',
+        ])->findOrFail($id)->makeVisible(['id_images', 'vin_images', 'insurance_images', 'registration_card_images']);
 
         return response()->json([
-            'car' => $car
+            'car' => $car,
         ]);
     }
 }

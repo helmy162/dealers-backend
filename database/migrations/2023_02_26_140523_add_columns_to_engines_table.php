@@ -37,7 +37,7 @@ return new class extends Migration
                 'Warning_Signal',
                 'Oil_Leaks',
                 'Water_Sladge',
-                'Shift_Interlock_Condition'
+                'Shift_Interlock_Condition',
             ]);
         });
     }

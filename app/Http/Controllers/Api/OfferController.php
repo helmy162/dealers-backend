@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Models\Offer;
+use Illuminate\Http\Request;
 
 class OfferController extends Controller
 {
@@ -15,16 +14,16 @@ class OfferController extends Controller
             'amount' => 'required|integer',
             'car_id' => 'required|integer',
         ]);
-        
-        $offer                        = new Offer();
-        $offer->user_id               = auth()->user()->id;
-        $offer->car_id                = $request->car_id;
-        $offer->amount                = $request->amount;
+
+        $offer = new Offer();
+        $offer->user_id = auth()->user()->id;
+        $offer->car_id = $request->car_id;
+        $offer->amount = $request->amount;
         $offer->save();
 
         return response()->json([
             'success' => true,
-            'offer' => $offer
+            'offer' => $offer,
         ]);
     }
 }

@@ -18,7 +18,7 @@ class Specs extends Model
         'created_at',
         'updated_at',
         'car_id',
-        'id'
+        'id',
     ];
 
     protected $casts = [
@@ -64,10 +64,11 @@ class Specs extends Model
         'Power_Mirrors' => 'boolean',
         'Adaptive_Cruise_Control' => 'boolean',
         'Carbon_Fiber_Interior' => 'boolean',
-        'Line_Change_Assist' => 'boolean'
+        'Line_Change_Assist' => 'boolean',
     ];
 
-    public function car(){
+    public function car()
+    {
         $this->belongsTo(Car::class);
     }
 }

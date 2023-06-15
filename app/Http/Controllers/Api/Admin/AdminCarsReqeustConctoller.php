@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
 use App\Models\Car;
+use Illuminate\Http\Request;
 
 class AdminCarsReqeustConctoller extends Controller
 {
@@ -85,7 +84,6 @@ class AdminCarsReqeustConctoller extends Controller
         ]);
     }
 
-
     //change car status to pending
     public function pendingCar($id)
     {
@@ -102,7 +100,8 @@ class AdminCarsReqeustConctoller extends Controller
         ]);
     }
 
-    public function showAllCars(){
+    public function showAllCars()
+    {
         $cars = Car::whereNotNull([
             'details_id',
             'history_id',
@@ -112,13 +111,13 @@ class AdminCarsReqeustConctoller extends Controller
             'specs_id',
             'wheels_id',
             'exterior_id',
-            'seller_id'
-            ])->with([
-                'details:id,car_id,make,model,year',
-                'seller:id,name',
-                'auction:car_id,start_at,end_at',
-                'inspector:id,name'
-            ])->get();
+            'seller_id',
+        ])->with([
+            'details:id,car_id,make,model,year',
+            'seller:id,name',
+            'auction:car_id,start_at,end_at',
+            'inspector:id,name',
+        ])->get();
 
         return response()->json($cars);
     }

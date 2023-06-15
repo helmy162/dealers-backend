@@ -1,32 +1,23 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AdminCarsReqeustConctoller;
+use App\Http\Controllers\Api\Admin\DashboardController;
+use App\Http\Controllers\Api\Admin\UsersController;
+use App\Http\Controllers\Api\AuctionController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BidController;
+use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\Closer\ClosersController;
+use App\Http\Controllers\Api\Dealer\DealersController;
+use App\Http\Controllers\Api\Inspector\InspectorsController;
+use App\Http\Controllers\Api\OfferController;
+use App\Http\Controllers\Api\PipedriveController;
+use App\Http\Controllers\Api\PusherController;
+use App\Http\Controllers\Api\Sales\SalesController;
+use App\Http\Controllers\Api\SellerController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-
-
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\Admin\{AdminCarsReqeustConctoller,UsersController,DashboardController};
-use App\Http\Controllers\Api\Dealer\DealersController;
-use App\Http\Controllers\Api\Closer\ClosersController;
-use App\Http\Controllers\Api\Sales\SalesController;
-
-use App\Http\Controllers\Api\{CarController,
-    EngineController,
-    Inspector\InspectorsController,
-    InteriorController,
-    PipedriveController,
-    SteeringController,
-    SpecsController,
-    WheelsController,
-    DetailsController,
-    ExteriorController,
-    SellerController,
-    AuctionController,
-    BidController,
-    OfferController,
-    PusherController,
-    UserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -48,11 +39,11 @@ Route::group(['prefix' => 'v1'], function () {
     // user register
     Route::post('/register', [AuthController::class, 'register']);
     //login user
-    Route::post('/login', [AuthController::class , 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
     //reset password
-    Route::post('/reset-password', [AuthController::class , 'resetPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     //reset password
-    Route::post('/confirm-reset-password', [AuthController::class , 'confirmResetPassword']);
+    Route::post('/confirm-reset-password', [AuthController::class, 'confirmResetPassword']);
 
     // Authenticated User Routes
     Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -77,7 +68,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('cars', [AdminCarsReqeustConctoller::class, 'showAllCars']);
             Route::get('cars/{car}', [CarController::class, 'allCarDetails']);
             Route::post('cars/{car}', [CarController::class, 'editCar']);
-            Route::delete('cars/{car}',  [CarController::class, 'destroy']);
+            Route::delete('cars/{car}', [CarController::class, 'destroy']);
         });
 
         //route group for inspector
@@ -134,17 +125,17 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('cars/expired-auction', [CarController::class, 'carsWithExpiredAuctions']);
         });
 
-        Route::group(['prefix' => 'pusher'], function(){
+        Route::group(['prefix' => 'pusher'], function () {
             // Route::post('auth-user', [PusherController::class, 'authenticateUser']);
             Route::post('auth-channel', [PusherController::class, 'authorizeChannel']);
         });
 
         //add logout route
-        Route::post('/logout', [AuthController::class , 'logout']);
+        Route::post('/logout', [AuthController::class, 'logout']);
         //new password
-        Route::post('/new-password', [AuthController::class , 'newPassword']);
+        Route::post('/new-password', [AuthController::class, 'newPassword']);
         // edit profile recieved notifications
-        Route::put('profile/notifications' ,[UserController::class, 'updateNotifications']);
+        Route::put('profile/notifications', [UserController::class, 'updateNotifications']);
 
         // user data
         Route::get('/profile', [UserController::class, 'index']);
@@ -160,6 +151,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'webhook'], function () {
         /**
          * Webhook for creating sellers
+         *
          * @see https://pipedrive.readme.io/docs/guide-for-webhooks
          */
         Route::post('pipedrive/seller', [SellerController::class, 'webhook']);

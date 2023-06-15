@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\Sales;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Models\Car;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
@@ -23,11 +22,11 @@ class SalesController extends Controller
                 'auction.latestBid',
                 'auction.bids.dealer:id,name',
                 'offers',
-                'offers.dealer:id,name'
+                'offers.dealer:id,name',
             ]);
 
         return response()->json([
-            'car' => $car
+            'car' => $car,
         ]);
     }
 
@@ -42,12 +41,12 @@ class SalesController extends Controller
             'specs_id',
             'wheels_id',
             'exterior_id',
-            'seller_id'
+            'seller_id',
         ])->with([
             'details:id,car_id,make,model,year',
             'seller:id,name',
             'auction:car_id,start_at,end_at',
-            'inspector:id,name'
+            'inspector:id,name',
         ])->get();
 
         return response()->json($cars);
@@ -77,7 +76,7 @@ class SalesController extends Controller
     public function updateDealer(Request $request, $id)
     {
         $request->validate([
-            'assigned_by' => 'required|integer'
+            'assigned_by' => 'required|integer',
         ]);
 
         $sales = User::whereType('sales')->find($request->assigned_by) ?? abort(404, 'Sales user not a Found!');

@@ -4,18 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\NotificationController;
-use Illuminate\Http\Request;
-
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use App\Models\Auction;
-use App\Models\Car;
-use App\Models\Bid;
-use App\Models\User;
 use App\Mail\newAuction;
 use App\Mail\wonAuction;
-use Mail;
+use App\Models\Auction;
+use App\Models\Bid;
+use App\Models\Car;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Mail;
 
 class AuctionController extends Controller
 {
@@ -42,7 +40,6 @@ class AuctionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -51,21 +48,20 @@ class AuctionController extends Controller
             'car_id' => 'required|integer|unique:auctions',
             'start_at' => 'required',
             'end_at' => 'required',
-            'start_price' => 'required|integer'
-        ],[
-            'car_id.unique' => 'Car already at auction!'
+            'start_price' => 'required|integer',
+        ], [
+            'car_id.unique' => 'Car already at auction!',
         ]);
 
         $car = Car::findOrFail($validated['car_id']);
 
-        $auction                    = new Auction();
-        $auction->car_id            = $validated['car_id'];
-        $auction->start_price       = $validated['start_price'];
-        $auction->start_at          = Carbon::make($validated['start_at']);
-        $auction->end_at            = Carbon::make($validated['end_at']);
+        $auction = new Auction();
+        $auction->car_id = $validated['car_id'];
+        $auction->start_price = $validated['start_price'];
+        $auction->start_at = Carbon::make($validated['start_at']);
+        $auction->end_at = Carbon::make($validated['end_at']);
         $auction->save();
 
-        
         $car->status = 'approved';
         $car->save();
 
@@ -77,23 +73,22 @@ class AuctionController extends Controller
             'start_price' => $auction->start_price,
             'start_at' => $auction->start_at,
             'end_at' => $auction->end_at,
-            'image' => asset('/storage/car_images/'.$car->images[0])
+            'image' => asset('/storage/car_images/' . $car->images[0]),
         ];
         // Sending data to WhatsApp webhook
         $response = Http::post('https://hook.us1.make.com/gwrof533jp0974w43brsjpo6kj3qvekl', $data);
 
         $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
-        foreach($dealers as $dealer){
+        foreach ($dealers as $dealer) {
             Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
         }
 
         // send a push notification to subscriped dealers
         $isPushNotificationSent = NotificationController::sendNewAuctionNotification($car); // returns bool
 
-
         return response()->json([
-            "success" => true,
-            "auction" => $auction
+            'success' => true,
+            'auction' => $auction,
         ]);
     }
 
@@ -106,6 +101,7 @@ class AuctionController extends Controller
     public function show($id)
     {
         $auction = Auction::findOrFail($id);
+
         return response()->json(['data' => $auction]);
     }
 
@@ -123,36 +119,34 @@ class AuctionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'car_id' => 'required|integer|unique:auctions,car_id,'.$id,
+            'car_id' => 'required|integer|unique:auctions,car_id,' . $id,
             'start_at' => 'required',
             'end_at' => 'required',
-            'start_price' => 'required|integer'
-        ],[
-            'car_id.unique' => 'Car already at auction!'
+            'start_price' => 'required|integer',
+        ], [
+            'car_id.unique' => 'Car already at auction!',
         ]);
-        
+
         $auction = Auction::findOrFail($id);
         $car = Car::findOrFail($validated['car_id']);
 
-        $auction->start_price       = $validated['start_price'];
-        $auction->start_at          = Carbon::make($validated['start_at']);
-        $auction->end_at            = Carbon::make($validated['end_at']);
+        $auction->start_price = $validated['start_price'];
+        $auction->start_at = Carbon::make($validated['start_at']);
+        $auction->end_at = Carbon::make($validated['end_at']);
         $auction->save();
 
-        
         $car->status = 'approved';
         $car->save();
 
         return response()->json([
-            "success" => true,
-            "auction" => $auction
+            'success' => true,
+            'auction' => $auction,
         ]);
     }
 
@@ -165,22 +159,22 @@ class AuctionController extends Controller
     public function destroy($id)
     {
         $auction = Auction::findOrFail($id);
-        
+
         $car = Car::findOrFail($auction->car_id);
         $car->status = 'pending';
         $car->save();
 
         $auction->delete();
         $auction->bids()->delete();
-        
 
         return response()->json([
-            "success" => true,
-            "message" => 'Auction deleted Successfully!'
+            'success' => true,
+            'message' => 'Auction deleted Successfully!',
         ]);
     }
 
-    public function declareWinner(Request $request){
+    public function declareWinner(Request $request)
+    {
         $validated = $request->validate([
             'auction_id' => 'required|integer',
             'user_id' => 'required|integer',
@@ -192,18 +186,18 @@ class AuctionController extends Controller
         $user = User::findOrFail($validated['user_id']);
         $car = Car::findOrFail($auction->car_id);
 
-        if( $bid->user_id != $user->id ){
+        if ($bid->user_id != $user->id) {
             abort(400, 'Bid and user not matched!');
         }
 
-        if($bid->car_id != $auction->car_id || $bid->auction_id != $auction->id){
+        if ($bid->car_id != $auction->car_id || $bid->auction_id != $auction->id) {
             abort(400, 'Auction and bid not matched!');
         }
 
         $auction->winner_bid = $bid->id;
         $auction->save();
 
-        if($user->notify_won_auction){
+        if ($user->notify_won_auction) {
             Mail::to($user->email)->send(new wonAuction($car, $user));
         }
 
@@ -212,7 +206,7 @@ class AuctionController extends Controller
 
         return response()->json([
             'success' => true,
-            'auction' => $auction
+            'auction' => $auction,
         ]);
 
     }

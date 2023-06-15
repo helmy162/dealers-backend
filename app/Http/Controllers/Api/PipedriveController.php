@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetPipedriveActivitiesRequest;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\JsonResponse;
 
 class PipedriveController extends Controller
 {
     private const MAX_LIMIT = 500;
 
-    public function getActivities(GetPipedriveActivitiesRequest $request): JsonResponse
+    public function getActivities(GetPipedriveActivitiesRequest $request) : JsonResponse
     {
         try {
             $params = [
@@ -70,7 +70,7 @@ class PipedriveController extends Controller
         }
     }
 
-    private function searchResults(Collection $data, string $search): Collection
+    private function searchResults(Collection $data, string $search) : Collection
     {
         return $data->filter(function ($item) use ($search) {
             return str_contains(strtolower($item['person_name']), strtolower($search))

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Dealer;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\Car;
 use Illuminate\Http\Request;
 
@@ -16,17 +15,17 @@ class DealersController extends Controller
      */
     public function index()
     {
-        
+
         $cars = Car::withoutGlobalScopes()->where('status', 'approved')->get()->map(function ($car) {
             return [
-                
+
                 'id' => $car->id,
                 'user_name' => $car->user->name ?? 'Test',
                 'car_name' => $car->name ?? 'Test',
-               //get getGeneralInfoAttribute from Car Model
-               //decode general info
-                'general_info' => json_decode($car->general_info , true),
-                'car_data' =>$car->carData,
+                //get getGeneralInfoAttribute from Car Model
+                //decode general info
+                'general_info' => json_decode($car->general_info, true),
+                'car_data' => $car->carData,
                 'carImages' => $car->carImages,
             ];
         });
@@ -46,6 +45,7 @@ class DealersController extends Controller
             'status' => 'requested',
             'dealer_id' => $request->user()->id,
         ]);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Car Requested Successfully',
@@ -56,22 +56,22 @@ class DealersController extends Controller
     public function show($id)
     {
         //find car by id when status approved
-        $car = Car::where('status','approved')->findOrFail($id)
-        ->load([
-            'details',
-            'history',
-            'engineTransmission',
-            'steering',
-            'interior',
-            'exterior',
-            'specs',
-            'wheels',
-            'auction:id,car_id,start_at,end_at,start_price',
-            'auction.latestBid:auction_id,bid',
-        ]);
+        $car = Car::where('status', 'approved')->findOrFail($id)
+            ->load([
+                'details',
+                'history',
+                'engineTransmission',
+                'steering',
+                'interior',
+                'exterior',
+                'specs',
+                'wheels',
+                'auction:id,car_id,start_at,end_at,start_price',
+                'auction.latestBid:auction_id,bid',
+            ]);
 
         return response()->json([
-            'car' => $car
+            'car' => $car,
         ]);
     }
 
@@ -80,7 +80,7 @@ class DealersController extends Controller
     {
         //filter cars by model or brand or year inside json data
         $cars = Car::withoutGlobalScopes()
-             ->where('car_data->model', 'like', '%' . $request->search . '%')
+            ->where('car_data->model', 'like', '%' . $request->search . '%')
             ->orWhere('car_data->brand', 'like', '%' . $request->search . '%')
             ->orWhere('car_data->year', 'like', '%' . $request->search . '%')
             ->get()->map(function ($car) {
@@ -88,7 +88,7 @@ class DealersController extends Controller
                     'id' => $car->id,
                     'user_name' => $car->user->name,
                     'car_name' => $car->name,
-                    'general_info' => json_decode($car->general_info , true),
+                    'general_info' => json_decode($car->general_info, true),
                     'carData' => $car->carData,
                     'carImages' => $car->carImages,
                 ];
@@ -99,5 +99,4 @@ class DealersController extends Controller
             'cars' => $cars,
         ]);
     }
-
 }

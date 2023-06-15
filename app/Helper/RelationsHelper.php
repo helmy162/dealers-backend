@@ -2,16 +2,11 @@
 
 namespace App\Helper;
 
-
-use App\Models\{
-    Car,
-    Wheel,
-    CarSpace,
-    EngineTransmission,
-    InteriorElecticalsAirConditioner,
-    SteeringSuspensionBrakes,
-};
-
+use App\Models\CarSpace;
+use App\Models\EngineTransmission;
+use App\Models\InteriorElecticalsAirConditioner;
+use App\Models\SteeringSuspensionBrakes;
+use App\Models\Wheel;
 
 class RelationsHelper
 {
@@ -32,7 +27,6 @@ class RelationsHelper
 
     }
 
-
     //save relations and return the id of the saved relation
 
     public static function saveRelations($request)
@@ -51,4 +45,4 @@ class RelationsHelper
 
         return $relations;
     }
-  }
+}

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CarImageSeeder extends Seeder
@@ -14,6 +13,6 @@ class CarImageSeeder extends Seeder
      */
     public function run()
     {
-        
+
     }
 }

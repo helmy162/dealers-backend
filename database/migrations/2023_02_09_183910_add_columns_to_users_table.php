@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('company')->nullable()->after('password');
             $table->boolean('is_verified')->default(false)->after('email_verified_at');
             $table->unsignedBigInteger('assigned_by')->nullable();
-            
+
         });
     }
 
@@ -30,7 +30,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->DropColumn(['company','is_verified']);
+            $table->DropColumn(['company', 'is_verified']);
         });
     }
 };

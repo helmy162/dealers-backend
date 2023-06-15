@@ -3,43 +3,40 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Bid;
+use App\Models\Car;
 use Carbon\Carbon;
-
-use \App\Models\Car;
-use \App\Models\Bid;
 
 class DashboardController extends Controller
 {
-
     public function index()
-    {   
+    {
         $totalInspectedCars = Car::whereNotNull([
-                'details_id',
-                'history_id',
-                'engine_id',
-                'steering_id',
-                'interior_id',
-                'specs_id',
-                'wheels_id',
-                'exterior_id',
-                'seller_id'
-            ])->count();
+            'details_id',
+            'history_id',
+            'engine_id',
+            'steering_id',
+            'interior_id',
+            'specs_id',
+            'wheels_id',
+            'exterior_id',
+            'seller_id',
+        ])->count();
 
         // get inspection stats for everyday of last 7 days
         $startOfWeek = Carbon::now()->subDays(7)->startOfDay();
         $endOfWeek = Carbon::now()->endOfDay();
         $carCountsPerDay = Car::whereNotNull([
-                'details_id',
-                'history_id',
-                'engine_id',
-                'steering_id',
-                'interior_id',
-                'specs_id',
-                'wheels_id',
-                'exterior_id',
-                'seller_id'
-            ])
+            'details_id',
+            'history_id',
+            'engine_id',
+            'steering_id',
+            'interior_id',
+            'specs_id',
+            'wheels_id',
+            'exterior_id',
+            'seller_id',
+        ])
             ->whereDate('created_at', '>=', $startOfWeek)
             ->whereDate('created_at', '<=', $endOfWeek)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
@@ -54,7 +51,7 @@ class DashboardController extends Controller
         $period = new \DatePeriod($startOfWeek, $interval, $endOfWeek);
         foreach ($period as $date) {
             $formattedDate = $date->format('Y-m-d');
-            if (!isset($carCountsPerDay[$formattedDate])) {
+            if (! isset($carCountsPerDay[$formattedDate])) {
                 $carCountsPerDay[$formattedDate] = 0;
             }
         }
@@ -73,6 +70,7 @@ class DashboardController extends Controller
                 $user->name = $user->dealer->name;
                 $user->email = $user->dealer->email;
                 unset($user->dealer);
+
                 return $user;
             });
 
@@ -81,8 +79,8 @@ class DashboardController extends Controller
                 'total_inspected_cars' => $totalInspectedCars,
                 'this_week' => array_values(array_slice($carCountsPerDay, 1)), // arranged from first day of the week until today
                 'last_week_last_day' => array_values(array_slice($carCountsPerDay, 0, 1))[0],
-                ],
-            'top_bidders' => $topBiddingUsers
+            ],
+            'top_bidders' => $topBiddingUsers,
         ]);
     }
 }

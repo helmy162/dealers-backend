@@ -18,10 +18,11 @@ class Steering extends Model
         'created_at',
         'updated_at',
         'car_id',
-        'id'
+        'id',
     ];
 
-    public function car(){
+    public function car()
+    {
         $this->belongsTo(Car::class);
     }
 }

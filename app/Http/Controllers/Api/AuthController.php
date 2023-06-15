@@ -3,17 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Events\PasswordReset;
-
 use App\Models\User;
 use Auth;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -38,7 +35,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Successfully created user!',
-            'user' => $user->fresh()
+            'user' => $user->fresh(),
         ], 201);
     }
 
@@ -48,22 +45,23 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
-            'remember_me' => 'boolean'
+            'remember_me' => 'boolean',
         ]);
 
         $credentials = request(['email', 'password']);
 
-        if (!Auth::attempt($credentials))
+        if (! Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized',
             ], 401);
+        }
 
         $user = $request->user();
 
-        if($user->status == "inactive"){
+        if ($user->status == 'inactive') {
             return response()->json([
                 'success' => false,
-                'message' => 'User not activated!'
+                'message' => 'User not activated!',
             ], 401);
         }
 
@@ -73,10 +71,9 @@ class AuthController extends Controller
             'message' => 'success login',
             'access_token' => $tokenResult,
             'token_type' => 'Bearer',
-            'user' => $user
+            'user' => $user,
         ], 200);
     }
-
 
     //logout user
     public function logout(Request $request)
@@ -84,7 +81,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Successfully logged out',
         ]);
     }
 
@@ -97,15 +94,15 @@ class AuthController extends Controller
 
         $status = Password::sendResetLink($request->only('email'));
 
-        if($status == Password::RESET_LINK_SENT){
+        if ($status == Password::RESET_LINK_SENT) {
             return response()->json([
                 'success' => true,
-                'status' => __($status)
+                'status' => __($status),
             ]);
         }
 
         throw ValidationException::withMessages([
-            'email' => [trans($status)]
+            'email' => [trans($status)],
         ]);
 
     }
@@ -118,7 +115,7 @@ class AuthController extends Controller
             'new_password' => 'required|string|confirmed',
         ]);
 
-        if (!Hash::check($request->current_password, auth()->user()->password)){
+        if (! Hash::check($request->current_password, auth()->user()->password)) {
             return response()->json([
                 'message' => 'The current password does not match.',
             ], 422);
@@ -129,7 +126,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Password changed successfully'
+            'message' => 'Password changed successfully',
         ], 200);
     }
 
@@ -141,22 +138,22 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
         ]);
-     
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
                 ])->setRememberToken(Str::random(60));
-     
+
                 $user->save();
-     
+
                 event(new PasswordReset($user));
             }
         );
 
         return $status === Password::PASSWORD_RESET
-                        ? response()->json([ 'success' => true, 'message' => __($status) ])
+                        ? response()->json(['success' => true, 'message' => __($status)])
                         : response()->json(['email' => [__($status)]]);
 
     }

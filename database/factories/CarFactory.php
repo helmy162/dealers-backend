@@ -16,16 +16,17 @@ class CarFactory extends Factory
      */
     public function definition()
     {
-        $name = ['BWM', 'AUDI' , 'MERCEDES', 'TOYOTA', 'HONDA', 'NISSAN', 'VOLKSWAGEN', 'FORD', 'ASTON MARTIN', 'BENT'];
+        $name = ['BWM', 'AUDI', 'MERCEDES', 'TOYOTA', 'HONDA', 'NISSAN', 'VOLKSWAGEN', 'FORD', 'ASTON MARTIN', 'BENT'];
+
         return [
             'name' => $this->faker->randomElement($name),
             'general_info' => json_encode([
                 'year' => $this->faker->year,
                 // 'auction_end' => $this->faker->dateTimeBetween('+1 days', '+2 days')->format('Y-m-d H:i:s'),
                 //add Thousand Comma to Decimal Number for seller_price
-                'seller_price' => number_format($this->faker->numberBetween(10000, 1000000), 0, '', ','), 
-                'max_bid' => number_format($this->faker->numberBetween(10000, 1000000), 0, '', ','), 
-                'min_bid' => number_format($this->faker->numberBetween(10000, 1000000), 0, '', ','), 
+                'seller_price' => number_format($this->faker->numberBetween(10000, 1000000), 0, '', ','),
+                'max_bid' => number_format($this->faker->numberBetween(10000, 1000000), 0, '', ','),
+                'min_bid' => number_format($this->faker->numberBetween(10000, 1000000), 0, '', ','),
                 'bid_count' => $this->faker->numberBetween(0, 100),
                 'bid_end' => $this->faker->dateTimeBetween('+1 days', '+2 days')->format('Y-m-d H:i:s'),
                 'auction_status' => $this->faker->randomElement(['live', 'expired']),

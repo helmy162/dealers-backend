@@ -2,9 +2,7 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -19,14 +17,15 @@ class NewBid implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(public array  $auction_data, public int $auction_id)
+    public function __construct(public array $auction_data, public int $auction_id)
     {
         //
     }
 
-    public function broadcastWith(){
+    public function broadcastWith()
+    {
         return [
-            'auction' => $this->auction_data
+            'auction' => $this->auction_data,
         ];
     }
 
@@ -37,10 +36,11 @@ class NewBid implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('car.auction.'.$this->auction_id);
+        return new PrivateChannel('car.auction.' . $this->auction_id);
     }
 
-    public function broadcastAs(){
+    public function broadcastAs()
+    {
         return 'NewBid';
     }
 }

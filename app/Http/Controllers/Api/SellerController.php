@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Webhook\StorePipedrivePersonRequest;
+use App\Models\Seller;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
-use App\Models\Seller;
 
 class SellerController extends Controller
 {
@@ -20,6 +20,7 @@ class SellerController extends Controller
     public function show($id)
     {
         $seller = Seller::findOrFail($id);
+
         return response()->json(['seller' => $seller]);
     }
 
@@ -28,7 +29,7 @@ class SellerController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:sellers',
-            'phone' => 'required'
+            'phone' => 'required',
         ]);
 
         $seller = new Seller();
@@ -36,8 +37,8 @@ class SellerController extends Controller
         $seller->save();
 
         return response()->json([
-            "success" => true,
-            "seller" => $seller
+            'success' => true,
+            'seller' => $seller,
         ]);
     }
 
@@ -45,7 +46,7 @@ class SellerController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:sellers,email,'.$id,
+            'email' => 'required|email|unique:sellers,email,' . $id,
             'phone' => 'required',
         ]);
 
@@ -54,8 +55,8 @@ class SellerController extends Controller
         $seller->save();
 
         return response()->json([
-            "success" => true,
-            "seller" => $seller
+            'success' => true,
+            'seller' => $seller,
         ]);
 
     }
@@ -66,13 +67,14 @@ class SellerController extends Controller
         $seller->delete();
 
         return response()->json([
-            "success" => true,
-            "message" => 'Seller deleted Successfully!'
+            'success' => true,
+            'message' => 'Seller deleted Successfully!',
         ]);
     }
 
     /**
      * Pipedrive webhook for creating Sellers from Pipedrive Persons
+     *
      * @see https://carsxchange.pipedrive.com/settings/webhooks
      * @see https://pipedrive.readme.io/docs/guide-for-webhooks
      */

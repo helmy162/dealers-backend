@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -12,7 +11,9 @@ class BidNotification extends Notification
     use Queueable;
 
     protected $car;
+
     protected $user;
+
     protected $bid;
 
     /**
@@ -20,7 +21,7 @@ class BidNotification extends Notification
      *
      * @return void
      */
-    public function __construct($user , $car , $bid)
+    public function __construct($user, $car, $bid)
     {
         $this->car = $car;
         $this->user = $user;
@@ -35,7 +36,7 @@ class BidNotification extends Notification
      */
     public function via($notifiable)
     {
-        //use sms and notification auth user 
+        //use sms and notification auth user
         return ['mail', 'database'];
 
     }
@@ -49,9 +50,9 @@ class BidNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -81,7 +82,6 @@ class BidNotification extends Notification
     public function toSms($notifiable)
     {
         return (new SmsMessage)
-                    ->content('New Bid Added');
+            ->content('New Bid Added');
     }
-
 }

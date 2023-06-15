@@ -18,10 +18,11 @@ class Engine extends Model
         'created_at',
         'updated_at',
         'car_id',
-        'id'
+        'id',
     ];
 
-    public function car(){
+    public function car()
+    {
         return $this->belongsTo(Car::class);
     }
 }

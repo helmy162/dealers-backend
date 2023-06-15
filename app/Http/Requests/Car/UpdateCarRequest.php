@@ -24,8 +24,7 @@ class UpdateCarRequest extends FormRequest
     public function rules()
     {
         return [
-            
-            
+
         ];
     }
 }

@@ -28,5 +28,4 @@ class Bid extends Model
     {
         return $this->belongsTo(Auction::class);
     }
-    
 }

@@ -12,7 +12,6 @@ class Notification extends Model
     //add guarded
     protected $guarded = [];
 
-
     public function notifiable()
     {
         return $this->morphTo();

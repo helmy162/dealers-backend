@@ -12,21 +12,22 @@ class Exterior extends Model
     protected $guarded = [
         'id',
         'car_id',
-        'markers'
+        'markers',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
         'car_id',
-        'id'
+        'id',
     ];
 
     protected $casts = [
-        'markers' => 'array'
+        'markers' => 'array',
     ];
 
-    public function car(){
+    public function car()
+    {
         $this->belongsTo(Car::class);
     }
 }

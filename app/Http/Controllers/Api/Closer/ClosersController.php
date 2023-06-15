@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\Closer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Car;
+use Illuminate\Http\Request;
 
 class ClosersController extends Controller
 {
@@ -21,7 +21,7 @@ class ClosersController extends Controller
             ]);
 
         return response()->json([
-            'car' => $car
+            'car' => $car,
         ]);
     }
 
@@ -36,12 +36,12 @@ class ClosersController extends Controller
             'specs_id',
             'wheels_id',
             'exterior_id',
-            'seller_id'
+            'seller_id',
         ])->with([
             'details:id,car_id,make,model,year',
             'seller:id,name',
             'auction:car_id,start_at,end_at',
-            'inspector:id,name'
+            'inspector:id,name',
         ])->get();
 
         return response()->json($cars);

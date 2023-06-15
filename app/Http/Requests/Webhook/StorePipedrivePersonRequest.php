@@ -30,7 +30,7 @@ class StorePipedrivePersonRequest extends FormRequest
             'current.email' => 'required|array',
             'current.email.*.value' => 'required|string',
             'current.phone' => 'required|array',
-            'current.phone.*.value' => 'required|string'
+            'current.phone.*.value' => 'required|string',
         ];
     }
 }

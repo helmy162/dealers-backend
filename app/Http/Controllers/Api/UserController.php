@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -43,6 +42,7 @@ class UserController extends Controller
             ->map(function ($carOffers) {
                 return $carOffers->last(); // return only last offer for each car
             });
+
         return response()->json($offers->values());
     }
 
@@ -50,7 +50,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'notify_new_auction' => 'required|boolean',
-            'notify_won_auction' => 'required|boolean'
+            'notify_won_auction' => 'required|boolean',
         ]);
 
         $user = auth()->user();
@@ -59,10 +59,9 @@ class UserController extends Controller
         $user->notify_won_auction = $validated['notify_won_auction'];
         $user->save();
 
-
         return response()->json([
             'success' => true,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -70,22 +69,21 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users,email,'.auth()->user()->id,
+            'email' => 'required|string|email|unique:users,email,' . auth()->user()->id,
             'phoneNumber' => 'string',
-            'company' => 'string'
+            'company' => 'string',
         ]);
 
-
-        $user                       = auth()->user();
-        $user->name                 = $request->name;
-        $user->email                = $request->email;
-        $user->phone                = $request->phoneNumber;
-        $user->company              = $request->company;
+        $user = auth()->user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phoneNumber;
+        $user->company = $request->company;
         $user->save();
 
         return response()->json([
             'success' => true,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -98,7 +96,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User deactivated successfully!'
+            'message' => 'User deactivated successfully!',
         ]);
     }
 }

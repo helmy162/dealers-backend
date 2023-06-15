@@ -63,10 +63,10 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'is_admin'=> \App\Http\Middleware\IsAdminMiddleware::class,
-        'is_inspector'=> \App\Http\Middleware\IsInspectorMiddleware::class,
-        'is_dealer'=> \App\Http\Middleware\IsDealerMiddleware::class,
-        'is_closer'=> \App\Http\Middleware\IsCloserMiddleware::class,
-        'is_sales'=> \App\Http\Middleware\IsSalesMiddleware::class
+        'is_admin' => \App\Http\Middleware\IsAdminMiddleware::class,
+        'is_inspector' => \App\Http\Middleware\IsInspectorMiddleware::class,
+        'is_dealer' => \App\Http\Middleware\IsDealerMiddleware::class,
+        'is_closer' => \App\Http\Middleware\IsCloserMiddleware::class,
+        'is_sales' => \App\Http\Middleware\IsSalesMiddleware::class,
     ];
 }

@@ -12,6 +12,6 @@ class Seller extends Model
     protected $guarded = [];
 
     protected $hidden = [
-        'updated_at'
+        'updated_at',
     ];
 }

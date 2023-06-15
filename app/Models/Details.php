@@ -18,7 +18,7 @@ class Details extends Model
         'created_at',
         'updated_at',
         'car_id',
-        'id'
+        'id',
     ];
 
     protected $casts = [
@@ -26,7 +26,8 @@ class Details extends Model
         'is_new' => 'boolean',
     ];
 
-    public function car(){
+    public function car()
+    {
         $this->belongsTo(Car::class);
     }
 }
