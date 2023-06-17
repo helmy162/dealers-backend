@@ -129,18 +129,18 @@ class AuctionController extends Controller
             'start_at' => 'required',
             'end_at' => 'required',
             'start_price' => 'required|integer',
-            'round' => 'required|integer'
-        ],[
-            'car_id.unique' => 'Car already at auction!'
+            'round' => 'required|integer',
+        ], [
+            'car_id.unique' => 'Car already at auction!',
         ]);
 
         $auction = Auction::findOrFail($id);
         $car = Car::findOrFail($validated['car_id']);
 
-        $auction->start_price       = $validated['start_price'];
-        $auction->round             = $validated['round'];
-        $auction->start_at          = Carbon::make($validated['start_at']);
-        $auction->end_at            = Carbon::make($validated['end_at']);
+        $auction->start_price = $validated['start_price'];
+        $auction->round = $validated['round'];
+        $auction->start_at = Carbon::make($validated['start_at']);
+        $auction->end_at = Carbon::make($validated['end_at']);
         $auction->save();
 
         $car->status = 'approved';

@@ -31,15 +31,15 @@ class CarController extends Controller
 
         $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
-            ->where('auctions.end_at','>', Carbon::now())
+            ->where('auctions.end_at', '>', Carbon::now())
             ->where(function ($query) {
                 $query->where('auctions.round', 1)
-                    ->orWhere('auctions.round', '<>' , 1)
+                    ->orWhere('auctions.round', '<>', 1)
                     ->whereExists(function ($query) {
                         $query->select(DB::raw(1))
-                              ->from('bids')
-                              ->whereColumn('bids.auction_id', 'auctions.id')
-                              ->where('bids.user_id', auth()->user()->id);
+                            ->from('bids')
+                            ->whereColumn('bids.auction_id', 'auctions.id')
+                            ->where('bids.user_id', auth()->user()->id);
                     });
             })
             ->whereNotNull([
