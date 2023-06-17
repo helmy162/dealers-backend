@@ -22,6 +22,7 @@ class PipedriveController extends Controller
                 'type' => config('pipedrive.activity.inspection_appointment'),
                 'user_id' => config('pipedrive.user_id'),
                 'start' => $request->start,
+                // Set limit to 500 if search is active, otherwise use the limit from the request
                 'limit' => $request->has('search') ? self::MAX_LIMIT : $request->limit,
                 'done' => $request->done,
             ];
@@ -59,6 +60,13 @@ class PipedriveController extends Controller
 
             $activities = $response->collect()->except(['success']);
 
+            // Pipedrive API does not offer a way to constrain dates to a single day, so we have to do it manually
+            if ($request->has('filter') && $request->filter === 'today') {
+                $activities['data'] = collect($activities['data'])->filter(function ($activity) {
+                    return Carbon::parse($activity['due_date'])->isToday();
+                })->values()->toArray();
+            }
+
             if ($request->has('search')) {
                 $searchResults = $this->searchResults(collect($activities['data']), $request->search);
                 $activities['data'] = $searchResults->values()->toArray();
@@ -70,6 +78,9 @@ class PipedriveController extends Controller
         }
     }
 
+    /**
+     * Search the activities for the given search string.
+     */
     private function searchResults(Collection $data, string $search) : Collection
     {
         return $data->filter(function ($item) use ($search) {
