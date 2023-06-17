@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('duration')->nullable();
             $table->timestamp('start_at');
             $table->timestamp('end_at');
+            $table->unsignedSmallInteger('round')->default(1);
             $table->timestamps();
         });
     }
