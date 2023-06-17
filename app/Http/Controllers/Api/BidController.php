@@ -39,7 +39,11 @@ class BidController extends Controller
             abort('400', 'Auction not started yet!');
         }
 
-        if ($bid_amount > auth()->user()->bid_limit) {
+        if( $auction->round > 1 && !$auction->bids()->where('user_id', auth()->user()->id)->count() ){
+            abort('400', 'You are not allowed to bid on this round!');
+        }
+
+        if($bid_amount > auth()->user()->bid_limit){
             return response()->json([
                 'success' => false,
                 'bid_limit' => auth()->user()->bid_limit,
