@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,8 +22,19 @@ class History extends Model
         'id',
     ];
 
+    protected $casts = [
+        'accident_history' => 'array',
+    ];
+
     public function car()
     {
         $this->belongsTo(Car::class);
+    }
+
+    public function setAccidentHistoryAttribute($value)
+    {
+        $accidentHistory = explode(',', $value);
+
+        $this->attributes['accident_history'] = json_encode($accidentHistory);
     }
 }
