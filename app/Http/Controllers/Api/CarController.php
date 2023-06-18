@@ -36,10 +36,10 @@ class CarController extends Controller
                 $query->where('auctions.round', 1)
                     ->orWhere('auctions.round', '<>', 1)
                     ->whereExists(function ($query) {
-                        $query->select(DB::raw(1))
-                            ->from('bids')
-                            ->whereColumn('bids.auction_id', 'auctions.id')
-                            ->where('bids.user_id', auth()->user()->id);
+                        $query->select(\DB::raw(1))
+                              ->from('bids')
+                              ->whereColumn('bids.auction_id', 'auctions.id')
+                              ->where('bids.user_id', auth()->user()->id);
                     });
             })
             ->whereNotNull([
