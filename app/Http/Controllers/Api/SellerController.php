@@ -8,6 +8,7 @@ use App\Models\Seller;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class SellerController extends Controller
@@ -92,10 +93,16 @@ class SellerController extends Controller
                 ['phone' => $phone]
             );
 
+            Log::info('Seller successfully synced from Pipedrive: ' . $seller->toJson());
+
             return response()->json($seller, Response::HTTP_OK);
         } catch (ValidationException $e) {
+            Log::error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
+
             return response()->json(['error' => $e->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
+            Log::error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
+
             return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
