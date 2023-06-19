@@ -210,6 +210,5 @@ class AuctionController extends Controller
             'success' => true,
             'auction' => $auction,
         ]);
-
     }
 }

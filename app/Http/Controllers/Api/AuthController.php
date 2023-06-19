@@ -104,7 +104,6 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => [trans($status)],
         ]);
-
     }
 
     // New Password
@@ -155,6 +154,5 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
                         ? response()->json(['success' => true, 'message' => __($status)])
                         : response()->json(['email' => [__($status)]]);
-
     }
 }

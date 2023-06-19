@@ -19,7 +19,6 @@ class newAuction extends Mailable
      */
     public function __construct(public $car, public $user)
     {
-
     }
 
     /**

@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-
     // user register
     Route::post('/register', [AuthController::class, 'register']);
     //login user
@@ -47,7 +46,6 @@ Route::group(['prefix' => 'v1'], function () {
 
     // Authenticated User Routes
     Route::group(['middleware' => ['auth:sanctum']], function () {
-
         //route group for admin
         Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function () {
             //route get dashboard stats

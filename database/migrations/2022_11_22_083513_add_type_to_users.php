@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->enum('type', ['admin', 'inspector', 'dealer', 'closer', 'sales'])->after('email')->default('dealer');
         });
-
     }
 
     /**

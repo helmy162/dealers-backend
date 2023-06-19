@@ -13,6 +13,5 @@ class CarImageSeeder extends Seeder
      */
     public function run()
     {
-
     }
 }

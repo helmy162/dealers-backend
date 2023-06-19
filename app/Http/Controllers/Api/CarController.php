@@ -28,7 +28,6 @@ class CarController extends Controller
      */
     public function index(Request $request)
     {
-
         $ActiveCars = Car::join('auctions', 'auctions.car_id', '=', 'cars.id')
             ->select('cars.*')
             ->where('auctions.end_at', '>', Carbon::now())
@@ -179,7 +178,6 @@ class CarController extends Controller
         $exterior->save();
 
         if ($request->hasFile('images')) {
-
             $images = $request->file('images');
             $imagesNameArr = [];
             foreach ($images as $image) {
@@ -206,7 +204,6 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('id_images')) {
-
             $images = $request->file('id_images');
             $imagesNameArr = [];
             foreach ($images as $image) {
@@ -233,7 +230,6 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('registration_card_images')) {
-
             $images = $request->file('registration_card_images');
             $imagesNameArr = [];
             foreach ($images as $image) {
@@ -260,7 +256,6 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('vin_images')) {
-
             $images = $request->file('vin_images');
             $imagesNameArr = [];
             foreach ($images as $image) {
@@ -287,7 +282,6 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('insurance_images')) {
-
             $images = $request->file('insurance_images');
             $imagesNameArr = [];
             foreach ($images as $image) {
@@ -384,7 +378,6 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('images')) {
-
             $images = $request->file('images');
             $imagesNameArr = $car->images;
             foreach ($images as $image) {

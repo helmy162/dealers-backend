@@ -38,7 +38,6 @@ class BidNotification extends Notification
     {
         //use sms and notification auth user
         return ['mail', 'database'];
-
     }
 
     /**

@@ -24,7 +24,6 @@ class RelationsHelper
         $relations['wheel'] = $car->wheel;
 
         return $relations;
-
     }
 
     //save relations and return the id of the saved relation

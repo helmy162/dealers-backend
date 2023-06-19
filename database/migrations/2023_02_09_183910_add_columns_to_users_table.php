@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('company')->nullable()->after('password');
             $table->boolean('is_verified')->default(false)->after('email_verified_at');
             $table->unsignedBigInteger('assigned_by')->after('password')->nullable();
-
         });
     }
 

@@ -16,7 +16,6 @@ class BaseController extends Controller
         ];
 
         return response()->json($response, 200);
-
     }
 
     //build function error response
