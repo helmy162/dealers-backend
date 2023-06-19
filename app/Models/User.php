@@ -95,7 +95,7 @@ class User extends Authenticatable
      */
     public function getAccountStatusAttribute()
     {
-        return $this->attributes['status'];
+        return $this->attributes['status'] ?? '';
     }
 
     /**
