@@ -93,15 +93,15 @@ class SellerController extends Controller
                 ['phone' => $phone]
             );
 
-            Log::channel('daily')->info('Seller successfully synced from Pipedrive: ' . $seller->toJson());
+            Log::info('Seller successfully synced from Pipedrive: ' . $seller->toJson());
 
             return response()->json($seller, Response::HTTP_OK);
         } catch (ValidationException $e) {
-            Log::channel('daily')->error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
+            Log::error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
 
             return response()->json(['error' => $e->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
-            Log::channel('daily')->error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
+            Log::error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
 
             return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
