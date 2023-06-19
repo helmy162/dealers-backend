@@ -11,11 +11,12 @@ class StorePipedrivePersonRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      *
+     * Middleware has already authorized the request. No need to add further authorization rules here.
+     *
      * @return bool
      */
     public function authorize()
     {
-        // TODO: Replace with proper HTTP username/password auth
         return true;
     }
 
