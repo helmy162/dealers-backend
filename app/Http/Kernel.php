@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'is_dealer' => \App\Http\Middleware\IsDealerMiddleware::class,
         'is_closer' => \App\Http\Middleware\IsCloserMiddleware::class,
         'is_sales' => \App\Http\Middleware\IsSalesMiddleware::class,
+        'pipedrive-http' => \App\Http\Middleware\PipedriveHttpAuth::class,
     ];
 }

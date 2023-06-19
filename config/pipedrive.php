@@ -18,6 +18,10 @@ return [
 
     'version' => env('PIPEDRIVE_API_VERSION', 'v1'),
     'token' => env('PIPEDRIVE_API_TOKEN'),
+    'webhook' => [
+        'username' => env('PIPEDRIVE_HTTP_AUTH_USERNAME'),
+        'password' => env('PIPEDRIVE_HTTP_AUTH_PASSWORD'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
