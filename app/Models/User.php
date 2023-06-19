@@ -51,13 +51,20 @@ class User extends Authenticatable
         'notify_won_auction' => 'boolean',
     ];
 
-    //get the user's cars
+    /**
+     * The attributes that should be appended.
+     *
+     * @var array<string, string>
+     */
+    protected $appends = [
+        'account_status',
+    ];
+
     public function cars()
     {
         return $this->hasMany(Car::class, 'inspector_id');
     }
 
-    //add realtion bid between user and car
     public function bids()
     {
         return $this->hasMany(Bid::class);
@@ -73,13 +80,27 @@ class User extends Authenticatable
         return $this->cars->carImages;
     }
 
-    //get the cars data
+    /**
+     * Get this user's cars
+     */
     public function getCarsAttribute()
     {
         return $this->cars()->get();
     }
 
-    //get users type (admin or inspecter or dealer) from users table
+    /**
+     * Get the account status attribute
+     *
+     * Map `status` column because it's a reserved keyword in most FE clients
+     */
+    public function getAccountStatusAttribute()
+    {
+        return $this->attributes['status'];
+    }
+
+    /**
+     * Get user's type (admin, dealer, sales, inspector, closer)
+     */
     public function scopeType($query, $type)
     {
         return $query->where('type', $type);
@@ -87,7 +108,7 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token)
     {
-        $url = env('FE_RESET_PASSWORD') . '?token=' . $token . '&email=' . $this->email;
+        $url = config('cxc.password_reset_url') . '?token=' . $token . '&email=' . $this->email;
 
         $this->notify(new ResetPasswordNotification($url));
     }

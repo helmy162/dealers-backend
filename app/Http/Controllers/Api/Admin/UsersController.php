@@ -10,7 +10,9 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::all(['id', 'name', 'email', 'type', 'phone', 'bid_limit', 'status', 'is_verified'])
+            ->append('account_status')
+            ->makeHidden('status');
 
         return response()->json($users);
     }
