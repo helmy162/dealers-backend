@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Webhook;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StorePipedrivePersonRequest extends FormRequest
 {
@@ -32,5 +34,17 @@ class StorePipedrivePersonRequest extends FormRequest
             'current.phone' => 'required|array',
             'current.phone.*.value' => 'required|string',
         ];
+    }
+
+    /**
+     * In the unlikely event that validation fails, we'll just return a 422 and log the error.
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        Log::critical('Pipedrive webhook validation failed', [
+            'errors' => $validator->errors(),
+        ]);
+
+        parent::failedValidation($validator);
     }
 }

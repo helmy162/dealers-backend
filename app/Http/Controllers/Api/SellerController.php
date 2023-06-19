@@ -96,10 +96,6 @@ class SellerController extends Controller
             Log::info('Seller successfully synced from Pipedrive: ' . $seller->toJson());
 
             return response()->json($seller, Response::HTTP_OK);
-        } catch (ValidationException $e) {
-            Log::error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
-
-            return response()->json(['error' => $e->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             Log::error('Seller sync from Pipedrive failed: ' . $e->getMessage() . json_encode($request->toArray()));
 
