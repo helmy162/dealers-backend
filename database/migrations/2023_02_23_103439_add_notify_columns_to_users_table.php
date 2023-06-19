@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('notify_new_auction')->default(1);
-            $table->boolean('notify_won_auction')->default(1);
+            $table->boolean('notify_new_auction')->after('bid_limit')->default(1);
+            $table->boolean('notify_won_auction')->after('bid_limit')->default(1);
         });
     }
 
