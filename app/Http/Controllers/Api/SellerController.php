@@ -34,6 +34,7 @@ class SellerController extends Controller
 
         $seller = new Seller();
         $seller->fill($validated);
+        $seller->source = Seller::SOURCE_MANUAL;
         $seller->save();
 
         return response()->json([
@@ -88,7 +89,7 @@ class SellerController extends Controller
 
             $seller = Seller::firstOrCreate(
                 ['email' => $email, 'name' => $name],
-                ['phone' => $phone]
+                ['phone' => $phone, 'source' => Seller::SOURCE_PIPEDRIVE]
             );
 
             Log::info('Seller successfully synced from Pipedrive: ' . $seller->toJson());

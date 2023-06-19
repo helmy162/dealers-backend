@@ -9,6 +9,10 @@ class Seller extends Model
 {
     use HasFactory;
 
+    public const SOURCE_MANUAL = 'manual';
+
+    public const SOURCE_PIPEDRIVE = 'pipedrive';
+
     protected $guarded = [];
 
     protected $hidden = [
