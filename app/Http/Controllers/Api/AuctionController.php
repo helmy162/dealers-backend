@@ -78,10 +78,11 @@ class AuctionController extends Controller
         // Sending data to WhatsApp webhook
         $response = Http::post('https://hook.us1.make.com/gwrof533jp0974w43brsjpo6kj3qvekl', $data);
 
-        $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
-        foreach ($dealers as $dealer) {
-            Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
-        }
+        // Sending auction data to user
+        // $dealers = User::whereStatus('active')->whereType('dealer')->whereNotifyNewAuction(true)->get();
+        // foreach ($dealers as $dealer) {
+        //     Mail::to($dealer->email)->queue(new newAuction($car, $dealer));
+        // }
 
         // send a push notification to subscriped dealers
         $isPushNotificationSent = NotificationController::sendNewAuctionNotification($car); // returns bool
