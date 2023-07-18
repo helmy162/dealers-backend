@@ -89,8 +89,9 @@ class UserController extends Controller
 
     public function deactivateAccount()
     {
-        auth()->user()->tokens()->delete();
-        auth()->user()->delete();
+        $user = auth()->user();
+        $user->tokens()->delete();
+        $user->delete();
 
         return response()->json([
             'success' => true,
