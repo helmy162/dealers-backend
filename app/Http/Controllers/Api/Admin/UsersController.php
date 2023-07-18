@@ -106,18 +106,15 @@ class UsersController extends Controller
         ]);
     }
 
-    /**
-     * Deactivate user. This doesn't actually (hard/soft) delete the user's account
-     */
     public function destroy(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->status = 'inactive';
-        $user->save();
+        $user->tokens()->delete();
+        $user->delete();
 
         return response()->json([
             'success' => true,
-            'user' => $user,
+            'message' => 'User deleted successfully',
         ]);
     }
 }
